@@ -427,6 +427,40 @@ cp work/memo.pdf <dossier de diffusion>/<projet>-memo-v1.0.pdf
 * `work/` n'est pas versionné : le PDF se reproduit depuis le tag (`git checkout memo-v1.0 && tools/build.sh memo.adoc`), à la date près, qui est celle du build, en pied de page.
 * Le fichier diffusé porte le projet, le type et la version : `memo.pdf` ne dit plus rien une fois joint à un courriel.
 
+[[publier]]
+=== Publier en ligne
+
+Le PDF reste le livrable : figé, numéroté, tagué.
+Pour une lecture en ligne, `build.sh --html` produit une page autonome, `work/<maître>.html` : sommaire à gauche, styles, tableaux des registres et schémas inclus dans le fichier, qui se dépose tel quel sur un serveur web.
+
+[source,sh]
+----
+tools/build.sh --html memo.adoc
+----
+
+*GitLab Pages.*
+Dans le dépôt d'une étude hébergé sur GitLab, un fichier `.gitlab-ci.yml` publie la page à chaque tag de livraison, avec l'image du build :
+
+[source,yaml]
+----
+pages:
+  image: asciidoctor/docker-asciidoctor:1.108.0
+  script:
+    - sh tools/build.sh --html memo.adoc
+    - mkdir -p public && cp work/memo.html public/index.html
+  artifacts:
+    paths: [public]
+  rules:
+    - if: $CI_COMMIT_TAG
+----
+
+WARNING: Sur certaines instances GitLab, le site Pages d'un projet privé est public par défaut.
+Avant la première publication, vérifier dans les réglages du projet (« Visibilité », Pages) qu'il est réservé aux membres du projet.
+
+*Confluence, SharePoint.*
+On y dépose le PDF livré, ou un lien vers la page publiée : une page Confluence courte (contexte, décision, lien) ou le PDF dans la bibliothèque SharePoint.
+Jamais une copie convertie et modifiable : corrigée sur place, elle divergerait de l'étude, qui reste la seule source.
+
 === Après la livraison
 
 * Les retours du comité, des relecteurs ou des équipes sont un entrant : skill `integrer-entrant`.

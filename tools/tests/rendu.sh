@@ -2,8 +2,9 @@
 # rendu.sh — PDF de démonstration du thème, pour relire le rendu après une
 #            modification de tools/pdf-theme/, tools/extensions/,
 #            tools/build.sh ou normes/plantuml/.
-# Usage    : tools/tests/rendu.sh
-# Sortie   : work/rendu.pdf ; rien n'est produit si check.sh est en KO.
+# Usage    : tools/tests/rendu.sh [--html]
+# Sortie   : work/rendu.pdf, ou work/rendu.html avec --html ; rien n'est
+#            produit si check.sh est en KO.
 #
 # Les sources, dans tools/tests/rendu/, sont un maître et ses fragments
 # comme ceux d'une étude. Ils sont copiés dans work/rendu/, avec des liens
@@ -20,4 +21,4 @@ mkdir -p "$d"
 cp "$root"/tools/tests/rendu/*.adoc "$d"/
 ln -s ../../normes "$d/normes"
 ln -s ../../images "$d/images"
-exec "$root/tools/build.sh" work/rendu/rendu.adoc
+exec "$root/tools/build.sh" "$@" work/rendu/rendu.adoc

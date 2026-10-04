@@ -105,8 +105,8 @@ Ensuite, sans agent :
 | Faire le point, préparer un comité
 | `tools/status.sh`, `tools/status.sh --comite`.
 
-| Produire le PDF
-| `tools/build.sh`, qui l'écrit dans `work/`.
+| Produire le PDF, ou une page web
+| `tools/build.sh`, qui l'écrit dans `work/` ; `tools/build.sh --html` pour une page autonome à publier : xref:doc/howto.adoc#publier[Publier en ligne].
 
 | Livrer un mémo, un DAT, une note
 | Relecture, version, PDF, tag : xref:doc/howto.adoc#livrer[Livrer un document].
