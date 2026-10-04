@@ -1,0 +1,15 @@
+[appendix]
+[[annexe-glossaire]]
+== Glossaire
+
+[glossary]
+ADR:: Architecture Decision Record, trace d'une décision d'architecture.
+RACI:: Matrice des responsabilités : réalise, approuve, consulté, informé.
+
+[appendix]
+[[annexe-sources]]
+== Sources
+
+[bibliography]
+* [[[ANSSI-HYG]]] ANSSI, _Guide d'hygiène informatique_, version 2017, chapitre 3.
+* [[[C4]]] Simon Brown, _The C4 model for visualising software architecture_, https://c4model.com.

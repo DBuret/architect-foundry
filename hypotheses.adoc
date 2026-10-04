@@ -1,0 +1,15 @@
+= Hypothèses
+
+// Registre : format, statuts et règles dans normes/registres.adoc.
+
+[[H1]]
+== H1 : Intitulé de l'hypothèse
+
+.Statut
+Non validée.
+
+.Énoncé
+À rédiger.
+
+.Origine
+À rédiger.

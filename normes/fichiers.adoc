@@ -1,0 +1,99 @@
+= Normes : fichiers, inclusions et header
+:description: Inclusion de fragments, header des documents, attributs de build
+:type: conventions-doc
+
+== Inclusion de Fichiers
+
+Utiliser `include::` pour les sous-documents, diagrammes externalisés ou fragments réutilisables.
+
+[source,asciidoc]
+----
+\include::sections/contexte.adoc[]
+\include::diagrams/architecture-logique.puml[]
+----
+
+Un même fichier inclus deux fois dans un même document maître duplique son contenu et, s'il contient des ancres, provoque un `id assigned to block already in use` au build.
+Voir `normes/asciidoc.adoc`, « Identifiants et renvois ».
+
+Un fragment qui est aussi un document autonome commence par un titre de document `= Titre`.
+Inclus tel quel, ce titre devient une section de niveau 0, et le build échoue sur `level 0 sections can only be used when doctype is book`.
+Un tel fragment s'inclut donc toujours avec un décalage de niveau : `leveloffset=+1` pour en faire un chapitre, `leveloffset=+2` pour une sous-section.
+
+[source,asciidoc]
+----
+\include::hypotheses.adoc[leveloffset=+1]
+----
+
+Les attributs d'en-tête du fragment s'appliquent alors au maître à partir de l'include : un fragment n'en porte que s'il doit aussi se rendre seul (un chapitre avec des images, pour l'aperçu), et avec les valeurs du maître.
+Un registre n'a pour en-tête que son titre : il n'est jamais rendu seul.
+Un fragment ne porte jamais `:type:`, propre à chaque maître : un registre partagé par le mémo et le DAT écraserait le type de l'un des deux.
+
+Un fragment inclus par plusieurs maîtres (les registres, un chapitre commun, un concept partagé par une note et un DAT) ne renvoie qu'à des contenus que tous incluent.
+Un renvoi vers un chapitre du seul DAT casserait le mémo : `check.sh` le signale en KO (« renvoi vers un document non inclus »).
+
+Un fragment dépasse rarement 40 Ko, soit environ 10 000 tokens : au-delà, l'agent ne peut plus le relire d'un bloc avec les normes et les registres dans une fenêtre de 128K.
+Un chapitre plus long se découpe en sous-fragments, un par section, inclus depuis un fragment de chapitre avec `leveloffset`.
+`check.sh` signale en AVERT un fragment au-delà de ce seuil ; les registres, lus par ID, font exception.
+
+Un fragment rendu seul sert à l'aperçu et à la relecture de son source, jamais à la diffusion.
+Ses renvois vers d'autres fichiers y deviennent des liens vers d'autres PDF, et ses `\<<ID>>` vers un autre fichier des liens morts.
+Seul le PDF du maître est un livrable.
+
+== Header des documents et attributs de build
+
+Le header d'un document porte ce qui décrit le document et que tout outil doit voir : `check.sh`, l'aperçu de l'éditeur, le rendu GitHub, un fragment rendu seul.
+`tools/build.sh` porte ce qui décrit le rendu PDF : thème, page de titre, logo, légendes, coloration du code.
+Un attribut de rendu ne se recopie donc pas dans chaque header : il est posé une seule fois, dans le script.
+
+[cols="1,2"]
+|===
+| Attribut | Emplacement
+
+| `:project:`, `:lang:`
+| Header du maître ; d'un fragment seulement s'il se rend seul.
+
+| `:revnumber:`
+| Header du maître seulement : version du document, affichée en page de titre ; `0.x` pour une version de travail, `1.0` pour la première soumise à décision ou validation. Chaque version livrée porte un tag git `<maître>-v<revnumber>` (`memo-v1.0`).
+
+| `:type:`
+| Header du maître seulement : `memo`, `dat` ou `note` (`normes/types.adoc`). Absent ou autre valeur : KO de `check.sh`.
+
+| `:toc:`, `:toclevels:`, `:sectnums:`, `:sectnumlevels:`
+| Header du maître seulement, avec les valeurs de son type.
+
+| `:kb-projet:`
+| Header du maître seulement : nom, dans la configuration RAG, de la base de connaissances du projet ; vide si l'étude n'en a pas. L'agent n'interroge pas d'autre base projet.
+
+| `:sites-projet:`
+| Header du maître seulement, même valeur dans tous les maîtres : URL des sites web de référence du projet, séparées par des virgules ; vide si aucun. L'agent y cherche en premier ce que les bases ne couvrent pas (skill `recherche-rag`).
+
+| `:imagesdir:`, `:imagesoutdir:`, `:diagram-cachedir:`
+| Header du maître ; d'un fragment seulement s'il se rend seul.
+
+| `stylesdir`, `stylesheet`, `source-highlighter=highlight.js`, `toc=left`
+| `.vscode/settings.json` (`asciidoc.preview.asciidoctorAttributes`) : réservés à l'aperçu VS Code, jamais dans un header ; invisibles pour `check.sh` et pour le PDF.
+
+| thème, `title-page`, `title-logo-image`, `header-logo`, `toc-title`, `icons`, légendes, `source-highlighter=rouge`, `docdate`
+| `tools/build.sh`.
+|===
+
+Un attribut passé par `build.sh` sans suffixe l'emporte sur le header ; avec le suffixe `@`, il n'est qu'une valeur par défaut qu'un header peut remplacer.
+Pour qu'une étude change son titre de sommaire ou supprime sa page de titre, elle le déclare donc simplement dans son header.
+
+Les légendes numérotées (« Tableau 3 », « Figure 2 ») sont désactivées au build.
+Un tableau ou une figure se cite donc par une ancre, comme une section, jamais par son numéro.
+
+== En-tête type
+
+Chaque maître porte l'en-tête d'attributs suivant (un fragment qui se rend seul aussi, un registre jamais) ; le maître y ajoute `:revnumber:`, `:type:`, `:kb-projet:`, `:sites-projet:`, `:toc:`, `:toclevels:`, `:sectnums:` et `:sectnumlevels:`, aux valeurs de son type (`normes/types.adoc`) :
+
+[source,asciidoc]
+----
+:project: nom_du_projet
+:lang: fr
+:imagesdir: images
+:imagesoutdir: {docdir}/work/images
+:diagram-cachedir: {docdir}/work/cache
+----
+
+Le préfixe `+{docdir}+` est nécessaire : un chemin relatif serait résolu depuis le dossier d'où l'on lance le build, pas depuis celui du document.

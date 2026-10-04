@@ -1,0 +1,9 @@
+{
+  "asciidoc.preview.asciidoctorAttributes": {
+    "toc": "left",
+    "stylesdir": "tools/preview",
+    "stylesheet": "vscode-preview.css",
+    "source-highlighter": "highlight.js"
+  },
+  "chat.useAgentsMdFile": true
+}

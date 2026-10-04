@@ -1,0 +1,145 @@
+= Normes : schémas et images
+:description: PlantUML, mindmaps, WBS, style commun, images
+:type: conventions-doc
+:imagesoutdir: {docdir}/../work/images
+:diagram-cachedir: {docdir}/../work/cache
+
+== Schémas et Diagrammes PlantUML
+
+Les schémas sont intégrés inline avec PlantUML.
+Le format est toujours `svg`, pour le PDF comme pour le HTML : ne jamais utiliser `png`.
+Les images générées et leur cache vont dans `work/`, ignoré par git, grâce aux attributs `:imagesoutdir:` et `:diagram-cachedir:` de l'en-tête (voir `normes/fichiers.adoc`, « En-tête type »).
+Ne jamais versionner un schéma généré : seule la source PlantUML fait foi.
+
+[plantuml,diagram-architecture,svg]
+----
+@startuml
+!include plantuml/_component.iuml
+component "Service A" as A
+component "Service B" as B
+A --> B : appels gRPC
+@enduml
+----
+
+Ce rendu dépend du gem `asciidoctor-diagram` et d'un moteur de diagramme (PlantUML/Graphviz local, ou serveur) présents dans la chaîne d'appel d'Asciidoctor.
+Sans eux, le bloc ne provoque ni WARNING ni ERROR : il se rend silencieusement en texte brut, affichant le code source PlantUML au lieu du diagramme.
+`check.sh` détecte ce cas (message DEBUG « unknown style for listing block »), mais seule une relecture du PDF ou du HTML rendu confirme qu'un diagramme donné s'est bien converti.
+
+=== Mindmaps et WBS
+
+Deux types de schéma PlantUML aident particulièrement la compréhension d'un lecteur, au-delà des diagrammes de composants ou de séquence.
+Ils utilisent le même bloc `[plantuml,nom,svg]` : seules les balises de début et de fin et la lecture du diagramme changent.
+
+Mindmap:: Pour explorer ou inventorier un ensemble d'idées sans ordre imposé (périmètre, risques, critères, facteurs d'un même sujet).
+Balises `@startmindmap` / `@endmindmap`, profondeur marquée par la répétition de `*` (`*`, `**`, `***`...).
+
+WBS (Work Breakdown Structure):: Pour décomposer un livrable, un projet ou une phase en sous-éléments (lots, tâches, activités).
+Même logique de profondeur par `*`, mais balises `@startwbs` / `@endwbs` ; le rendu est un arbre descendant, pas une carte associative.
+
+[plantuml,perimetre,svg]
+----
+@startmindmap
+!include plantuml/_mindmap.iuml
+* Périmètre de l'étude
+** Inclus
+*** Applications web
+*** Traitements par lots
+** Exclu
+*** Applications en fin de vie
+*** Postes de travail
+@endmindmap
+----
+
+[plantuml,phasage,svg]
+----
+@startwbs
+!include plantuml/_wbs.iuml
+* Étude
+** Cadrage
+** Analyse
+*** Inventaire
+*** Options
+*** Critères
+** Recommandation
+** Décision
+@endwbs
+----
+
+Dans ce fichier, qui vit dans `normes/`, le chemin d'`!include` est `plantuml/…` ; dans un chapitre d'étude, à la racine, c'est `normes/plantuml/…` (voir « Style commun aux schémas »).
+
+Utiliser un mindmap ou un WBS quand une section énumère plus de cinq éléments, une hiérarchie sur deux niveaux ou plus, ou une décomposition en phases, lots ou tâches.
+En dessous de ce seuil, une liste reste plus lisible qu'un diagramme creux à deux branches : ne pas diagrammer pour diagrammer.
+
+Un WBS s'impose pour un phasage, un livrable ou un périmètre de travail, c'est-à-dire les mêmes contenus qu'une table de phasage ou une liste de lots, en plus lisible pour qui découvre le document.
+Un mindmap convient à un inventaire ou une catégorisation sans ordre d'exécution imposé (facteurs de risque, critères de décision, périmètre inclus ou exclu).
+
+Décider où ce seuil est atteint ne se fait pas pendant la rédaction d'un chapitre, mais après, sur le chapitre déjà écrit : voir le skill `illustrer-etude`.
+Rédiger le texte sans s'interrompre pour évaluer chaque paragraphe ; l'ajout de schémas est une passe séparée, avec la vue d'ensemble du chapitre en main.
+
+=== Style commun aux schémas
+
+Tous les schémas PlantUML de l'étude partagent le même style (couleurs, police, absence d'ombre) grâce à des fichiers d'inclusion PlantUML dans `normes/plantuml/` : `_commun.iuml` pose le style de base, et un fichier par type de schéma l'étend.
+Un chapitre n'écrit jamais de `skinparam` lui-même ; il inclut le fichier de son type de schéma, juste après la balise de début.
+`check.sh` signale en AVERT un bloc `[plantuml]` sans cet `!include`.
+Dans un schéma, les flèches s'écrivent `->`, `-->` ou `..>`, jamais avec un tiret long Unicode (`–`, `—`), et un bloc `[plantuml]` ne contient que du PlantUML, jamais de code source :
+
+[cols="1,2"]
+|===
+| Type de schéma | Fichier à inclure
+
+| Mindmap (`@startmindmap`)
+| `normes/plantuml/_mindmap.iuml`
+
+| WBS (`@startwbs`)
+| `normes/plantuml/_wbs.iuml`
+
+| Composants, classes, déploiement (`@startuml`)
+| `normes/plantuml/_component.iuml`
+
+| Séquence (`@startuml`)
+| `normes/plantuml/_sequence.iuml`
+|===
+
+Pour un mindmap ou un WBS, la couleur et la taille de police varient automatiquement avec la profondeur (`:depth(0)` à `:depth(6)`) : la racine ressort sans rien à écrire dans le texte du schéma.
+Marquer un nœud du stéréotype `\<<urgent>>` lui donne un contour rouge, quelle que soit sa profondeur, pour signaler un point sensible.
+
+.Rendu obtenu ici — chemin propre à ce fichier, voir plus bas
+[plantuml,exemple-style-commun,svg]
+----
+@startmindmap
+!include plantuml/_mindmap.iuml
+* Périmètre de l'étude
+** Applications éligibles
+** Hors périmètre <<urgent>>
+@endmindmap
+----
+
+La cible de `!include` est un chemin relatif au dossier du fichier où vit le bloc, pas à la racine du dépôt ni au dossier depuis lequel le build est lancé.
+Comme les fragments d'une étude vivent tous à la racine (« Carte » de `AGENTS.md`), ce chemin est `normes/plantuml/_mindmap.iuml` depuis n'importe quel chapitre — c'est le texte à copier.
+Ce n'est qu'ici, dans `normes/schemas.adoc` qui vit un niveau plus bas, que le chemin correct est `plantuml/_mindmap.iuml`, comme dans l'exemple ci-dessus : ne pas le recopier tel quel dans un chapitre.
+Un chemin absent déclenche une `ERROR: cannot include`, une vraie erreur de build que `check.sh` détecte, pas un avertissement silencieux.
+
+Ne jamais écrire `!include +{docdir}+/...` : contrairement à l'en-tête du document, le contenu d'un bloc `[plantuml]` ne subit aucune substitution d'attributs Asciidoctor ; `+{docdir}+` resterait littéral et l'inclusion échouerait.
+
+Ajouter un nouveau type de fichier d'inclusion suit toujours le même patron : `!include _commun.iuml` en première ligne (chemin relatif au dossier `normes/plantuml/` lui-même, sans le préfixe), puis les `skinparam` ou le bloc `<style>` propres au type.
+Le bloc `<style>` (syntaxe CSS de PlantUML) cible un type de nœud (`node`, `arrow`), une profondeur (`:depth(n)`) ou une classe posée en stéréotype dans le texte (`.urgent`, ciblée par `\<<urgent>>`) ; il l'emporte sur un `skinparam` de portée plus large.
+
+WARNING: Un sélecteur `arrow` ou de classe (`.urgent`) écrit hors du bloc englobant du type de schéma (`mindmapDiagram { ... }`, `wbsDiagram { ... }`) n'a silencieusement aucun effet : ni WARNING, ni ERROR, ni schéma dégradé visible autrement qu'en comparant le rendu à l'intention.
+Vérifié sur cette version de PlantUML : le fichier de style doit tout envelopper dans le bloc de son diagramme, `:depth()` compris.
+
+Une police citée par `skinparam defaultFontName` qui n'existe pas sur la machine de rendu ne provoque ni WARNING ni ERROR : PlantUML se rabat silencieusement sur une police par défaut.
+`_commun.iuml` utilise DejaVu Sans, présente dans l'image Docker du build et sur la plupart des postes Linux, à installer sur macOS (`tools/build.sh` avertit si elle manque) ; ne la remplacer que par une police dont la présence est vérifiée sur toute la chaîne de rendu.
+La police doit aussi être déclarée dans le catalogue du thème PDF (`tools/pdf-theme/custom-theme.yml`), fichiers compris.
+PlantUML fixe dans le SVG la largeur de chaque texte, mesurée avec sa police ; si le PDF ne la connaît pas, asciidoctor-pdf lui substitue la police du corps et l'étire jusqu'à cette largeur.
+Le résultat est un texte aux lettres espacées (« P h a s a g e »), sans WARNING ni ERROR.
+
+WARNING: Le cache des schémas (`work/cache`, attribut `:diagram-cachedir:`) est indexé sur le texte du bloc `[plantuml]` dans le `.adoc`, pas sur le contenu des fichiers inclus.
+Éditer `normes/plantuml/_mindmap.iuml` sans purger `work/cache` laisse silencieusement l'ancien style dans les schémas déjà générés.
+`tools/build.sh` purge ce cache à chaque exécution ; dans l'aperçu VS Code, qui garde un cache persistant, lancer `rm -rf work/cache` après avoir modifié un fichier de `normes/plantuml/`.
+
+== Images ajoutées manuellement
+
+Une image qui n'est pas générée (capture, logo, schéma produit hors PlantUML) est déposée dans `images/` et versionnée.
+Elle est citée par son nom seul, résolu depuis `images/` grâce à l'attribut `:imagesdir:` de l'en-tête : `image::nom.svg[Texte alternatif]`.
+Préférer `svg` quand l'outil d'origine le permet.
+Une image introuvable ne bloque ni le HTML ni le PDF : `check.sh` la signale en KO.

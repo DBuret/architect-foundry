@@ -1,0 +1,18 @@
+= Décisions d'architecture
+
+// Registre : format, statuts et règles dans normes/registres.adoc.
+
+[[ADR-01]]
+== ADR-01 : Titre de la décision
+
+.Statut
+Proposé.
+
+.Contexte
+À rédiger : le problème, les contraintes, les options envisagées et pourquoi les autres sont écartées.
+
+.Décision
+À rédiger.
+
+.Conséquences
+À rédiger : ce que la décision apporte, le risque accepté, le coût d'un retour arrière, ce qui ferait revenir sur elle.

@@ -1,0 +1,158 @@
+= Normes : types de documents et synthèse
+:description: Mémo de décision, DAT et note de réflexion : lecteurs, structures, synthèse
+:type: conventions-doc
+
+== Synthèse
+
+Tout document maître commence par une section `== Synthèse`, d'une page au plus, qui se suffit à elle-même : beaucoup de lecteurs ne lisent qu'elle.
+Elle n'est pas numérotée : `:sectnums!:` sur la ligne qui précède son titre, `:sectnums:` sur celle qui précède le chapitre suivant, qui porte ainsi le numéro 1.
+Elle reste au sommaire, avec le style des autres titres ; pas de style `[abstract]`, qui la mettrait en italique gris et la retirerait du sommaire.
+Elle suit le format des registres, rubriques en titres de bloc, dans l'ordre fixé pour le type du document (voir plus bas).
+Son message principal va dans un encadré (`\****`), seul usage de l'encadré dans une étude : le thème le met en valeur.
+Les incertitudes ne se recopient pas : ce sont les tableaux générés (`normes/registres.adoc`) `registre::hypotheses[incertains]` et `registre::points-ouverts[incertains]`.
+
+La synthèse ne contient aucune information absente du corps du document : chaque affirmation y renvoie par xref à la section, l'ADR ou l'hypothèse qui la porte.
+Elle se rédige en dernier.
+
+== Types de documents
+
+Une étude produit un ou plusieurs documents maîtres, à la racine, chacun déclaré par l'attribut `:type:` de son header.
+Ils partagent tout le reste : registres, normes, thème, contrôles, skills, et les fragments communs.
+
+[cols="1,3,3,3"]
+|===
+| | Mémo de décision (`memo.adoc`, `:type: memo`) | Dossier d'architecture technique, DAT (`dat.adoc`, `:type: dat`) | Note de réflexion (`note.adoc`, `:type: note`)
+
+| Lecteur
+| La direction, qui décide.
+| Les équipes projet, d'exploitation et d'architecture, qui construisent et maintiennent.
+| L'architecte et ses pairs, aujourd'hui et dans six mois.
+
+| Question
+| Que faut-il décider, et pourquoi ?
+| Qu'a-t-on décidé de construire, et comment ?
+| Où en est la réflexion ?
+
+| Longueur
+| Dix à quinze pages pour le corps ; annexes sans limite.
+| Sans limite ; aussi long que l'architecture l'exige.
+| Sans limite ; elle grandit avec le sujet, découpée en fragments.
+
+| Profondeur
+| Trois niveaux de sections numérotés, deux au sommaire (`:toclevels: 2`, `:sectnumlevels: 3`) ; dans le corps, jamais au-delà de `====` : un niveau de moins que le DAT.
+| Trois niveaux au sommaire, quatre numérotés (`:toclevels: 3`, `:sectnumlevels: 4`).
+| Comme le DAT.
+
+| Détail technique
+| Dans le corps, seulement ce qui change la décision, sans bloc de code.
+Les annexes peuvent être aussi techniques qu'un DAT : la direction soumet souvent un mémo à des experts, qui doivent y trouver de quoi juger.
+| Complet : flux, données, configuration, extraits de code si nécessaire.
+| Autant que la réflexion l'exige.
+
+| Schémas
+| Dans le corps, mindmap et WBS, un par chapitre au plus ; dans les annexes, tous les types.
+| Tous les types de `normes/plantuml/`.
+| Tous les types de `normes/plantuml/`.
+
+| Message de la synthèse (encadré)
+| La recommandation.
+| L'architecture retenue.
+| Ce que l'on pense aujourd'hui.
+|===
+
+`check.sh` signale en AVERT, dans le corps d'un mémo (hors annexes), un bloc de code et une section au-delà de `====` ; pour tous les types, une synthèse absente ou qui n'est pas la première section.
+
+Quand une étude produit les deux documents, le mémo se rédige à partir du DAT, jamais l'inverse : le DAT porte l'analyse, le mémo en extrait ce qui sert la décision.
+Ses annexes techniques peuvent alors inclure des chapitres du DAT, à condition que ceux-ci ne renvoient qu'à ce que le mémo inclut aussi.
+Les deux incluent les mêmes registres, qui restent la source unique des hypothèses, décisions et points ouverts.
+
+== Structure d'un mémo de décision
+
+* Synthèse : Question, Options étudiées, Recommandation (encadré, avec xref vers l'ADR qui la porte), Décision attendue, Risques majeurs, Ce qui reste incertain (`registre::hypotheses[incertains]` et `registre::points-ouverts[incertains]`).
+* Contexte et enjeux : le problème avant la solution, pourquoi décider maintenant.
+* Options étudiées : une sous-section par option, rubriques en titres de bloc :
+** Principe ;
+** Limites : ce que l'option ne couvre pas ;
+** Exigences opératoires : ce qu'elle impose pour être exploitée (activités nouvelles, compétences requises, contraintes de sécurité et d'astreinte), sans dire qui les porte ;
+** Facteurs de coût : ce qui fait varier le coût (dimensionnement, licences, matériel), pas le budget ;
+** Risques ;
+** Réversibilité.
+* Critères de décision et analyse comparative : les critères proposés, chacun avec sa source et sa méthode de mesure ; leurs seuils, laissés à fixer par la direction ; puis les options confrontées aux critères.
+* Recommandation et trajectoire d'architecture : l'option recommandée et ses conditions, les états successifs de l'architecture, les points de non-retour, les propriétés à mesurer pour la juger ; puis les décisions, en tableau généré (`registre::adr[]`), où se lit ce qui reste soumis à décision (statut Proposé).
+* Hypothèses
+* Décisions d'architecture
+* Points ouverts
+* Annexes (`[appendix]`) : d'abord les annexes techniques destinées aux experts, chacune citée depuis le corps à l'endroit qu'elle étaye ; puis méthode des estimations, glossaire et sources.
+Annexes recommandées quand l'étude s'y prête :
+** Couverture des exigences : priorité de chaque exigence (Must, Should), couverture selon une légende fixe (natif, partiel, par conception, absent), puis la liste des exigences Must non couvertes nativement, qui alimente les risques majeurs de la synthèse ;
+** Cas d'usage types, dont au moins un contre-exemple, qui montre où l'option s'arrête ;
+** Modèle opératoire : les activités d'exploitation et les contraintes d'architecture qui en conditionnent la répartition, sans attribuer les rôles.
+
+Les tableaux générés par `registre::` ne figurent qu'aux deux endroits prévus : la synthèse (ce qui reste incertain) et la recommandation (les décisions).
+Les chapitres des registres n'en portent pas, leurs entrées figurant déjà au sommaire ; ailleurs, une entrée se cite par xref, là où elle sert l'argument.
+
+=== Architecte et direction de projet
+
+Le mémo est un livrable d'architecte : il éclaire la décision, il ne porte ni le budget, ni le planning, ni l'organisation.
+
+[cols="1,2,2"]
+|===
+| | L'étude fournit | La direction de projet porte
+
+| Critères de décision
+| Les critères, leur source, leur méthode de mesure
+| Les seuils, et la règle appliquée si un critère n'est pas atteint
+
+| Coûts
+| Facteurs de coût, dimensionnement
+| TCO, budget
+
+| Organisation
+| Exigences opératoires de chaque option
+| Attribution des rôles, effectifs, conduite du changement
+
+| Trajectoire
+| États successifs de l'architecture, points de non-retour
+| Planning, charges, jalons de gouvernance
+|===
+
+Ce que l'étude fournit se lit au chapitre « Recommandation et trajectoire d'architecture ».
+Ce qu'elle attend de la direction de projet, quand la décision en dépend, est un point ouvert dont elle est porteuse, ou une hypothèse quand l'étude avance sur une valeur supposée : jamais un chiffre de budget ou de planning présenté comme un résultat de l'étude.
+
+== Structure d'un dossier d'architecture technique (DAT)
+
+* Synthèse : Objet, Périmètre, Architecture retenue (encadré), Décisions structurantes (`registre::adr[]`), Ce qui reste incertain (tableaux générés).
+* Contexte et objectifs
+** Contexte
+** Objectifs fonctionnels
+** Objectifs non fonctionnels
+* Infrastructure et contraintes
+* Architecture logique
+** Vue d'ensemble
+** Flux de données
+* Architecture technique
+* Modèle de données
+* Sources de données
+* Phasage de mise en œuvre
+* Hypothèses
+* Décisions d'architecture
+* Points ouverts
+* Annexes techniques : glossaire, schémas, sources.
+
+== Structure d'une note de réflexion
+
+Une note de réflexion sert les sujets larges et longs, en phase de recherche : elle dit où en est la réflexion, sans être un livrable pour la direction.
+Elle relâche ce qui sert une décision (options, critères, décision attendue, limite de pages) et garde ce qui fait sa rigueur : sources, hypothèses, renvois vérifiés, synthèse en tête.
+
+* Synthèse : Ce que l'on pense aujourd'hui (encadré), Ce qui a changé depuis la version précédente, Hypothèses structurantes (`registre::hypotheses[incertains]`), Questions ouvertes (`registre::points-ouverts[incertains]`).
+* Corps libre : pas de plan imposé.
+Un concept appelé à durer (un principe, un modèle) va dans son propre fragment, que la note et, plus tard, un DAT ou un mémo du même sujet incluent sans le recopier.
+* Hypothèses : c'est le registre central d'une note ; une idée non démontrée y devient une hypothèse, citée par xref, plutôt qu'une affirmation du corps.
+* Décisions d'architecture : seulement si la réflexion a déjà tranché ; sinon, le chapitre et son registre sont retirés.
+* Points ouverts : les questions de recherche.
+* Annexes : filiation intellectuelle, références, glossaire.
+
+Chaque état présenté de la note porte un numéro de version (`:revnumber:` dans le header) et un tag git `note-v<revnumber>` (`note-v0.3`), comme toute version livrée d'un maître (`normes/fichiers.adoc`) ; la rubrique « Ce qui a changé » de la synthèse dit ce qui le distingue du précédent.
+
+IMPORTANT: Ces structures sont obligatoires : elles garantissent qu'un lecteur retrouve la même information au même endroit d'une étude à l'autre.
+Un chapitre supplémentaire (critères de décision détaillés, modèle organisationnel ou RACI) s'insère avant les registres, sans remplacer un chapitre prévu.

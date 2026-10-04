@@ -1,0 +1,31 @@
+= Décisions d'architecture
+
+[[ADR-01]]
+== ADR-01 : Migrer le service portefeuille en deux phases
+
+.Statut
+Proposé.
+
+.Contexte
+Le volume attendu repose sur xref:hypotheses.adoc#H1[] ; le support éditeur, sur xref:hypotheses.adoc#H2[].
+
+.Décision
+Retenir l'option B du xref:chapitre-tables.adoc#tab-couts[tableau des coûts].
+
+.Conséquences
+Le financement du second site reste suspendu à xref:points-ouverts.adoc#PO-01[].
+
+[[ADR-02]]
+== ADR-02 : Remplacer le service par un progiciel
+
+.Statut
+Rejeté.
+
+.Contexte
+Option C du xref:chapitre-tables.adoc#tab-couts[tableau des coûts], écartée parce qu'elle dépendait de xref:hypotheses.adoc#H3[].
+
+.Décision
+Ne pas retenir le remplacement.
+
+.Conséquences
+Aucune.

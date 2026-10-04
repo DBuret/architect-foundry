@@ -1,0 +1,46 @@
+' Style des WBS. Voir normes/schemas.adoc.
+' Usage : !include normes/plantuml/_wbs.iuml, juste après @startwbs.
+' Volontairement sobre : bordure grise, pas de fond coloré par défaut ;
+' la profondeur 3 (feuilles) se fond en blanc pour ne pas surcharger un
+' phasage détaillé. La racine se distingue des autres niveaux par une
+' police plus grande (14, contre 12 en gras pour la profondeur 1), sans
+' quoi elle serait visuellement identique à un simple nœud de premier
+' niveau. Marquer un nœud <<urgent>> lui donne un contour rouge, quelle
+' que soit sa profondeur.
+' Tout doit rester à l'intérieur de wbsDiagram { ... } : un arrow{} ou un
+' sélecteur de classe (.urgent) posé en dehors n'a silencieusement aucun
+' effet, sans WARNING ni ERROR (vérifié sur cette version de PlantUML).
+
+!include _commun.iuml
+
+<style>
+wbsDiagram {
+  node {
+    MaximumWidth 250
+    RoundCorner 8
+    LineColor #aaaaaa
+    LineThickness 1.0
+  }
+  arrow {
+    LineColor DimGrey
+  }
+  :depth(0) {
+    FontStyle bold
+    FontSize 14
+  }
+  :depth(1) {
+    FontStyle bold
+    FontSize 12
+  }
+  ' Profondeur 2 : fond bleu pâle envisagé (#e6f2fd), laissé inactif comme
+  ' dans le fichier d'origine ; décommenter au besoin.
+  ' :depth(2) { BackgroundColor #e6f2fd }
+  :depth(3) {
+    BackgroundColor white
+    LineColor white
+  }
+  .urgent * {
+    node { LineColor red }
+  }
+}
+</style>

@@ -1,0 +1,85 @@
+[[texte]]
+== Texte et listes
+
+=== Formatage en ligne
+
+Un paragraphe courant, justifié, en Etude Sans 10,5 : c'est la densité de lecture d'une étude présentée à la direction.
+Les mots longs du domaine (interopérabilité, conteneurisation, hyperconvergence, désynchronisation) vérifient la césure du texte justifié.
+
+Texte en *gras*, en _italique_, en *_gras italique_*, en `code en ligne`, en #surligné#, en [.underline]#souligné# et en [.line-through]#barré#.
+Exposant : 10^6^ requêtes ; indice : H~2~O.
+Guillemets français : « une citation courte », et apostrophe typographique : l'étude.
+Caractères spéciaux : € → ← ⇒ ≤ ≥ ± × ✓ ✗ œ Œ æ.
+
+Touches et menus (attribut `:experimental:`) : kbd:[Ctrl+Maj+P], btn:[Valider], menu:Fichier[Exporter > PDF].
+
+Un lien externe : link:https://docs.asciidoctor.org/pdf-converter/latest/theme/[Documentation des thèmes asciidoctor-pdf].
+Une URL nue : https://asciidoctor.org.
+Une note de bas de page.footnote:[Les notes de bas de page sont regroupées en fin de chapitre dans le PDF.]
+
+Un saut de ligne forcé +
+au milieu d'un paragraphe.
+
+Un chemin très long sans espace, pour la césure du code en ligne : `/opt/rbenv/versions/3.3.6/lib/ruby/gems/3.3.0/gems/asciidoctor-pdf-2.3.27/data/themes/default-theme.yml`.
+
+=== Renvois
+
+Vers une hypothèse d'un autre fichier : xref:hypotheses.adoc#H1[].
+Vers un point ouvert : xref:points-ouverts.adoc#PO-01[].
+Vers une décision : xref:adr.adoc#ADR-01[].
+Vers une section de ce fichier : <<listes>>.
+Vers une section d'un autre fichier, avec un texte : xref:chapitre-blocs.adoc#blocs[le chapitre des blocs].
+Vers un tableau : xref:chapitre-tables.adoc#tab-couts[] ; vers une figure : xref:chapitre-schemas.adoc#fig-perimetre[].
+Vers une entrée de bibliographie : <<ANSSI-HYG>>.
+
+[[listes]]
+=== Listes
+
+Liste à puces sur deux niveaux :
+
+* Premier élément.
+* Deuxième élément, assez long pour passer sur deux lignes et montrer l'alignement du texte après la puce dans la colonne du thème.
+** Sous-élément A.
+** Sous-élément B.
+*** Troisième niveau, toléré mais à éviter.
+* Troisième élément.
+
+Liste numérotée :
+
+. Cadrer le périmètre.
+. Recenser les contraintes.
+.. Contraintes réglementaires.
+.. Contraintes techniques.
+. Décider.
+
+Liste de contrôle :
+
+* [x] Hypothèses recensées.
+* [ ] Points ouverts tranchés.
+
+Liste de définitions :
+
+RPO:: Perte de données maximale admissible.
+RTO:: Durée maximale admissible d'interruption.
+
+Liste de définitions horizontale :
+
+[horizontal]
+Disponibilité:: 99,9 % mesurée sur le mois.
+Support:: Heures ouvrées, du lundi au vendredi.
+
+Questions et réponses :
+
+[qanda]
+Faut-il un second site ?::
+Oui, si le RTO visé est inférieur à quatre heures.
+Qui porte la décision ?::
+Le comité d'architecture.
+
+==== Niveau 4
+
+Texte sous un titre de niveau 4.
+
+===== Niveau 5
+
+Texte sous un titre à cinq signes `=`, le plus profond numéroté dans un DAT (`:sectnumlevels: 4`).

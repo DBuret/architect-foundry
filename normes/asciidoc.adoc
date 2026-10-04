@@ -1,0 +1,185 @@
+= Conventions de Documentation AsciiDoc
+:description: Conventions de rédaction AsciiDoc pour les documents d'architecture générés par LLM
+:type: conventions-doc
+:imagesoutdir: {docdir}/../work/images
+:diagram-cachedir: {docdir}/../work/cache
+
+[WARNING]
+====
+Le LLM ne doit jamais produire de Markdown.
+Toute documentation suit strictement la syntaxe et les conventions AsciiDoc, sauf si demande explicite de l'utilisateur.
+====
+
+Ce fichier contient l'essentiel, à lire avant toute rédaction.
+Les règles propres à une tâche sont dans des fichiers séparés, à lire seulement quand la tâche les touche :
+
+[cols="1,2"]
+|===
+| Fichier | À lire pour
+
+| `normes/registres.adoc`
+| écrire ou modifier une hypothèse, un point ouvert, une ADR ; utiliser la macro `registre::`
+
+| `normes/types.adoc`
+| créer ou restructurer un maître (mémo, DAT, note), rédiger une synthèse
+
+| `normes/schemas.adoc`
+| ajouter ou modifier un schéma PlantUML ou une image
+
+| `normes/fichiers.adoc`
+| inclure un fragment, modifier un header, comprendre les attributs de build
+|===
+
+== Règles de Syntaxe AsciiDoc
+
+=== Titres et Structure
+
+* Ne pas numéroter les titres manuellement.
+Le moteur AsciiDoc gère la numérotation via `:sectnums:` au moment du rendu.
+* Ne pas styliser les titres (gras, majuscules, etc.).
+L'apparence est déterminée par le thème HTML ou PDF.
+* Toujours insérer une ligne vide avant et après un titre.
+
+=== Format du source
+
+Une seule phrase par ligne, sans retour à la ligne manuel au milieu d'une phrase.
+C'est une règle de format du source, pas de style : le rendu HTML ou PDF recompose les paragraphes et n'en garde aucune trace.
+Elle sert à rendre chaque modification localisable : un `git diff` montre la phrase changée, une revue peut citer une ligne précise, et un LLM peut remplacer une phrase sans réécrire tout le paragraphe.
+
+=== Formatage du Texte
+
+* Le gras utilise une seule étoile de chaque côté : `*mot*`.
+* L'italique utilise des underscores : `_mot_`.
+* Les variables, chemins de fichiers et commandes utilisent des backquotes : `fichier/config.toml`.
+* Pas d'emoji, ni dans le texte ni dans un schéma : la police du PDF n'en contient qu'une petite partie, et les autres s'affichent avec un glyphe faux, sans WARNING ni ERROR (`check.sh` les signale en AVERT).
+
+=== Identifiants et renvois
+
+Tout objet qu'un autre passage peut avoir besoin de citer (hypothèse, ADR, point ouvert, critère, exigence...) reçoit une ancre AsciiDoc, posée une seule fois : `[[H2]]`, `[[ADR-01]]`, `[[PO-03]]`.
+
+* Ne jamais renvoyer à un numéro de section, de page, de tableau ou de figure (« voir §4.3 », « section 2 », « tableau 3 »).
+La numérotation se déplace à la moindre réorganisation, et le renvoi devient alors faux sans que rien ne le signale.
+* Toujours renvoyer par l'ancre : `\<<H2>>` dans le même fichier, `\xref:hypotheses.adoc#H2[]` vers un autre fichier.
+Dans le PDF du maître, les deux formes deviennent des liens internes au PDF, à condition que le fichier cible soit inclus dans le maître.
+La forme `\xref:` reste cliquable dans l'aperçu VS Code du fragment, et c'est elle qui permet à `check.sh` de repérer une cible non incluse.
+* Ne jamais renvoyer vers un fichier que le maître n'inclut pas.
+Dans le PDF, ce renvoi devient un lien vers un fichier PDF qui n'existe pas, et Asciidoctor ne le signale pas : c'est `check.sh` qui le détecte, en KO.
+* Ne jamais citer un identifiant en texte simple (« voir H2 », « cf. ADR-01 »).
+Le build ne vérifie que les xrefs : une mention en texte simple peut désigner un objet supprimé ou renuméroté sans que rien ne le signale.
+* Un registre (hypothèses, points ouverts, ADR...) est rédigé une seule fois et inclus une seule fois par document maître.
+Les ADR forment un seul registre, `adr.adoc` : une section ancrée par ADR, pas un fichier par ADR.
+Il est cité ailleurs par renvoi, jamais recopié ni réinclus.
+* Une xref vers une ancre inexistante ne bloque pas le rendu : Asciidoctor se contente d'un `possible invalid reference` et affiche l'ID brut entre crochets.
+C'est `check.sh` qui doit l'attraper, pas une relecture visuelle.
+* Pour montrer `\<<ID>>`, `\xref:` ou `\include::` comme texte d'exemple (et non comme un renvoi réel), faire précéder d'un antislash.
+Sans cet antislash, Asciidoctor tente de résoudre la directive pour de vrai, y compris à l'intérieur d'un bloc `[source]` délimité par `----`, qui ne protège pas `include::`.
+Sans cible réelle, le résultat est une erreur de build ou un texte « Unresolved directive » à la place de l'exemple.
+
+=== Sources et hypothèses
+
+Toute affirmation sur un éditeur, un produit ou une contrainte externe est soit sourcée, soit rattachée à une hypothèse du registre.
+
+* Une affirmation sourcée cite sa source par son titre, avec sa version ou sa date, et sa section ou sa page ; jamais par un nom ou un chemin de fichier, que le lecteur ne peut pas retrouver.
+Jamais le numéro d'un résultat de recherche (`[RAG-1]`), qui ne désigne rien en dehors de la session où il a été obtenu.
+Pour trouver ou vérifier une source dans les bases de connaissances, l'agent suit le skill `recherche-rag`.
+* Aucune forme de source n'est imposée : les entrants d'un projet sont souvent une note, une présentation, un courriel.
+Une source écrite absente des bases de connaissances se cite par ce qui permet de la retrouver : nature, auteur, date.
+* Une indication orale est une source légitime, mais que personne ne peut vérifier à la lecture.
+Elle devient une hypothèse du registre, dont le texte dit qui l'a donnée, quand et dans quel cadre ; l'étude y renvoie par xref.
+Le lecteur voit ainsi ce qui repose sur une parole plutôt que sur un écrit.
+* Une affirmation qui repose sur une hypothèse non validée renvoie à cette hypothèse par xref : `\<<H2>>`.
+* Une déduction qu'aucune source ne confirme (par exemple le fonctionnement supposé d'un protocole chez un éditeur) n'est pas un troisième statut.
+Elle devient une hypothèse du registre, ou un point ouvert si elle doit être confirmée par un tiers, et le texte y renvoie par xref.
+* Un chiffre dont dépend la décision (volume éligible, dimensionnement, délai) se donne en fourchette, avec sa méthode et son niveau de confiance (déclaratif, vérifié sur document, mesuré) dans une annexe « Méthode des estimations ».
+Jamais un chiffre unique sans méthode : il paraît plus sûr qu'il n'est.
+
+=== Listes
+
+* Toujours insérer une ligne vide avant une liste pour un rendu correct.
+* Les listes à puces utilisent `*` (niveau 1) ou `**` (niveau 2).
+* Les listes numérotées utilisent un simple point `.` sans numéro manuel.
+
+=== Liens
+
+* Le livrable est un PDF unique : les seuls liens qui en sortent sont des URL.
+* Les liens externes utilisent la syntaxe native : `link:URL[Titre]`.
+Jamais de `link:` vers un fichier local, qui serait un lien mort dans le PDF diffusé.
+* Les liens internes dans le même document : `\xref:#anchor[Titre]`.
+* Les liens vers un autre fichier : `\xref:chemin/fichier.adoc#anchor[Titre]`, uniquement si ce fichier est inclus dans le maître.
+* Ces deux dernières formes sont celles de la règle « Identifiants et renvois » : ne jamais leur substituer un numéro en dur.
+
+=== Admonitions
+
+Une étude n'utilise que trois types d'admonition, par gravité croissante.
+Chacun a une icône distincte dans le PDF, que le lecteur repère en feuilletant.
+
+[cols="1,4"]
+|===
+| Type | Usage
+
+| `TIP`
+| Bonne pratique ou piste complémentaire, hors décision : « prévoir un test de charge avant la phase 2 ».
+Une TIP ne formule jamais de recommandation sur la décision elle-même : celle-ci n'est que dans la synthèse et dans les ADR.
+
+| `IMPORTANT`
+| Point que le décideur ne doit pas manquer : contrainte structurante, condition d'une option.
+
+| `WARNING`
+| Risque ou conséquence coûteuse, difficile à rattraper.
+|===
+
+`NOTE` et `CAUTION` ne s'utilisent pas.
+Une précision neutre n'a pas besoin d'encadré : un paragraphe ou une note de bas de page suffit, et un encadré fréquent ne signale plus rien.
+`CAUTION` ne se distingue pas de `WARNING` pour le lecteur.
+`check.sh` signale l'un et l'autre en AVERT.
+
+Toujours insérer une ligne vide avant et après une admonition.
+Éviter d'y placer du code : dans le PDF, un bloc de code dans une admonition se lit mal.
+
+TIP: Relire le PDF après l'ajout d'une admonition longue : elle n'est jamais coupée entre deux pages, et peut donc laisser un blanc en bas de la page précédente.
+
+IMPORTANT: Une admonition ne remplace pas un renvoi : une contrainte ou un risque qui fonde une décision est aussi une hypothèse, un point ouvert ou une conséquence d'ADR, cité par xref.
+
+WARNING: Une `NOTE` ou une `CAUTION` s'affiche dans le PDF comme une admonition admise : seul l'AVERT de `check.sh` la signale.
+
+=== Blocs de Code et Sources
+
+Ne jamais utiliser les triples backquotes Markdown.
+Le rendu est géré exclusivement par Asciidoctor.
+
+Les blocs de code utilisent la syntaxe AsciiDoc native, délimitée par `----` : quatre tirets, exactement le même nombre à l'ouverture et à la fermeture.
+
+[source,langage]
+----
+code ici
+----
+
+Un déséquilibre (cinq tirets à l'ouverture, quatre à la fermeture, par exemple) ne provoque pas une erreur nette.
+Asciidoctor signale un `unterminated listing block` et absorbe tout ce qui suit, titres et blocs compris, dans le même bloc de code jusqu'à la prochaine occurrence de `----`.
+Toujours utiliser exactement quatre tirets des deux côtés élimine le risque, et `check.sh` détecte ce warning.
+
+Exemple pour du Rust :
+
+[source,rust]
+----
+fn main() {
+    println!("Documentation formatée selon conventions AsciiDoc");
+}
+----
+
+=== Tables
+
+Toujours privilégier les tables structurées lorsque pertinent, sans styliser les bordures.
+
+La ligne vide entre la ligne d'en-tête et les lignes de données est ce qui fait qu'Asciidoctor rend la première ligne comme un en-tête.
+`options="header"` n'est pas nécessaire tant que cette ligne vide est présente.
+L'omettre ne provoque aucune erreur : la table perd silencieusement son style d'en-tête.
+
+.Exemple de table
+|===
+| Élément        | Description                   | Type
+
+| Service        | Gestion du portefeuille       | gRPC
+| Base de données| PostgreSQL + extensions       | SQL
+| Stockage       | Vault                         | Secret
+|===

@@ -1,0 +1,203 @@
+# Thème PDF des études. Ne déclare que ce qui s'écarte du thème default
+# d'asciidoctor-pdf : toute autre clé (marges, page de titre, tables...)
+# reprend la valeur de default.
+extends: default
+
+font:
+  catalog:
+    merge: true
+    # Polices libres, redistribuables avec le dépôt (licences dans
+    # licences/). Etude Sans est Carlito, aux métriques de Calibri (même mise
+    # en page, mêmes coupures de ligne), complétée du trait d'union
+    # conditionnel (U+00AD) que Carlito n'a pas : sans lui, la césure
+    # laissait des blancs au milieu des mots (« sur li gné »). Renommée
+    # comme l'exige la licence OFL pour une police modifiée.
+    # JetBrains Mono remplace Consolas.
+    Etude Sans:
+      normal: EtudeSans-Regular.ttf
+      bold: EtudeSans-Bold.ttf
+      italic: EtudeSans-Italic.ttf
+      bold_italic: EtudeSans-BoldItalic.ttf
+    JetBrains Mono:
+      normal: JetBrainsMono-Regular.ttf
+      bold: JetBrainsMono-Bold.ttf
+      italic: JetBrainsMono-Italic.ttf
+      bold_italic: JetBrainsMono-BoldItalic.ttf
+    # Police des schémas PlantUML (normes/plantuml/_commun.iuml). PlantUML
+    # dimensionne chaque texte du SVG avec cette police ; si le PDF ne la
+    # connaît pas, il y substitue Etude Sans, plus étroite, et l'étire lettre
+    # par lettre jusqu'à la largeur prévue (« P h a s a g e »). Pas de
+    # variante italique fournie : l'italique retombe sur le romain.
+    DejaVu Sans:
+      normal: DejaVuSans.ttf
+      bold: DejaVuSans-Bold.ttf
+      italic: DejaVuSans.ttf
+      bold_italic: DejaVuSans-Bold.ttf
+    M+ 1p Fallback: GEM_FONTS_DIR/mplus1p-regular-fallback.ttf
+    Noto Emoji: GEM_FONTS_DIR/notoemoji-subset.ttf
+  fallbacks: [M+ 1p Fallback, Noto Emoji]
+
+# Les titres reprennent base-font-family (Etude Sans) sans le redire.
+# font-size-large : 13 dans default, +24 % sur le corps. default en tire au
+# chargement le résumé, le rôle lead, les titres d'encadré et les auteurs de
+# la page de titre, avant cette surcharge : il faut donc les reprendre un à un.
+base:
+  font-family: Etude Sans
+  font-size-large: 11.5
+
+abstract:
+  font-size: $base-font-size-large
+  title:
+    font-size: $base-font-size-large
+
+# statut-* : rôles posés par tools/extensions/registres.rb sur le statut des
+# entrées de registre et dans les tableaux registre::. Vert : acquis ;
+# orange : en attente (la recommandation en dépend) ; rouge : hypothèse
+# invalidée ; gris : décision rejetée ou remplacée.
+role:
+  lead:
+    font-size: $base-font-size-large
+  statut-ok:
+    font-color: '#2e7d32'
+    font-style: bold
+  statut-attention:
+    font-color: '#c25e00'
+    font-style: bold
+  statut-alerte:
+    font-color: '#c62828'
+    font-style: bold
+  statut-inactif:
+    font-color: '#777777'
+    font-style: bold
+
+# L'encadré (****) est réservé à la recommandation de la synthèse
+# (normes/types.adoc) : fond vert pâle, filet vert.
+sidebar:
+  background-color: '#eef6f2'
+  border-color: '#087859'
+  border-width: 0.75
+  title:
+    font-size: $base-font-size-large
+    font-color: '#087859'
+    text-align: left
+
+# default met le titre en gris clair (#999999), peu contrasté.
+title-page:
+  title:
+    font-color: '#555555'
+  authors:
+    font-size: $base-font-size-large
+
+# Échelle des titres resserrée pour une note de décision (default : 22, 18,
+# 13). h1 reste celui de default : il ne sert qu'au titre de la page de titre.
+heading:
+  h2-font-size: 18
+  h3-font-size: 14
+  h4-font-size: 12
+  font-color: '#087859'
+  # auto : un titre n'est jamais laissé seul en bas de page, il suit son
+  # premier bloc (default ne garantit que 20 pt de place après le titre).
+  min-height-after: auto
+
+# default calcule code et kbd à partir de codespan au chargement de default,
+# donc avant cette surcharge : sans ces deux blocs, les blocs [source] et
+# kbd:[] resteraient en M+ 1mn.
+# 0,8 du corps (8,4 pt) : JetBrains Mono a un œil très haut (hauteur d'x
+# 0,55 em, contre 0,48 pour Etude Sans) ; à cette taille, le code a presque la
+# même hauteur d'x que le texte courant, et la même chasse que Consolas
+# à 9,45 pt (5 pt par caractère) : mêmes coupures dans les blocs de code.
+codespan:
+  font-family: JetBrains Mono
+  font-color: '#333333'
+  font-size: $base-font-size * 0.8
+
+# Même taille pour le code en bloc et les touches que pour le code en ligne :
+# default met les blocs à 11 pt, plus gros que le corps (10,5).
+code:
+  font-family: $codespan-font-family
+  font-size: $codespan-font-size
+
+kbd:
+  font-family: $codespan-font-family
+  font-size: $codespan-font-size
+
+
+# Une citation est une source (note de cadrage, référence) : taille du corps.
+quote:
+  font-size: $base-font-size
+
+verse:
+  font-size: $base-font-size
+
+# Icônes d'admonition (Font Awesome 5, fournie avec asciidoctor-pdf) dans la
+# charte : vert des titres pour NOTE, TIP, IMPORTANT ; orange des statuts en
+# attente pour CAUTION et WARNING, qui doivent se repérer sans être lus.
+# 20 pt au lieu de 24 : à 24, l'icône pèse plus que les titres de rubrique.
+admonition:
+  column-rule-color: '#087859'
+  icon:
+    note:
+      name: fas-info-circle
+      stroke-color: '#087859'
+      size: 20
+    tip:
+      name: far-lightbulb
+      stroke-color: '#087859'
+      size: 20
+    important:
+      name: fas-exclamation-circle
+      stroke-color: '#087859'
+      size: 20
+    caution:
+      name: fas-hand-paper
+      stroke-color: '#c25e00'
+      size: 20
+    warning:
+      name: fas-exclamation-triangle
+      stroke-color: '#c25e00'
+      size: 20
+
+caption:
+  font-style: bold_italic
+  font-color: $heading-font-color
+
+image:
+  align: center
+  caption:
+    align: inherit
+
+# verso est obligatoire : sans lui, les pages paires n'ont pas d'en-tête.
+# header-logo : macro image complète, ou vide, posée par tools/build.sh à
+# partir de la variable d'environnement PDF_HEADER_LOGO (par défaut
+# tools/pdf-theme/header-logo.png).
+header:
+  height: $base-line-height-length * 2.5
+  font-size: $base-font-size-small
+  border-color: '#dddddd'
+  border-width: 0.25
+  recto:
+    left:
+      content: '{document-title}'
+    right:
+      content: '{header-logo}'
+  verso:
+    left:
+      content: '{document-title}'
+    right:
+      content: '{header-logo}'
+
+# Le pied de page ne dépend pas du sous-titre : sans « : » dans le titre,
+# {document-subtitle} est vide et le pied affichait « - date ».
+# verso est obligatoire ici aussi : default en définit un (numéro à gauche),
+# qui s'appliquerait aux pages paires.
+footer:
+  recto:
+    left:
+      content: '{docdate}'
+    right:
+      content: '{page-number}'
+  verso:
+    left:
+      content: '{docdate}'
+    right:
+      content: '{page-number}'

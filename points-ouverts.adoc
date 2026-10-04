@@ -1,0 +1,18 @@
+= Points ouverts
+
+// Registre : format, statuts et règles dans normes/registres.adoc.
+
+[[PO-01]]
+== PO-01 : Intitulé du point ouvert
+
+.Statut
+Ouvert.
+
+.Question
+À rédiger.
+
+.Porteur
+À désigner.
+
+.Échéance
+À fixer.

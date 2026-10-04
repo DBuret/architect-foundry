@@ -1,0 +1,118 @@
+[[blocs]]
+== Blocs
+
+=== Admonitions
+
+TIP: Une bonne pratique ou une piste complémentaire, hors décision.
+
+IMPORTANT: Un point que le décideur ne doit pas manquer.
+
+WARNING: Un risque ou une conséquence coûteuse, difficile à rattraper.
+
+[IMPORTANT]
+.Admonition en bloc, avec un titre
+====
+Une admonition peut contenir plusieurs paragraphes.
+
+* et une liste ;
+* sur deux éléments.
+====
+
+=== Citations
+
+[quote,Frederick P. Brooks,The Mythical Man-Month]
+____
+Adding manpower to a late software project makes it later.
+____
+
+[quote,Direction des systèmes d'information,Note de cadrage du 12 mars 2026]
+____
+La solution retenue devra être exploitable par les équipes actuelles, sans recrutement spécifique.
+____
+
+Citation courte en ligne, avec sa source : selon la note de cadrage, « la solution devra être exploitable par les équipes actuelles ».
+
+[verse,Paul Verlaine,Chanson d'automne]
+____
+Les sanglots longs
+Des violons
+De l'automne
+____
+
+=== Exemples
+
+.Exemple
+====
+Un bloc d'exemple, pour un cas concret illustrant la règle qui précède.
+====
+
+[%collapsible]
+.Bloc repliable (déplié dans le PDF)
+====
+Dans le HTML, ce bloc est replié ; le PDF l'affiche toujours en entier.
+====
+
+[.lead]
+Un paragraphe d'introduction mis en avant par le rôle `lead`.
+
+=== Code
+
+[source,yaml]
+----
+# Configuration d'exemple
+service:
+  nom: portefeuille
+  replicas: 3 # <1>
+  ressources:
+    cpu: "500m"
+    memoire: "1Gi" # <2>
+----
+<1> Trois réplicas pour tolérer la perte d'un nœud.
+<2> Limite mémoire par conteneur.
+
+[source,bash]
+----
+#!/bin/sh
+set -eu
+for f in *.adoc; do
+  echo "contrôle de $f"
+done
+----
+
+[source,java]
+----
+public final class Portefeuille {
+    private final String id;
+
+    public Portefeuille(String id) {
+        this.id = Objects.requireNonNull(id, "id");
+    }
+}
+----
+
+[source,json]
+----
+{"service": "portefeuille", "version": "1.4.2", "actif": true, "tags": ["critique", "externe"]}
+----
+
+Bloc littéral, sans coloration :
+
+....
+Texte préformaté, aligné
+  tel quel     dans le source.
+....
+
+Une ligne de code très longue, pour vérifier le retour à la ligne dans un bloc :
+
+[source,text]
+----
+curl -sS -X POST https://api.example.org/v1/portefeuilles/0123456789abcdef/operations?format=json&inclure=historique,soldes,metadonnees
+----
+
+=== Séparateurs
+
+Un séparateur thématique suit.
+
+'''
+
+Texte après le séparateur.

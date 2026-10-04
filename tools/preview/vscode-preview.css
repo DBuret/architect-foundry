@@ -1,0 +1,274 @@
+/* Aperçu VS Code des études : reprend tools/pdf-theme/custom-theme.yml et,
+   pour ce qu'il ne redéfinit pas, le thème default d'asciidoctor-pdf.
+   Unités en pt pour garder les tailles du PDF. Une valeur changée dans le
+   thème PDF se reporte ici, dans :root de préférence.
+   Limites : ni pagination, ni en-tête, ni pied de page ; les légendes
+   numérotées (« Table 1. ») et l'intitulé des annexes restent ceux du HTML,
+   build.sh les réglant par attributs. */
+
+/* Polices du dépôt. Deux chemins : le premier vaut quand la feuille est liée
+   (linkcss), le second quand elle est incorporée à un maître de la racine ;
+   le navigateur passe au suivant si le fichier est introuvable. Carlito ou
+   Calibri, s'ils sont installés, ont les mêmes métriques qu'Etude Sans. */
+@font-face { font-family: "Etude Sans"; font-weight: 400; font-style: normal;
+  src: url("../pdf-theme/EtudeSans-Regular.ttf"), url("tools/pdf-theme/EtudeSans-Regular.ttf"); }
+@font-face { font-family: "Etude Sans"; font-weight: 700; font-style: normal;
+  src: url("../pdf-theme/EtudeSans-Bold.ttf"), url("tools/pdf-theme/EtudeSans-Bold.ttf"); }
+@font-face { font-family: "Etude Sans"; font-weight: 400; font-style: italic;
+  src: url("../pdf-theme/EtudeSans-Italic.ttf"), url("tools/pdf-theme/EtudeSans-Italic.ttf"); }
+@font-face { font-family: "Etude Sans"; font-weight: 700; font-style: italic;
+  src: url("../pdf-theme/EtudeSans-BoldItalic.ttf"), url("tools/pdf-theme/EtudeSans-BoldItalic.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-style: normal;
+  src: url("../pdf-theme/JetBrainsMono-Regular.ttf"), url("tools/pdf-theme/JetBrainsMono-Regular.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 700; font-style: normal;
+  src: url("../pdf-theme/JetBrainsMono-Bold.ttf"), url("tools/pdf-theme/JetBrainsMono-Bold.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-style: italic;
+  src: url("../pdf-theme/JetBrainsMono-Italic.ttf"), url("tools/pdf-theme/JetBrainsMono-Italic.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 700; font-style: italic;
+  src: url("../pdf-theme/JetBrainsMono-BoldItalic.ttf"), url("tools/pdf-theme/JetBrainsMono-BoldItalic.ttf"); }
+/* Icônes d'admonition (:icons: font) : les glyphes du PDF, extraits des
+   polices Font Awesome 5 de prawn-icon (licence dans licences/). */
+@font-face { font-family: "Icones admonitions"; font-weight: 900;
+  src: url("fa-solid-admonitions.ttf"), url("tools/preview/fa-solid-admonitions.ttf"); }
+@font-face { font-family: "Icones admonitions"; font-weight: 400;
+  src: url("fa-regular-admonitions.ttf"), url("tools/preview/fa-regular-admonitions.ttf"); }
+
+:root {
+  --vert: #087859;           /* titres, légendes, encadré, filet d'admonition */
+  --vert-pale: #eef6f2;      /* fond de l'encadré */
+  --orange: #c25e00;         /* CAUTION, WARNING, statut en attente */
+  --texte: #333333;
+  --filet: #eeeeee;
+  --filet-table: #dddddd;
+  --fond-code: #f5f5f5;
+  --bord-code: #cccccc;
+  --lien: #428bca;
+  --rythme: 12pt;            /* vertical-rhythm du thème default */
+  --sans: "Etude Sans", Carlito, Calibri, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+}
+
+/* Base : corps 10,5 pt ; le texte occupe toute la largeur de l'aperçu. */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 10.5pt; }
+body {
+  margin: 0; padding: 2em 1em; background: #fff; color: var(--texte);
+  font-family: var(--sans); font-size: 1rem; line-height: 1.35;
+}
+p { margin: 0 0 var(--rythme); }
+.paragraph { margin: 0 0 var(--rythme); }
+.paragraph > p { margin: 0; }
+#content { text-align: justify; hyphens: auto; }
+a { color: var(--lien); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img, svg, object { max-width: 100%; height: auto; }
+b, strong { font-weight: 700; }
+mark { background: #ff0; }
+.lead { font-size: 11.5pt; }
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.big { font-size: 1.2em; }
+.small { font-size: .8em; }
+
+/* Rôles statut-* (tools/extensions/registres.rb) */
+.statut-ok, .statut-attention, .statut-alerte, .statut-inactif { font-weight: 700; }
+.statut-ok { color: #2e7d32; }
+.statut-attention { color: var(--orange); }
+.statut-alerte { color: #c62828; }
+.statut-inactif { color: #777777; }
+
+/* Titres : échelle du thème (18, 14, 12), gras, vert, alignés à gauche. */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--vert); font-weight: 700; line-height: 1.1; text-align: left;
+  margin: calc(var(--rythme) * .4) 0 calc(var(--rythme) * .9);
+}
+h2 { font-size: 18pt; margin-top: calc(var(--rythme) * 1.4); }
+h3 { font-size: 14pt; margin-top: var(--rythme); }
+h4 { font-size: 12pt; }
+h5 { font-size: 10.5pt; }
+h6 { font-size: 9pt; }
+h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; }
+
+/* En-tête du document : titre en gris, comme la page de titre. */
+#header > h1 { font-size: 27pt; color: #555555; margin-top: 0; }
+#header .details { color: #5c6266; margin-bottom: var(--rythme); }
+#header .details span + span::before { content: " · "; }
+
+/* Sommaire (toc-title posé par build.sh) */
+#toc { margin-bottom: calc(var(--rythme) * 2); line-height: 1.4; text-align: left; }
+#toctitle { font-size: 0; margin-top: 0; color: var(--vert); font-weight: 700; }
+#toctitle::before { content: "Sommaire"; font-size: 18pt; }
+#toc ul { list-style: none; margin: 0; padding-left: var(--rythme); }
+#toc > ul { padding-left: 0; }
+#toc li { margin: 0; }
+#toc a { color: var(--texte); }
+
+/* :toc: left ou right (posé pour l'aperçu dans les maîtres) : sommaire fixe
+   en marge, qui reste visible au défilement. Sous 768 px, il revient en
+   tête du document. */
+@media screen and (min-width: 768px) {
+  body.toc2 { padding-left: 17em; }
+  body.toc2.toc-right { padding-left: 1em; padding-right: 17em; }
+  #toc.toc2 {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 15em; overflow-y: auto;
+    margin: 0; padding: 1.5em 1em; font-size: .9em; background: #fff;
+    border-right: .5pt solid var(--filet-table); z-index: 1000;
+  }
+  body.toc-right #toc.toc2 {
+    left: auto; right: 0; border-right: 0; border-left: .5pt solid var(--filet-table);
+  }
+  #toc.toc2 #toctitle::before { font-size: 14pt; }
+  #toc.toc2 li { margin-bottom: 2pt; }
+}
+
+/* Titres de bloc (.Titre) et légendes : gras italique, vert. */
+.title, caption.title {
+  font-weight: 700; font-style: italic; color: var(--vert);
+  font-size: .95em; text-align: left; margin: 0 0 calc(var(--rythme) / 3);
+}
+.imageblock { text-align: center; margin-bottom: var(--rythme); }
+.imageblock > .title { text-align: center; margin: calc(var(--rythme) / 3) 0 0; }
+
+/* Listes */
+ul, ol { margin: 0 0 var(--rythme); padding-left: calc(var(--rythme) * 1.5); }
+li { margin-bottom: calc(var(--rythme) / 2); }
+li > p, li .paragraph { margin: 0; }
+li ul, li ol { margin: calc(var(--rythme) / 2) 0 0; }
+.ulist.checklist ul, .ulist.none ul, .ulist.unstyled ul { list-style: none; }
+dl { margin: 0 0 var(--rythme); }
+dt { font-weight: 700; margin-bottom: calc(var(--rythme) / 4); }
+dd { margin: 0 0 calc(var(--rythme) / 2) calc(var(--rythme) * 1.25); }
+.hdlist td { vertical-align: top; padding: 0 1em calc(var(--rythme) / 2) 0; }
+.hdlist1 { font-weight: 700; }
+.colist td { vertical-align: top; padding: 0 .5em calc(var(--rythme) / 2) 0; }
+
+/* Résumé (abstract) : gris, italique, première ligne en gras. */
+.quoteblock.abstract { margin: 0 0 calc(var(--rythme) * 1.5); }
+.quoteblock.abstract > .title {
+  font-style: normal; font-size: 11.5pt; text-align: center;
+}
+.quoteblock.abstract blockquote {
+  border: 0; padding: 0; margin: 0; background: transparent;
+  color: #5c6266; font-size: 11.5pt; font-style: italic; line-height: 1.4;
+}
+.quoteblock.abstract blockquote > .paragraph:first-child p::first-line { font-weight: 700; }
+
+/* Citations : taille du corps, filet gauche. */
+.quoteblock, .verseblock { margin: 0 0 var(--rythme); }
+.quoteblock blockquote, .verseblock pre {
+  margin: 0; padding: 3pt 12pt 3pt 14pt; border-left: 4pt solid var(--filet);
+  background: transparent;   /* VS Code les met sur fond sombre en thème sombre */
+}
+.verseblock pre { font-family: inherit; font-size: 1rem; white-space: pre-wrap; }
+.quoteblock blockquote > :last-child { margin-bottom: 0; }
+.quoteblock .attribution, .verseblock .attribution {
+  font-size: 9pt; color: #999999; text-align: right; margin-top: calc(var(--rythme) / 3);
+}
+
+/* Encadré (****) : réservé à la recommandation de la synthèse. */
+.sidebarblock {
+  background: var(--vert-pale); border: .75pt solid var(--vert); border-radius: 4pt;
+  padding: var(--rythme) calc(var(--rythme) * 1.25); margin-bottom: var(--rythme);
+}
+.sidebarblock > .content > .title { font-style: normal; font-size: 11.5pt; }
+.sidebarblock > .content > :last-child { margin-bottom: 0; }
+
+/* Exemple (====) */
+.exampleblock > .content {
+  border: .75pt solid var(--filet); border-radius: 4pt; padding: var(--rythme);
+  margin-bottom: var(--rythme);
+}
+.exampleblock > .content > :last-child { margin-bottom: 0; }
+
+/* Admonitions : libellé à la place de l'icône du PDF, dans la même couleur ;
+   filet vert entre libellé et texte. */
+.admonitionblock { margin-bottom: var(--rythme); }
+.admonitionblock > table { border-collapse: collapse; width: 100%; }
+.admonitionblock td.icon {
+  width: 6.5em; min-width: 6.5em; text-align: center; vertical-align: middle;
+  padding: 0 var(--rythme) 0 0; border-right: .5pt solid var(--vert);
+}
+.admonitionblock td.icon .title {
+  margin: 0; font-style: normal; font-size: .9em; text-transform: uppercase; color: var(--vert);
+}
+.admonitionblock.caution td.icon .title,
+.admonitionblock.warning td.icon .title { color: var(--orange); }
+.admonitionblock td.icon img { max-width: 2em; }
+/* :icons: font : même icône et même couleur que le PDF (custom-theme.yml),
+   sans dépendre de la feuille Font Awesome distante, souvent bloquée. */
+.admonitionblock td.icon [class^="fa icon-"] {
+  font: normal 900 20pt/1 "Icones admonitions"; color: var(--vert); cursor: default;
+}
+.admonitionblock td.icon .icon-note::before { content: "\f05a"; }
+.admonitionblock td.icon .icon-tip::before { content: "\f0eb"; }
+.admonitionblock td.icon .icon-tip { font-weight: 400; }
+.admonitionblock td.icon .icon-important::before { content: "\f06a"; }
+.admonitionblock td.icon .icon-caution::before { content: "\f256"; }
+.admonitionblock td.icon .icon-warning::before { content: "\f071"; }
+.admonitionblock td.icon .icon-caution,
+.admonitionblock td.icon .icon-warning { color: var(--orange); }
+.admonitionblock td.content { padding: calc(var(--rythme) / 3) var(--rythme); }
+.admonitionblock td.content > :last-child { margin-bottom: 0; }
+
+/* Code : JetBrains Mono à 0,8 du corps, en ligne comme en bloc. */
+code, kbd, pre { font-family: var(--mono); font-size: .8rem; }
+/* Fond et couleur explicites : sinon l'aperçu garde ceux du thème VS Code,
+   sombres en thème sombre (texte gris foncé sur fond noir). */
+code { color: var(--texte); }
+:not(pre) > code {
+  background: var(--fond-code); border-radius: 2pt; padding: 0 2pt;
+  overflow-wrap: anywhere;
+}
+.listingblock, .literalblock { margin-bottom: var(--rythme); }
+.listingblock pre, .literalblock pre {
+  margin: 0; padding: .8rem; line-height: 1.25; text-align: left;
+  background: var(--fond-code); border: .75pt solid var(--bord-code); border-radius: 4pt;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+pre code, pre code.hljs { font-size: inherit; background: transparent; padding: 0; }
+.conum { font-family: var(--mono); font-weight: 700; }
+kbd {
+  background: var(--fond-code); border: .5pt solid var(--bord-code); border-radius: 2pt;
+  padding: 0 2pt;
+}
+.menuseq, .menuref, .button b { font-weight: 700; }
+.menuseq .caret { color: #b12146; }
+
+/* Tableaux : filets #ddd de 0,5 pt, en-tête gras souligné, zébrures. */
+table.tableblock {
+  border-collapse: collapse; margin-bottom: var(--rythme);
+  border: 0 solid var(--filet-table);
+}
+table.tableblock.stretch { width: 100%; }
+table.tableblock > caption.title { caption-side: top; }
+.tableblock th, .tableblock td { padding: 3pt; vertical-align: top; border: 0 solid var(--filet-table); }
+.tableblock p.tableblock { margin: 0; }
+.tableblock td > .content > :last-child { margin-bottom: 0; }
+.tableblock p.tableblock + p.tableblock { margin-top: calc(var(--rythme) / 2); }
+.tableblock thead th { font-weight: 700; border-bottom-width: 1.25pt !important; }
+.tableblock tfoot { background: #f0f0f0; }
+table.frame-all { border-width: .5pt; }
+table.frame-ends { border-top-width: .5pt; border-bottom-width: .5pt; }
+table.frame-sides { border-left-width: .5pt; border-right-width: .5pt; }
+table.grid-all > * > tr > * { border-width: .5pt; }
+table.grid-cols > * > tr > * { border-left-width: .5pt; border-right-width: .5pt; }
+table.grid-rows > * > tr > * { border-top-width: .5pt; border-bottom-width: .5pt; }
+table.stripes-all > tbody > tr,
+table.stripes-odd > tbody > tr:nth-of-type(odd),
+table.stripes-even > tbody > tr:nth-of-type(even),
+table.stripes-hover > tbody > tr:hover { background: #f9f9f9; }
+.halign-left { text-align: left; }
+.halign-right { text-align: right; }
+.halign-center { text-align: center; }
+.valign-middle { vertical-align: middle; }
+.valign-bottom { vertical-align: bottom; }
+
+/* Divers */
+hr { border: 0; border-top: .5pt solid var(--filet); margin: calc(var(--rythme) / 2) 0 var(--rythme); }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-justify { text-align: justify; }
+#footnotes { margin-top: calc(var(--rythme) * 2); font-size: 8pt; }
+#footnotes hr { width: 20%; margin-left: 0; }
+#footer { margin-top: calc(var(--rythme) * 2); font-size: 9pt; color: #999999; }

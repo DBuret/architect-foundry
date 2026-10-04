@@ -1,0 +1,13 @@
+# Fichiers propres à l'étude : quand une étude tire les évolutions du modèle
+# (git merge modele/main) et que les deux côtés ont changé l'un d'eux, l'étude
+# garde sa version. Sans effet tant que le pilote n'est pas configuré dans le
+# clone : git config merge.etude.driver true (doc/architecture.adoc, « Étude
+# et modèle »). Dans le modèle lui-même, il ne l'est pas.
+memo.adoc                       merge=etude
+dat.adoc                        merge=etude
+note.adoc                       merge=etude
+hypotheses.adoc                 merge=etude
+points-ouverts.adoc             merge=etude
+adr.adoc                        merge=etude
+images/**                       merge=etude
+tools/pdf-theme/header-logo.png merge=etude

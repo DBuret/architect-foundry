@@ -1,0 +1,104 @@
+[[tables]]
+== Tableaux
+
+Les légendes numérotées sont désactivées au build : un tableau se cite par son ancre.
+
+[[tab-couts]]
+.Coûts comparés des options
+[cols="2,1,1,3"]
+|===
+| Option | Coût initial | Coût annuel | Commentaire
+
+| A : conserver
+| 0 €
+| 120 k€
+| Aucun changement, dette technique croissante.
+
+| B : migrer
+| 250 k€
+| 80 k€
+| Migration en deux phases.
+
+| C : remplacer
+| 400 k€
+| 60 k€
+| Dépend de xref:hypotheses.adoc#H1[].
+
+| Total indicatif
+| 650 k€
+| 260 k€
+|
+|===
+
+.Alignements et fusions de cellules
+[cols="1,^1,>1"]
+|===
+| Gauche | Centré | Droite
+
+| a | b | 12
+2+| Deux colonnes fusionnées | 345
+.2+| Deux lignes fusionnées | c | 6
+| d | 78
+|===
+
+.Tableau avec pied
+[cols="3,1",options="footer"]
+|===
+| Poste | Montant
+
+| Licences | 40 k€
+| Hébergement | 25 k€
+| Total | 65 k€
+|===
+
+.Cellule au contenu AsciiDoc
+[cols="1,3a"]
+|===
+| Critère | Détail
+
+| Sécurité
+| Trois exigences :
+
+* chiffrement au repos ;
+* chiffrement en transit ;
+* journalisation des accès.
+
+| Exploitation
+|
+[source,bash]
+----
+systemctl status portefeuille
+----
+|===
+
+.Tableau issu d'un CSV
+[%header,format=csv,cols="1,1,1"]
+|===
+Environnement,Instances,Région
+Production,6,Paris
+Recette,2,Paris
+Développement,1,Lille
+|===
+
+.Texte long dans une cellule étroite
+[cols="1,5"]
+|===
+| Clé | Valeur
+
+| url
+| https://portail.example.org/applications/portefeuille/environnements/production/tableaux-de-bord/disponibilite
+| texte
+| Une cellule avec beaucoup de texte, pour vérifier que la hauteur de ligne suit, que le texte reste lisible et que la justification ne crée pas de blancs excessifs dans une colonne large.
+|===
+
+.Tableau de décision à six colonnes
+[cols="2,1,1,1,1,1"]
+|===
+| Critère | Poids | Option A | Option B | Option C | Commentaire
+
+| Coût | 30 % | 3 | 2 | 1 | Voir <<tab-couts>>.
+| Risque | 25 % | 2 | 2 | 3 | Selon xref:points-ouverts.adoc#PO-01[].
+| Délai | 20 % | 3 | 2 | 1 | —
+| Réversibilité | 15 % | 3 | 2 | 1 | —
+| Exploitation | 10 % | 2 | 3 | 2 | —
+|===

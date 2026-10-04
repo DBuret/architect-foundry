@@ -1,0 +1,16 @@
+= Points ouverts
+
+[[PO-01]]
+== PO-01 : Financement du second site
+
+.Statut
+Ouvert.
+
+.Question
+Le second site est-il financé dans le budget 2027 ?
+
+.Porteur
+Direction financière.
+
+.Échéance
+Arbitrage budgétaire d'octobre 2026.

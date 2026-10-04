@@ -1,0 +1,152 @@
+= ArchitectFoundry
+:lang: fr
+
+_Études d'architecture IT en doc-as-code._
+
+ArchitectFoundry fournit un modèle de travail pour produire des études d'architecture IT avec Git, AsciiDoc et des agents IA.
+
+Il structure le travail autour de :
+
+* documents versionnés : mémo de décision, dossier d'architecture technique (DAT), note de réflexion ;
+* registres d'hypothèses, de décisions et de points ouverts ;
+* contrôles automatisés ;
+* génération PDF ;
+* skills optionnels pour les agents IA.
+
+L'architecte reste responsable des décisions.
+L'IA rédige, recherche, vérifie et propose ; elle ne décide pas.
+
+== Pourquoi ?
+
+Une étude d'architecture contient généralement des affirmations venues de sources variées (note de cadrage, compte rendu, courriel, indication orale), des hypothèses, des points en suspens et des décisions.
+Rédigée dans un traitement de texte, elle devient vite difficile à tenir : une hypothèse recopiée en trois endroits diverge, un point ouvert clos reste cité comme ouvert, une affirmation perd sa source, et personne ne sait ce qui a changé entre deux versions.
+
+Ici, l'étude est traitée comme du code source :
+
+* chaque hypothèse, point ouvert ou décision est défini une seule fois, dans un registre, et cité partout par un renvoi qu'un script vérifie ;
+* toute affirmation est sourcée ou rattachée à une hypothèse, qui dit d'où elle vient ;
+* git garde l'historique, et chaque livraison est un PDF tagué ;
+* un script contrôle, avant chaque commit, ce qui peut l'être : renvois cassés, identifiants jamais cités, statuts hors liste, images introuvables, restes de Markdown.
+
+Les mêmes règles valent pour l'humain et pour l'agent IA : elles sont écrites une fois, dans `normes/`, et contrôlées par `tools/check.sh`.
+
+== Origine
+
+J'écris mes documents d'architecture en doc-as-code depuis 2018 : AsciiDoc, PlantUML, git et asciidoctor-pdf.
+C'est mon outil quotidien depuis.
+Je ne l'avais pas poussé plus loin, vers une base des hypothèses et des décisions par exemple : il aurait fallu développer puis maintenir un outillage, un investissement trop lourd au regard du temps qu'il aurait fait gagner.
+
+Les agents IA et le RAG ont changé ce calcul.
+Registres, contrôles, vérification des sources et relecture tiennent désormais dans quelques scripts, des normes écrites et des skills, sans application à maintenir.
+Ce dépôt est ce cran de maturité supplémentaire.
+
+== Démarrage
+
+Poste équipé (xref:doc/howto.adoc#installer[prérequis]) :
+
+[source,sh]
+----
+git clone <url du modèle> mon-etude && cd mon-etude
+tools/init.sh --projet "Mon projet" --kb ma-base --maitres memo,dat \
+  --depot <url du dépôt de l'étude>
+----
+
+`init.sh` garde les maîtres choisis, renseigne leurs attributs, active le hook et lance les contrôles, puis rappelle ce qui reste à faire à la main.
+`--kb`, la base de connaissances du projet, est facultatif (voir « Avec RAG »).
+Détail : xref:doc/howto.adoc#demarrer[Démarrer une étude].
+
+Ensuite, sans agent :
+
+[cols="2,3"]
+|===
+| Pour | Faire
+
+| Vérifier
+| `tools/check.sh` ; le hook le relance à chaque commit.
+
+| Faire le point, préparer un comité
+| `tools/status.sh`, `tools/status.sh --comite`.
+
+| Produire le PDF
+| `tools/build.sh`, qui l'écrit dans `work/`.
+
+| Livrer un mémo, un DAT, une note
+| Relecture, version, PDF, tag : xref:doc/howto.adoc#livrer[Livrer un document].
+
+| Tirer les évolutions du modèle
+| `git fetch modele && git merge modele/main`, puis `tools/check.sh`.
+|===
+
+== Avec un agent IA
+
+Le dépôt est prêt pour pi et pour le chat de VS Code en mode agent, chacun avec le modèle de son choix, LLM interne compris.
+L'agent lit `AGENTS.md` au démarrage, puis les normes et les skills dont sa tâche a besoin ; il propose, l'architecte décide.
+
+Le modèle doit appeler ses outils de façon fiable ; 128K tokens de contexte sont recommandés.
+À l'automne 2026, un modèle de classe 30B suffit aux tâches courantes ; la revue de cohérence d'un document entier et la réflexion de fond demandent un modèle plus grand.
+Détail : xref:doc/howto.adoc#modele-llm[Choisir le modèle de l'agent].
+
+[cols="2,3"]
+|===
+| Pour | Demander
+
+| Intégrer un compte rendu, un courriel, une indication orale
+| Coller les notes et demander de les intégrer : skill `integrer-entrant`.
+
+| Rédiger un chapitre
+| Le chapitre voulu, dans une session neuve.
+
+| Illustrer un chapitre rédigé
+| Skill `illustrer-etude`.
+
+| Relire
+| Skill `revue-etude` avec un axe et un périmètre : `revue-etude cohérence memo.adoc`.
+
+| Challenger une décision, une architecture, alléger un document
+| Skill `revue-etude`, axes `décision`, `robustesse`, `concision`.
+
+| Étayer ou contester une idée
+| Skill `justifier-idee`.
+|===
+
+Appeler un skill explicitement : `/skill:<nom>` sous pi, `/<nom>` sous VS Code.
+Une tâche par session ; l'état est dans git et dans `work/`.
+Détail : xref:doc/howto.adoc#quotidien[Travailler au quotidien].
+
+== Avec RAG
+
+Le RAG, facultatif, donne à l'agent des sources à citer.
+Une étude interroge jusqu'à deux bases de connaissances :
+
+* la base *projet*, nommée par l'attribut `:kb-projet:` des maîtres (`init.sh --kb`) : les entrants de l'étude (note de cadrage, présentation de lancement, livrables amont) ; sans elle, l'agent ne vérifie rien dans les entrants ;
+* la base `multi-projets` : ouvrages de référence, réglementation, normes de l'entreprise.
+
+L'agent y vérifie les affirmations de l'étude, y cherche ce qui soutient ou contredit une idée, et, sur demande (« Explore… »), y trouve des options et des critères de choix.
+Il cite chaque passage par son titre, sa section et sa page, et ne répond jamais de mémoire : sans RAG, il le dit et marque ses vérifications « non vérifié ».
+
+Les outils sont les mêmes sous les deux agents : `rag_list`, `rag_search`, `rag_status`, fournis par l'extension pi-rag sous pi et par un serveur MCP `rag` sous VS Code.
+Détail : xref:doc/howto.adoc#rag[Déclarer une base de connaissances].
+
+== Documentation
+
+[cols="1,3"]
+|===
+| Document | Contenu
+
+| xref:doc/howto.adoc[Mode d'emploi]
+| Installer le poste, démarrer ou rejoindre une étude, travailler au quotidien, produire et livrer un document, déclarer une base de connaissances, tirer le modèle, dépanner.
+
+| xref:doc/architecture.adoc[Architecture du modèle]
+| Principes, types de documents, arborescence, contrôles, agent et skills, bases de connaissances, séparation entre étude et modèle.
+
+| `normes/`
+| Règles de rédaction, lues par l'humain comme par l'agent.
+
+| `AGENTS.md`
+| Consignes de l'agent.
+|===
+
+== Licence
+
+Le modèle (outils, normes, skills, documentation) est distribué sous licence Apache 2.0 : voir `LICENSE`.
+Le contenu d'une étude rédigée avec lui (maîtres, fragments, registres, images) appartient à son auteur et n'est pas couvert par cette licence.

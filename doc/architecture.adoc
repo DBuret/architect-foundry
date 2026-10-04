@@ -1,0 +1,260 @@
+= Architecture du modèle
+:toc:
+:toclevels: 2
+:sectnums:
+:lang: fr
+
+Ce document dit comment le modèle est construit, et pourquoi.
+Les procédures sont dans xref:howto.adoc[Mode d'emploi] ; les règles de rédaction, dans `normes/`.
+
+== Principes
+
+*L'étude est du code source.*
+Elle est écrite en AsciiDoc, versionnée dans git, vérifiée par un script avant chaque commit et rendue en PDF à la demande.
+Elle se lit dans un diff ; chaque livrable est le PDF d'un document maître.
+
+*Chaque objet cité ailleurs a un identifiant unique.*
+Une hypothèse, un point ouvert ou une décision d'architecture (ADR) est défini une seule fois, dans un registre, et cité partout ailleurs par un renvoi que le build vérifie.
+Un renvoi cassé devient une erreur détectée, pas une coquille découverte en comité.
+
+*Toute affirmation est sourcée ou rattachée à une hypothèse.*
+Aucune forme de source n'est imposée : les entrants d'un projet sont une note, une présentation, un courriel, parfois une indication orale.
+Il faut seulement dire d'où vient chaque affirmation.
+Une indication orale devient une hypothèse du registre, qui dit qui l'a donnée, quand et dans quel cadre : le lecteur voit ce qui repose sur une parole plutôt que sur un écrit.
+Une déduction que rien ne confirme n'est pas présentée comme un fait : elle devient une hypothèse ou un point ouvert.
+
+*L'agent propose, l'architecte décide.*
+L'agent ne change jamais le statut d'une ADR, ne clôt pas un point ouvert et ne modifie ni une hypothèse ni un seuil de décision sans demande explicite.
+
+*Vérifier plutôt qu'expliquer.*
+Une règle qu'un script peut contrôler est contrôlée par `check.sh`, pas seulement écrite dans une consigne que l'agent peut oublier.
+Les consignes restent courtes ; ce qui ne se contrôle pas mécaniquement relève de la revue.
+
+*Aussi peu que possible, autant que nécessaire.*
+Un outil, une norme ou un skill n'est ajouté que s'il sert une tâche récurrente que le reste ne couvre pas.
+
+[[types]]
+== Trois types de documents, un système
+
+[cols="1,2,2"]
+|===
+| Maître | Lecteur | Question
+
+| `memo.adoc` (`:type: memo`), mémo de décision
+| La direction, qui décide ; ses annexes, les experts à qui elle le soumet.
+| Que faut-il décider, et pourquoi ?
+
+| `dat.adoc` (`:type: dat`), dossier d'architecture technique
+| Les équipes qui construisent et exploitent.
+| Qu'a-t-on décidé de construire, et comment ?
+
+| `note.adoc` (`:type: note`), note de réflexion
+| L'architecte et ses pairs, aujourd'hui et dans six mois.
+| Où en est la réflexion ?
+|===
+
+Une étude garde un ou plusieurs maîtres, qui partagent registres, fragments, normes, thème, contrôles et skills.
+Chacun déclare son type dans son header ; le type fixe la structure obligatoire, la profondeur, la synthèse et ce que la revue juge (`normes/types.adoc`).
+Quand une étude produit un DAT et un mémo, le DAT porte l'analyse et le mémo en extrait ce qui sert la décision, jamais l'inverse.
+
+=== Un sujet long, un dépôt
+
+Certains sujets s'étendent sur des mois : une recherche, puis un pilote, puis peut-être une décision.
+Pas d'outillage supplémentaire : un dépôt par sujet, dont les maîtres s'ajoutent au fil du temps.
+
+[source]
+----
+gestion-secrets/                      un dépôt, créé depuis ce modèle
+  note.adoc                           l'exploration, version après version
+  dat.adoc                            le DAT du pilote, quand il vient
+  memo.adoc                           le jour où la direction doit trancher
+  principe-secret-ephemere.adoc       fragments de concepts : écrits une fois,
+  principe-rotation-automatique.adoc  inclus par la note puis par le DAT
+  hypotheses.adoc                     registres communs à tous les maîtres
+  points-ouverts.adoc
+  adr.adoc
+----
+
+* Un concept appelé à durer va dans son propre fragment dès la note ; le DAT l'inclut au lieu de le réécrire, et ne peut donc pas diverger.
+* Une idée non démontrée est une hypothèse ; validée ou invalidée au fil des mois, elle garde son identifiant jusqu'au DAT.
+* Une question de recherche est un point ouvert ; quand la réflexion tranche, une ADR prend le relais.
+
+`check.sh` contrôle tous les maîtres à la fois, et refuse le renvoi d'un fragment commun vers ce qu'un des maîtres n'inclut pas.
+
+== Arborescence
+
+[cols="1,3"]
+|===
+| Chemin | Rôle
+
+| `memo.adoc`, `dat.adoc`, `note.adoc`
+| Maîtres ; leurs `include::` fixent l'ordre de lecture. Chacun donne un PDF.
+
+| `hypotheses.adoc`, `points-ouverts.adoc`, `adr.adoc`
+| Registres, communs à tous les maîtres.
+
+| autres `*.adoc` de la racine
+| Fragments : un fichier par chapitre ou annexe.
+
+| `images/`
+| Images ajoutées à la main, versionnées.
+
+| `work/`
+| Ignoré par git : PDF, schémas générés, rapports de l'agent.
+
+| `normes/`
+| Règles de rédaction, chacune écrite une seule fois ; `normes/plantuml/` : styles des schémas.
+
+| `AGENTS.md`, `.agents/skills/`
+| Consignes et skills de l'agent, communs à pi et à VS Code.
+
+| `.github/agents/`, `.vscode/settings.json`
+| Agents propres à VS Code ; attributs de l'aperçu.
+
+| `tools/`
+| Mise en place (`init.sh`), contrôle (`check.sh`), rendu PDF (`build.sh`), conteneur commun aux deux (`conteneur.sh`), état (`status.sh`), hook git, tests, thème PDF et polices, extensions Asciidoctor. Chaque script décrit son usage dans son en-tête.
+
+| `README.adoc`, `doc/`
+| Documentation pour les humains.
+|===
+
+Les `.adoc` de la racine, sauf `README.adoc`, sont l'étude : `check.sh` les contrôle tous.
+La documentation du modèle vit donc dans `doc/`, hors de son périmètre.
+
+== Maître, fragments et registres
+
+Chaque maître suit la structure de son type et commence par une synthèse d'une page, qui se suffit à elle-même et ne contient rien d'absent du corps.
+Un chapitre long sort dans son propre fragment, de 40 Ko au plus : au-delà, l'agent ne peut plus le relire d'un bloc dans une fenêtre de 128K.
+Un registre est rédigé une fois, inclus une fois par maître et cité partout ailleurs par xref ; la macro `registre::` en génère les tableaux récapitulatifs au rendu, pour qu'aucun tableau recopié à la main ne diverge du registre.
+
+Les règles détaillées sont dans les normes, que l'humain lit comme l'agent :
+
+[cols="1,2"]
+|===
+| Sujet | Norme
+
+| Identifiants, renvois, sources, hypothèses, syntaxe
+| `normes/asciidoc.adoc`
+
+| Format des registres, statuts, macro `registre::`
+| `normes/registres.adoc`
+
+| Types de documents et synthèse
+| `normes/types.adoc`
+
+| Schémas PlantUML et images
+| `normes/schemas.adoc`
+
+| Inclusions, en-têtes, attributs de build et de l'aperçu
+| `normes/fichiers.adoc`
+|===
+
+== Contrôles
+
+`check.sh` rend chaque maître en HTML dans un dossier temporaire et inspecte le source : renvois sans cible ou vers un fichier non inclus, numéros de section en dur, restes de Markdown ou de LaTeX, identifiants jamais cités ou cités sans xref, statuts hors liste, images introuvables, admonitions non admises, emojis, fragments trop longs, schémas PlantUML sans style commun.
+Un KO bloque (code de sortie 1, commit refusé) ; un AVERT signale un défaut probable sans bloquer.
+Chaque contrôle est décrit, avec son niveau et sa raison, par le commentaire qui le précède dans le script.
+Sans asciidoctor sur le poste, `check.sh` se relance dans le conteneur de `build.sh` (`tools/conteneur.sh`, qui fixe l'image une seule fois pour les deux).
+Sans l'un ni l'autre, c'est un KO : un outil manquant ne doit jamais faire passer les contrôles au vert sans rien vérifier.
+
+Le hook pre-commit lance `check.sh` dès qu'un `.adoc` est dans le commit.
+Il contrôle l'arbre de travail, pas l'index : un fichier indexé en partie est vérifié dans son état courant.
+Le contourner (`--no-verify`) reste une décision de l'architecte, jamais de l'agent.
+
+*Ce que `check.sh` ne vérifie pas*, par choix : les défauts propres au PDF (cellule trop étroite, SVG mal dessiné, glyphe absent, mise en page).
+Les détecter imposerait un rendu PDF complet à chaque vérification et à chaque commit.
+asciidoctor-pdf les signale dans la sortie de `build.sh`, que l'agent lit et traite ; l'axe `rendu` de la revue relit le PDF.
+
+Le rendu HTML sert au contrôle et à l'aperçu, pas à la diffusion : il n'affiche pas les schémas, générés dans `work/images/`.
+
+== L'agent
+
+=== Ce qu'il lit
+
+`AGENTS.md`, au démarrage : carte du dépôt, ce que l'agent ne fait pas, workflow, contrôles, économie de contexte.
+Il ne contient aucune règle de rédaction : il renvoie aux normes.
+L'agent lit `normes/asciidoc.adoc` avant toute rédaction, les autres normes seulement quand sa tâche les touche, et ne lit pas la documentation humaine.
+
+=== Skills et agents VS Code
+
+Un skill dit _comment_ faire ; il vit dans `.agents/skills/`, que lisent pi et VS Code.
+L'agent n'en voit d'abord que le nom et la description, et charge le skill quand la tâche lui correspond.
+
+[cols="1,3"]
+|===
+| Skill | Rôle
+
+| `integrer-entrant`
+| Range un compte rendu, un courriel ou une indication orale en sources, hypothèses, points ouverts et ADR proposées ; propose, sans les modifier, ce qui touche les entrées existantes.
+
+| `recherche-rag`
+| Protocole de recherche dans les bases et sur les sites du projet : choix de la base, requêtes, lecture des passages, verdicts, citation, exploration. Lu par les autres skills dès qu'ils cherchent.
+
+| `illustrer-etude`
+| Ajoute mindmaps et WBS à un chapitre déjà rédigé, sans toucher au texte.
+
+| `revue-etude`
+| Relit un périmètre selon un axe (traçabilité, cohérence, sources, rendu, décision, robustesse, concision), et écrit un rapport de constats prouvés.
+
+| `justifier-idee`
+| Cherche ce qui soutient et ce qui contredit une idée, et rend un verdict par affirmation.
+|===
+
+Un agent VS Code (`.github/agents/`) dit _qui_ fait : avec quels outils, quel modèle, dans quel contexte.
+Il n'existe que là où VS Code apporte ce que pi n'a pas, et ne recopie jamais la démarche de son skill.
+*Relecteur* démarre chaque revue dans un contexte neuf et permet de choisir son modèle ; *Justificateur d'idée* garde ses recherches dans son propre contexte quand le Relecteur l'appelle comme sous-agent.
+Les deux n'écrivent que dans `work/`.
+
+Il n'y a pas d'agent de rédaction : le mode agent par défaut, avec `AGENTS.md`, suffit.
+
+=== Économie de contexte
+
+Le dépôt est conçu pour une fenêtre de 128K tokens, et fonctionne à plus forte raison avec davantage.
+L'agent ne charge que ce que sa tâche exige, et le travail tient dans les fichiers, pas dans la conversation : normes et skills découpés, une tâche par session, lecture par morceaux avec `rg`, rapports écrits au fil de l'eau dans `work/`.
+
+== Bases de connaissances
+
+L'agent interroge des bases Qdrant par les outils `rag_list`, `rag_search` et `rag_status`, les mêmes sous les deux agents : l'extension pi-rag (link:https://github.com/raguets/pi-rag[raguets/pi-rag]) les fournit à pi, le serveur MCP `rag` à VS Code.
+Une étude en utilise deux :
+
+* la base *projet*, nommée par l'attribut `:kb-projet:` des maîtres : la documentation du projet, dont les entrants de l'étude (note de cadrage, présentation de lancement, livrables amont) ;
+* la base `multi-projets` : ouvrages de référence, réglementation et normes de l'entreprise, communs à toutes les études.
+
+Les bases des autres projets ne sont pas interrogées sans demande : leurs documents ne sont pas des entrants de l'étude.
+Les `.adoc` du dépôt ne sont dans aucune base : ils se cherchent avec `rg`.
+L'agent n'accède aux sources que par les passages renvoyés, et n'ouvre jamais les fichiers du corpus ; le `source_name` et l'identifiant de chaque passage permettent à l'architecte de le retrouver.
+Si le RAG ne répond pas, l'agent le dit et marque ses vérifications « non vérifié » : il ne les remplace jamais par sa mémoire.
+
+[[etude-modele]]
+== Étude et modèle
+
+Chaque étude a deux remotes : `origin`, le sien, et `modele`, ce dépôt.
+Une amélioration des normes ou des outils se fait dans le modèle, et rejoint toutes les études par une fusion git.
+La fusion se fait sans conflit tant que chacun reste chez lui :
+
+[cols="1,3"]
+|===
+| Qui modifie | Quoi
+
+| L'étude
+| Ses `.adoc` de la racine (maîtres, fragments, registres), `images/` et le logo d'en-tête.
+
+| Le modèle
+| `tools/` (sauf le logo d'en-tête), `normes/`, `doc/`, `.agents/`, `.github/`, `AGENTS.md`, `README.adoc`, `LICENSE`, `.vscode/`, `.gitattributes`, `.gitignore`.
+|===
+
+Le modèle contient aussi des maîtres, des registres et des logos d'exemple, que l'étude réécrit : c'est là que les deux côtés se croisent.
+`.gitattributes` les marque `merge=etude`, et `git config merge.etude.driver true` déclare ce pilote de fusion : la commande `true` ne touche à rien et réussit, donc git garde la version de l'étude, sans conflit.
+Le pilote n'est appelé que si les deux côtés ont modifié le fichier ; un fichier que l'étude n'a pas touché prend la version du modèle, comme dans toute fusion.
+Dans le modèle lui-même, le pilote n'est pas configuré : ses fusions de branches restent normales.
+
+== Points connus
+
+* Les noms de fichiers de l'étude ne doivent pas contenir d'espace : `check.sh` ne les gère pas.
+
+== Points ouverts
+
+* *Identifiants de passage sous pi : juger si nécessaire.*
+Sous VS Code, `rag-query` donne à chaque passage un identifiant stable, repris dans les rapports pour retrouver le passage ; sous pi, pi-rag n'en donne pas, et les rapports ne citent que la base et le `source_name`.
+Pour les avoir aussi sous pi, il faudrait une petite extension pi qui appelle `rag-query search --json`.
+Cela ne vaut la peine que si les revues continuent à se faire sous pi.

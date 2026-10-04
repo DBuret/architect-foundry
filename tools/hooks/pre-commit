@@ -1,0 +1,22 @@
+#!/bin/sh
+# pre-commit — refuse un commit dont les maîtres ne passent pas check.sh.
+#
+# Installation, une fois par clone (le hook lui-même est versionné) :
+#   git config core.hooksPath tools/hooks
+# Contournement ponctuel et assumé : git commit --no-verify
+#
+# Limite connue : check.sh contrôle l'arbre de travail, pas l'index. Un
+# fichier partiellement indexé (git add -p) est donc vérifié dans son état
+# courant, pas dans l'état commité.
+
+CHECK="tools/check.sh"  # chemin depuis la racine du dépôt ; sans argument,
+                        # il contrôle tous les maîtres (:type: memo, dat ou note)
+
+# Rien à contrôler si aucun .adoc n'est dans le commit.
+git diff --cached --name-only --diff-filter=ACMR | grep -q '\.adoc$' || exit 0
+
+cd "$(git rev-parse --show-toplevel)" || exit 1
+"$CHECK" || {
+  echo "pre-commit : check.sh en KO, commit refusé." >&2
+  exit 1
+}

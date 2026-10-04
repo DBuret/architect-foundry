@@ -1,0 +1,17 @@
+' Style commun à tous les schémas PlantUML de l'étude.
+' Inclus par les fichiers _<type>.iuml de ce dossier, jamais directement
+' par un chapitre : voir normes/schemas.adoc.
+' Ne pas renommer ce fichier sans répercuter le changement dans chaque
+' _<type>.iuml qui le référence par son nom seul.
+
+skinparam shadowing false
+skinparam monochrome false
+skinparam defaultFontName DejaVu Sans
+' 12 px, soit 9 pt dans le PDF : DejaVu Sans a des minuscules plus hautes
+' que Etude Sans, la police du texte (0,55 em contre 0,48), le texte des schémas a ainsi la même
+' hauteur visuelle que le corps du document (10,5 pt).
+skinparam defaultFontSize 12
+
+' Couleurs alignées sur le thème PDF (tools/pdf-theme/custom-theme.yml).
+skinparam ArrowColor #087859
+skinparam DefaultFontColor #333333

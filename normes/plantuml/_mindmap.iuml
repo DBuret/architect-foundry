@@ -1,0 +1,56 @@
+' Style des mindmaps. Voir normes/schemas.adoc.
+' Usage : !include normes/plantuml/_mindmap.iuml, juste après @startmindmap.
+' La racine (profondeur 0) est mise en valeur automatiquement, sans rien à
+' écrire dans le texte du schéma. Marquer un nœud <<urgent>> lui donne un
+' contour rouge, quelle que soit sa profondeur.
+' Tout doit rester à l'intérieur de mindmapDiagram { ... } : un arrow{} ou
+' un sélecteur de classe (.urgent) posé en dehors n'a silencieusement
+' aucun effet, sans WARNING ni ERROR (vérifié sur cette version de
+' PlantUML).
+
+!include _commun.iuml
+
+<style>
+mindmapDiagram {
+  node {
+    LineColor DarkGrey
+    MaximumWidth 150
+    HorizontalAlignment center
+  }
+  arrow {
+    LineColor DimGrey
+  }
+  :depth(0) {
+    FontSize 12
+    FontStyle Bold
+    BackgroundColor #def2c6
+  }
+  :depth(1) {
+    BackgroundColor #d3edd2
+    node { FontSize 11 }
+  }
+  :depth(2) {
+    BackgroundColor #d1e6e4
+    node { FontSize 10; Padding 10 }
+  }
+  :depth(3) {
+    BackgroundColor #d6dde9
+    node { FontSize 9; Padding 7 }
+  }
+  :depth(4) {
+    BackgroundColor #fff2e8
+    node { FontSize 8; Padding 7 }
+  }
+  :depth(5) {
+    BackgroundColor none
+    node { FontSize 8; Padding 7 }
+  }
+  :depth(6) {
+    BackgroundColor none
+    node { FontSize 8; Padding 7 }
+  }
+  .urgent * {
+    node { LineColor red }
+  }
+}
+</style>

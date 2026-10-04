@@ -1,0 +1,72 @@
+= Étude de démonstration : banc d'essai du thème PDF
+Architecte Démo <architecte@example.org>
+v0.1, 2026-09-26: Brouillon pour relecture du rendu
+:type: dat
+:project: demo_rendu
+:kb-projet: demo
+:lang: fr
+:experimental:
+:toc:
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 4
+:imagesdir: images
+:imagesoutdir: {docdir}/work/images
+:diagram-cachedir: {docdir}/work/cache
+
+// Document de démonstration : chaque élément AsciiDoc des normes, pour juger
+// le rendu du thème. Contenu fictif. Ne se rend pas d'ici : lancer
+// tools/tests/rendu.sh, qui le copie dans work/rendu/ à côté de liens vers
+// normes/ et images/, puis appelle tools/build.sh (PDF : work/rendu.pdf).
+
+[abstract]
+.Résumé
+Ce document ne décrit aucun projet réel.
+Il réunit un exemple de chaque élément AsciiDoc autorisé par les normes (`normes/`), pour juger le rendu du thème PDF.
+La première ligne de ce résumé est en gras, les suivantes en italique : c'est le style `abstract` du thème.
+
+== Synthèse
+
+.Question
+Faut-il migrer le service portefeuille avant la fin du support de sa plateforme actuelle ?
+
+.Options étudiées
+Conserver, migrer en deux phases ou remplacer : voir le xref:chapitre-tables.adoc#tab-couts[tableau des coûts].
+Le remplacement est écarté par xref:adr.adoc#ADR-02[].
+
+.Recommandation
+****
+Migrer en deux phases, comme le propose xref:adr.adoc#ADR-01[].
+C'est l'option la moins coûteuse sur cinq ans, et elle reste réversible jusqu'à la seconde phase.
+****
+
+.Décision attendue
+Le comité d'architecture, en séance d'octobre 2026.
+
+.Risques majeurs
+Le volume de transactions pourrait dépasser la capacité prévue : voir xref:hypotheses.adoc#H1[].
+
+.Hypothèses dont dépend la recommandation
+registre::hypotheses[incertains]
+
+.Points ouverts
+registre::points-ouverts[incertains]
+
+.Toutes les décisions
+registre::adr[]
+
+include::chapitre-texte.adoc[]
+
+include::chapitre-blocs.adoc[]
+
+include::chapitre-tables.adoc[]
+
+include::chapitre-schemas.adoc[]
+
+include::hypotheses.adoc[leveloffset=+1]
+
+include::adr.adoc[leveloffset=+1]
+
+include::points-ouverts.adoc[leveloffset=+1]
+
+include::annexes.adoc[]

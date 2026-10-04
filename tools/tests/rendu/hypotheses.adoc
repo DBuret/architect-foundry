@@ -1,0 +1,37 @@
+= Hypothèses
+
+[[H1]]
+== H1 : Volume de transactions
+
+.Statut
+Non validée.
+
+.Énoncé
+Le volume de transactions reste inférieur à 10^6^ par jour jusqu'en 2028.
+
+.Origine
+Indication orale du responsable métier, atelier de cadrage du 12 mars 2026.
+
+[[H2]]
+== H2 : Support de la version 4
+
+.Statut
+Validée.
+
+.Énoncé
+L'éditeur maintient la version 4 au moins jusqu'en 2029.
+
+.Origine
+Feuille de route publique de l'éditeur, version de janvier 2026, page 4.
+
+[[H3]]
+== H3 : Réutilisation du socle actuel
+
+.Statut
+Invalidée par l'équipe d'exploitation le 3 septembre 2026.
+
+.Énoncé
+Le socle d'hébergement actuel peut accueillir la nouvelle version sans extension.
+
+.Origine
+Hypothèse de travail de l'architecte, réfutée par le relevé de capacité de l'exploitation.

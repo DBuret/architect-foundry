@@ -1,0 +1,68 @@
+= Normes : registres
+:description: Format des registres (hypothèses, points ouverts, ADR), statuts, macro registre::
+:type: conventions-doc
+
+== Registres
+
+Les trois registres (hypothèses, points ouverts, ADR) suivent le même format, pour que le lecteur trouve chaque information au même endroit et qu'un changement de statut se voie dans un `git diff`.
+
+* Une entrée est une section, précédée de son ancre sur une ligne seule, et titrée « ID : intitulé » : `\[[H1]]` puis `== H1 : Volume de transactions`.
+* L'intitulé tient en cinq mots environ : c'est le texte qu'affiche chaque renvoi vers l'entrée.
+* Les rubriques sont des titres de bloc (`.Statut`), jamais des sous-sections, pour ne pas charger le sommaire.
+* `.Statut` vient en premier, dans toutes les entrées.
+* Un titre de bloc est toujours suivi de son texte : jamais de rubrique vide, « À rédiger. » à défaut.
+
+[cols="2,3,3"]
+|===
+| Registre | Rubriques, dans l'ordre | Statuts admis
+
+| Hypothèses (`hypotheses.adoc`)
+| Statut, Énoncé, Origine
+| Non validée, Validée, Invalidée
+
+| Points ouverts (`points-ouverts.adoc`)
+| Statut, Question, Porteur, Échéance
+| Ouvert, Clos
+
+| ADR (`adr.adoc`)
+| Statut, Contexte, Décision, Conséquences
+| Proposé, Accepté, Rejeté, Remplacé
+|===
+
+Le Contexte d'une ADR dit aussi les options envisagées et pourquoi les autres sont écartées ; ses Conséquences disent le risque accepté, ce que coûterait un retour arrière, et ce qui ferait revenir sur la décision.
+
+Le texte d'un statut commence par l'une de ces valeurs, telle quelle, et peut la préciser : « Validée par le responsable métier le 2 avril 2026. ».
+Un statut hors liste est une erreur de build (KO de `check.sh`) : la liste est tenue dans `tools/extensions/registres.rb`, qui colore aussi le statut dans le PDF (vert acquis, orange en attente, rouge hypothèse invalidée, gris décision rejetée ou remplacée).
+
+Exemple d'entrée :
+
+[source,asciidoc]
+----
+\[[H1]]
+== H1 : Volume de transactions
+
+.Statut
+Non validée.
+
+.Énoncé
+Le volume de transactions reste inférieur à un million par jour jusqu'en 2028.
+
+.Origine
+Indication orale du responsable métier, atelier de cadrage du 12 mars 2026.
+----
+
+`check.sh` signale en AVERT une entrée de registre sans rubrique `.Statut`.
+
+Un registre ne se recopie jamais en tableau à la main : le tableau divergerait du registre à la première mise à jour.
+La macro `registre::` le génère au rendu, à partir des entrées elles-mêmes (ID cliquable, intitulé, statut coloré) :
+
+[source,asciidoc]
+----
+.Hypothèses dont dépend la recommandation
+registre::hypotheses[incertains]
+----
+
+La cible est `hypotheses`, `points-ouverts` ou `adr`.
+L'option `incertains` ne garde que les entrées en attente ou invalidées, celles dont la recommandation dépend encore ; sans option, toutes les entrées figurent.
+Le titre de bloc devient le titre du tableau.
+L'aperçu VS Code ne charge pas l'extension : la macro y reste affichée en texte.

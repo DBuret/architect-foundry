@@ -1,0 +1,9 @@
+' Style des diagrammes de séquence.
+' Voir normes/schemas.adoc.
+' Usage : !include normes/plantuml/_sequence.iuml, juste après @startuml.
+
+!include _commun.iuml
+
+hide footbox
+skinparam ParticipantBackgroundColor #F1F1F1
+skinparam LifeLineBorderColor #087859

@@ -1,0 +1,63 @@
+= Titre de la note de réflexion
+:type: note
+:project: nom_du_projet
+:revnumber: 0.1
+:kb-projet: nom_de_la_base_projet
+:sites-projet:
+:lang: fr
+:toc:
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 4
+:imagesdir: images
+:imagesoutdir: {docdir}/work/images
+:diagram-cachedir: {docdir}/work/cache
+
+// Maître : ses include:: fixent l'ordre de lecture (normes/fichiers.adoc) ;
+// structure et synthèse du type : normes/types.adoc.
+
+// Synthèse : une page au plus, mise à jour à chaque version, en dernier.
+// Non numérotée : le chapitre suivant porte le numéro 1.
+:sectnums!:
+== Synthèse
+
+.Ce que l'on pense aujourd'hui
+****
+À rédiger : l'état de la réflexion en quelques phrases, avec un renvoi vers le chapitre qui le développe.
+****
+
+.Ce qui a changé depuis la version précédente
+À rédiger : ce qui a été ajouté, abandonné ou tranché ; « Première version. » pour la première.
+
+.Hypothèses structurantes
+registre::hypotheses[incertains]
+
+.Questions ouvertes
+registre::points-ouverts[incertains]
+
+// Reprise de la numérotation après la synthèse.
+:sectnums:
+// Corps libre. Un concept appelé à durer va dans son propre fragment
+// (par exemple principe-nom.adoc), inclus ici et, plus tard, par le DAT ou
+// le mémo du même sujet, sans être recopié.
+== Point de départ
+
+// Exemple de renvois vers les registres, à remplacer par le texte de la note.
+L'idée centrale repose sur <<H1>>.
+Elle laisse ouverte <<PO-01>>.
+
+include::hypotheses.adoc[leveloffset=+1]
+
+// Décisions : seulement si la réflexion a déjà tranché ; sinon, retirer
+// cette ligne.
+include::adr.adoc[leveloffset=+1]
+
+include::points-ouverts.adoc[leveloffset=+1]
+
+[appendix]
+== Filiation intellectuelle et références
+
+À rédiger : les travaux dont la réflexion s'inspire, et ce qu'elle y ajoute.
+
+[appendix]
+== Glossaire

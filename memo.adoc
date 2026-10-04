@@ -1,0 +1,101 @@
+= Titre du mémo
+:type: memo
+:project: nom_du_projet
+:revnumber: 0.1
+:kb-projet: nom_de_la_base_projet
+:sites-projet:
+:lang: fr
+:toc:
+:toclevels: 2
+:sectnums:
+:sectnumlevels: 3
+:imagesdir: images
+:imagesoutdir: {docdir}/work/images
+:diagram-cachedir: {docdir}/work/cache
+
+// Maître : ses include:: fixent l'ordre de lecture (normes/fichiers.adoc) ;
+// structure et synthèse du type : normes/types.adoc.
+
+// Synthèse : une page au plus, lue seule par le décideur, rédigée en dernier.
+// Non numérotée : le chapitre suivant porte le numéro 1.
+:sectnums!:
+== Synthèse
+
+.Question
+À rédiger : la décision à prendre, en une ou deux phrases.
+
+.Options étudiées
+À rédiger : une ligne par option, avec un renvoi vers son analyse.
+
+.Recommandation
+****
+À rédiger : l'option recommandée, portée par <<ADR-01>>, et ses deux ou trois raisons décisives.
+****
+
+.Décision attendue
+À rédiger : qui décide, dans quelle instance, à quelle date.
+
+.Risques majeurs
+À rédiger : trois au plus, chacun avec son renvoi.
+
+.Hypothèses dont dépend la recommandation
+registre::hypotheses[incertains]
+
+.Points ouverts
+registre::points-ouverts[incertains]
+
+// Reprise de la numérotation après la synthèse.
+:sectnums:
+== Contexte et enjeux
+
+// Exemple de renvois vers les registres, à remplacer par le texte du mémo.
+Le périmètre retenu repose sur <<H1>>.
+Il reste suspendu à <<PO-01>>.
+
+== Options étudiées
+
+// Une sous-section par option, mêmes rubriques pour toutes.
+=== Option A
+
+.Principe
+À rédiger.
+
+.Limites
+À rédiger : ce que l'option ne couvre pas.
+
+.Exigences opératoires
+À rédiger : ce qu'elle impose pour être exploitée, sans dire qui le porte.
+
+.Facteurs de coût
+À rédiger : ce qui fait varier le coût, pas le budget.
+
+.Risques
+À rédiger.
+
+.Réversibilité
+À rédiger.
+
+// Critères proposés par l'étude ; seuils et règle par défaut : direction.
+== Critères de décision et analyse comparative
+
+// Ce que l'étude fournit ; ce qu'elle attend de la direction de projet est
+// un point ouvert dont celle-ci est porteuse.
+== Recommandation et trajectoire d'architecture
+
+.Décisions
+registre::adr[]
+
+include::hypotheses.adoc[leveloffset=+1]
+
+include::adr.adoc[leveloffset=+1]
+
+include::points-ouverts.adoc[leveloffset=+1]
+
+// Annexes : ordre et annexes recommandées dans normes/types.adoc.
+[appendix]
+== Analyse technique détaillée
+
+À rédiger pour les experts, ou supprimer si le mémo n'en a pas besoin.
+
+[appendix]
+== Glossaire et sources

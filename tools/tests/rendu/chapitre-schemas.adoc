@@ -1,0 +1,84 @@
+[[schemas]]
+== Schémas et images
+
+=== Mindmap
+
+[[fig-perimetre]]
+.Périmètre de l'étude
+[plantuml,demo-perimetre,svg]
+----
+@startmindmap
+!include normes/plantuml/_mindmap.iuml
+* Périmètre de l'étude
+** Applications éligibles
+*** Sans état
+**** Web
+**** Batch
+*** Runtimes standards
+** Hors périmètre <<urgent>>
+*** Fin de vie avant bascule
+*** Hors virtualisation
+** Contraintes
+*** Réglementaires
+*** Budgétaires
+@endmindmap
+----
+
+=== WBS
+
+.Phasage
+[plantuml,demo-phasage,svg]
+----
+@startwbs
+!include normes/plantuml/_wbs.iuml
+* Phasage
+** P0 : Cadrage
+*** Note de cadrage
+** P1 : Alignement
+*** Matrice de couverture
+**** Grille
+*** Concept paper <<urgent>>
+** P2 : Décision
+*** Comité
+@endwbs
+----
+
+=== Composants
+
+.Vue d'ensemble
+[plantuml,demo-composants,svg]
+----
+@startuml
+!include normes/plantuml/_component.iuml
+component "Portail" as P
+component "Service portefeuille" as S
+database "Base PostgreSQL" as DB
+P --> S : REST
+S --> DB : SQL
+@enduml
+----
+
+=== Séquence
+
+.Flux de souscription
+[plantuml,demo-sequence,svg]
+----
+@startuml
+!include normes/plantuml/_sequence.iuml
+actor Client
+participant Portail
+participant Service
+Client -> Portail : souscrire
+Portail -> Service : créer(portefeuille)
+Service --> Portail : identifiant
+Portail --> Client : confirmation
+@enduml
+----
+
+=== Image ajoutée manuellement
+
+[[fig-logo]]
+.Image versionnée dans `images/`
+image::logo.png[Logo,width=30%]
+
+Image en ligne : image:logo.png[Logo,width=40] dans le texte.

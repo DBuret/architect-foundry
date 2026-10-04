@@ -1,0 +1,82 @@
+= Titre du dossier d'architecture technique
+:type: dat
+:project: nom_du_projet
+:revnumber: 0.1
+:kb-projet: nom_de_la_base_projet
+:sites-projet:
+:lang: fr
+:toc:
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 4
+:imagesdir: images
+:imagesoutdir: {docdir}/work/images
+:diagram-cachedir: {docdir}/work/cache
+
+// Maître : ses include:: fixent l'ordre de lecture (normes/fichiers.adoc) ;
+// structure et synthèse du type : normes/types.adoc.
+
+// Synthèse : une page au plus, rédigée en dernier.
+// Non numérotée : le chapitre suivant porte le numéro 1.
+:sectnums!:
+== Synthèse
+
+.Objet
+À rédiger : ce que décrit le DAT, en une ou deux phrases.
+
+.Périmètre
+À rédiger : ce qui est couvert, ce qui ne l'est pas.
+
+.Architecture retenue
+****
+À rédiger : l'architecture en quelques phrases, avec un renvoi vers sa vue d'ensemble.
+****
+
+.Décisions structurantes
+registre::adr[]
+
+.Hypothèses non validées
+registre::hypotheses[incertains]
+
+.Points ouverts
+registre::points-ouverts[incertains]
+
+// Reprise de la numérotation après la synthèse.
+:sectnums:
+== Contexte et objectifs
+
+// Exemple de renvois vers les registres, à remplacer par le texte du DAT.
+Le périmètre retenu repose sur <<H1>>.
+Il reste suspendu à <<PO-01>>.
+La décision correspondante est portée par <<ADR-01>>.
+
+=== Contexte
+
+=== Objectifs fonctionnels
+
+=== Objectifs non fonctionnels
+
+== Infrastructure et contraintes
+
+== Architecture logique
+
+=== Vue d'ensemble
+
+=== Flux de données
+
+== Architecture technique
+
+== Modèle de données
+
+== Sources de données
+
+== Phasage de mise en œuvre
+
+include::hypotheses.adoc[leveloffset=+1]
+
+include::adr.adoc[leveloffset=+1]
+
+include::points-ouverts.adoc[leveloffset=+1]
+
+[appendix]
+== Annexes techniques

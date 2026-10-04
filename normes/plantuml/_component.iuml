@@ -1,0 +1,9 @@
+' Style des diagrammes de composants, de classes et de déploiement.
+' Voir normes/schemas.adoc.
+' Usage : !include normes/plantuml/_component.iuml, juste après @startuml.
+
+!include _commun.iuml
+
+skinparam componentStyle rectangle
+skinparam ComponentBackgroundColor #F1F1F1
+skinparam DatabaseBackgroundColor #F1F1F1
