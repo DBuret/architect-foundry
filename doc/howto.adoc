@@ -66,7 +66,7 @@ Sous VS Code, l'agent Relecteur peut fixer son propre modèle (champ `model`), p
 +
 [source,sh]
 ----
-git clone <url du modèle> mon-etude && cd mon-etude
+git clone https://github.com/DBuret/architect-foundry.git mon-etude && cd mon-etude
 ----
 . Si l'étude a une base projet : la déclarer et y ingérer ses entrants (<<rag>>).
 . Lancer `tools/init.sh`, qui demande les valeurs dans un terminal ou les reçoit en options :
@@ -115,7 +115,7 @@ Les réglages du hook et du pilote de fusion vivent dans `.git/config`, qui n'es
 ----
 git clone <url du dépôt de l'étude> && cd <dossier>
 git config core.hooksPath tools/hooks
-git remote add modele <url du modèle>   # seulement pour tirer le modèle
+git remote add modele https://github.com/DBuret/architect-foundry.git   # pour tirer le modèle
 git config merge.etude.driver true      # idem
 ----
 
@@ -148,6 +148,13 @@ Ce chargement peut manquer : pour l'imposer, l'appeler explicitement.
 | agent *Justificateur d'idée*, ou sous-agent du Relecteur
 |===
 
+.Exemple : imposer le skill de revue
+[source,text]
+----
+/skill:revue-etude cohérence memo.adoc        (pi)
+/revue-etude cohérence memo.adoc              (VS Code)
+----
+
 Si les skills n'apparaissent pas dans le menu `/` de VS Code, vérifier qu'ils sont activés dans les réglages du chat.
 
 Une tâche par session : un entrant, un chapitre, ou un axe de revue sur un périmètre.
@@ -156,6 +163,16 @@ L'état est dans git et dans `work/`, pas dans la conversation.
 === Intégrer un entrant
 
 Après une réunion, un courriel, une indication orale : coller les notes dans une session neuve et demander de les intégrer (skill `integrer-entrant`), en précisant qui, quand et dans quel cadre si les notes ne le disent pas.
+
+.Exemple de demande
+[source,text]
+----
+Intègre ces notes : atelier exploitation du 2 octobre 2026, avec le
+responsable de production.
+- Trois nœuds suffisent pour la charge prévue jusqu'en 2028.
+- La rotation automatique des secrets n'est pas encore validée par la sécurité.
+- L'équipe préfère éviter un nouveau fournisseur.
+----
 
 L'agent crée les nouvelles hypothèses, points ouverts et ADR proposées dans les registres.
 Ce qui touche une entrée existante (une hypothèse validée, un point ouvert qui a sa réponse) n'est pas modifié : c'est une proposition dans `work/entrant-<date>.adoc`, à trancher.
@@ -168,6 +185,22 @@ L'agent suit la structure du type du maître et rédige le texte en entier, sans
 . Faire illustrer le chapitre (skill `illustrer-etude`) : mindmaps et WBS, seulement là où le texte franchit le seuil des normes.
 . `tools/check.sh` : aucun KO, chaque AVERT corrigé ou compris.
 . Relire le diff, puis commiter ; le hook relance `check.sh`.
+
+.Exemple : une session par étape
+[source,text]
+----
+Rédige le chapitre « Déploiement cible » du mémo, dans deploiement.adoc,
+à partir des hypothèses H1 et H2 et du point ouvert PO-01.
+
+Illustre deploiement.adoc.
+----
+
+[source,sh]
+----
+tools/check.sh
+git diff
+git commit -am "Chapitre déploiement cible"
+----
 
 La synthèse s'écrit en dernier, une fois le corps stable.
 Quand une étude produit un DAT et un mémo, le mémo se rédige à partir du DAT.
@@ -202,6 +235,16 @@ Une revue porte sur un axe et un périmètre : `revue-etude traçabilité git di
 | Ce qui peut disparaître sans perte de décision, de preuve ou de compréhension.
 |===
 
+.Exemples de demandes
+[source,text]
+----
+revue-etude traçabilité git diff
+revue-etude sources deploiement.adoc
+revue-etude décision adr.adoc
+revue-etude robustesse memo.adoc, points de vue exploitation et sécurité
+revue-etude concision memo.adoc
+----
+
 Le rapport est écrit dans `work/revue-etude-<date>.adoc`.
 La revue constate et propose ; elle ne corrige rien sans accord.
 
@@ -212,6 +255,16 @@ L'agent cherche dans les bases ce qui la soutient et ce qui la contredit, et ren
 * *Explorer* : « explore les options pour… », « quels critères pour… ».
 L'agent cherche des pistes dans la base `multi-projets` et les liste dans `work/exploration-<date>.adoc`.
 Une piste retenue n'entre dans l'étude qu'une fois sourcée, ou comme hypothèse.
+
+.Exemples de demandes
+[source,text]
+----
+Justifie cette affirmation de deploiement.adoc, section « Déploiement cible » :
+« la rotation automatique des secrets réduit le risque de fuite ».
+
+Explore les options de stockage des secrets pour des applications
+conteneurisées, et les critères pour choisir.
+----
 
 === Faire le point, préparer un comité
 
@@ -400,6 +453,31 @@ Pour les documents de projet, ils restent facultatifs.
 * *Pas de seuil de score.*
 Chaque recherche renvoie `topK` passages, même sans rapport : c'est le réglage de départ, en attendant de calibrer un seuil avec `rag-query eval`, puisque l'agent juge chaque passage à la lecture.
 
+[[sites]]
+== Déclarer les sites de référence
+
+Les sites de référence complètent les bases de connaissances : la documentation d'un éditeur, le portail d'une norme, le site d'un partenaire.
+Ils se déclarent dans l'en-tête de chaque maître, par l'attribut `:sites-projet:`, URL séparées par des virgules ; vide, l'étude n'en a pas.
+
+[source,asciidoc]
+----
+:sites-projet: https://developer.hashicorp.com/vault/docs, https://www.ssi.gouv.fr
+----
+
+* *À la création*, `init.sh --sites` le renseigne dans tous les maîtres gardés.
+Ensuite, la ligne se modifie à la main, avec la même valeur dans chaque maître : si elles diffèrent, l'agent le signale et demande.
+* *Ce qu'en fait l'agent.*
+Ce que les bases ne couvrent pas, il le cherche d'abord sur ces sites, avant toute autre recherche web.
+Un site fait foi pour ce qu'il publie sur son propre domaine, comme la documentation technique d'un éditeur ; sur ce qui a été demandé ou décidé pour le projet, la base projet prime, et un écart entre les deux est signalé, pas tranché.
+* *Il faut un outil web à l'agent.*
+Sous VS Code, l'outil `web` lit une page dont l'URL est connue, sans moteur de recherche ; les agents Relecteur et Justificateur d'idée l'ont.
+Sous pi, une extension de recherche web est nécessaire.
+Sans outil web, ou site inaccessible, les vérifications qui en dépendent sont marquées « non vérifié ».
+* *Citation.*
+Une page se cite par son titre, en lien (`link:URL[Titre]`), avec la date de consultation : une page change, un PDF ingéré non.
+* *Confidentialité.*
+Seul du contenu public est cherché sur le web : l'agent n'y envoie jamais de nom de projet, d'architecture cible, de chiffre interne ni d'extrait des bases.
+
 [[modele]]
 == Tirer les évolutions du modèle
 
@@ -433,7 +511,7 @@ On garde la version de l'étude pour ses `.adoc` de la racine, `images/` et le l
 
 [source,sh]
 ----
-git remote add modele <url du modèle> && git fetch modele
+git remote add modele https://github.com/DBuret/architect-foundry.git && git fetch modele
 git merge --allow-unrelated-histories --no-commit modele/main
 git checkout --ours -- ':(glob)*.adoc' images
 git checkout --theirs -- tools normes doc .agents .github AGENTS.md README.adoc LICENSE .vscode .gitattributes .gitignore

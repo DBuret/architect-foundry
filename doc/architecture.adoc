@@ -225,6 +225,9 @@ Les `.adoc` du dépôt ne sont dans aucune base : ils se cherchent avec `rg`.
 L'agent n'accède aux sources que par les passages renvoyés, et n'ouvre jamais les fichiers du corpus ; le `source_name` et l'identifiant de chaque passage permettent à l'architecte de le retrouver.
 Si le RAG ne répond pas, l'agent le dit et marque ses vérifications « non vérifié » : il ne les remplace jamais par sa mémoire.
 
+Les sites de référence du projet, déclarés par l'attribut `:sites-projet:` des maîtres, complètent les bases pour ce qu'elles ne couvrent pas : la documentation d'un éditeur fait foi pour son produit, mais la base projet prime sur ce qui a été demandé ou décidé.
+L'agent les consulte avec un outil web, et ne cite que le texte de la page ouverte, avec sa date de consultation.
+
 [[etude-modele]]
 == Étude et modèle
 
