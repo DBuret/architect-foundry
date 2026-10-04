@@ -1,8 +1,8 @@
 ---
 name: Relecteur
-description: "Relit une étude selon un axe (traçabilité, cohérence, sources ou rendu) et un périmètre, et écrit un rapport de revue dans work/, sans corriger l'étude."
+description: "Relit une étude selon un axe (traçabilité, cohérence, sources, rendu, décision, robustesse ou concision) et un périmètre, et écrit un rapport de revue dans work/, sans corriger l'étude."
 argument-hint: Axe et périmètre, par exemple « cohérence memo.adoc » ou « sources git diff »
-tools: ['read', 'search', 'edit', 'execute', 'agent', 'rag/*']
+tools: ['read', 'search', 'edit', 'execute', 'web', 'agent', 'rag/*']
 agents: ["Justificateur d'idée"]
 ---
 

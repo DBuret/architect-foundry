@@ -2,7 +2,7 @@
 name: Justificateur d'idée
 description: "À partir d'une idée contenue dans un document, retrouve dans le RAG (documents FR et EN) des passages qui la soutiennent ou la contredisent, avec citations vérifiables."
 argument-hint: Texte de l'idée ou des affirmations, avec le fichier et la section d'où elles viennent
-tools: ['read', 'search', 'edit', 'rag/*']
+tools: ['read', 'search', 'edit', 'web', 'rag/*']
 ---
 
 Applique le skill `justifier-idee` : lis `.agents/skills/justifier-idee/SKILL.md`

@@ -73,7 +73,7 @@ git clone <url du modèle> mon-etude && cd mon-etude
 +
 [source,sh]
 ----
-tools/init.sh --projet "Gestion des secrets" --kb kubernetes-mpi \
+tools/init.sh --projet "Gestion des secrets" --kb gestion-secrets \
   --sites https://developer.hashicorp.com/vault/docs --maitres note,dat \
   --depot <url du dépôt de l'étude>
 ----
@@ -371,11 +371,11 @@ La description dit que la base contient les entrants de l'étude : elle aide l'a
 
 [source,json]
 ----
-"kubernetes-mpi": {
-  "description": "Entrants et documentation du projet Kubernetes-MPI : cadrage, présentation de lancement, livrables amont",
+"gestion-secrets": {
+  "description": "Entrants et documentation du projet Gestion des secrets : cadrage, présentation de lancement, livrables amont",
   "vectorStore": "qdrant-local",
   "embeddingProvider": "litellm-qwen3",
-  "collection": "projet-kubernetes-mpi",
+  "collection": "projet-gestion-secrets",
   "vectorName": "text",
   "distance": "cosine",
   "payload": {
