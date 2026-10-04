@@ -1,8 +1,10 @@
 #!/bin/sh
 # build.sh — contrôle puis rendu PDF d'une étude, avec les outils du poste ou,
 #            à défaut, dans le conteneur Asciidoctor
-# Usage     : tools/build.sh [maitre.adoc ...]
+# Usage     : tools/build.sh [--html] [maitre.adoc ...]
 #             depuis n'importe quel dossier ; un maître est relatif à la racine.
+#             --html : une page HTML autonome au lieu du PDF (styles et
+#             schémas inclus dans le fichier), pour une publication web.
 #             Sans argument : tous les maîtres de la racine (:type: memo, dat
 #             ou note dans le header).
 # Prérequis : sur le poste, asciidoctor-pdf, les gems asciidoctor-diagram,
@@ -13,7 +15,8 @@
 # Réglages : variables d'environnement, à poser une fois par poste dans le
 #             profil du shell : BUILD, ASCIIDOCTOR_IMAGE, DOCKER,
 #             PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH.
-# Sortie    : work/<maître>.pdf pour chaque maître ; schémas dans work/images/.
+# Sortie    : work/<maître>.pdf (ou .html) pour chaque maître ; schémas dans
+#             work/images/.
 #             Rien n'est produit si check.sh est en KO.
 #
 # Les attributs de rendu PDF (thème, page de titre, légendes...) sont posés
@@ -26,6 +29,9 @@
 set -eu
 
 root=$(cd "$(dirname "$0")/.." && pwd)
+
+format=pdf
+[ "${1:-}" = --html ] && { format=html; shift; }
 
 # Image et lancement du conteneur : tools/conteneur.sh, commun avec check.sh.
 . "$root/tools/conteneur.sh"
@@ -92,7 +98,7 @@ if [ "$mode" = poste ] &&
 fi
 
 run sh tools/check.sh "$@" || {
-  echo "build : check.sh en KO, PDF non produit." >&2
+  echo "build : check.sh en KO, rien n'est produit." >&2
   exit 1
 }
 
@@ -103,25 +109,42 @@ run sh tools/check.sh "$@" || {
 # build ; check.sh, lui, utilise déjà un cache neuf à chaque appel.
 rm -rf "$root/work/cache"
 
-run asciidoctor-pdf -r asciidoctor-diagram \
-  -r ./tools/extensions/pagination.rb \
-  -r ./tools/extensions/registres.rb \
-  -a pdf-themesdir="$base/tools/pdf-theme" \
-  -a pdf-theme=custom \
-  -a header-logo="$header_logo" \
-  -a title-page@ \
-  -a 'title-logo-image=image:logo.png[pdfwidth=60%,align=center]@' \
-  -a toc-title=Sommaire@ \
-  -a icons=font \
-  -a table-caption! -a example-caption! -a listing-caption! -a figure-caption! \
-  -a source-highlighter=rouge -a rouge-style=github \
-  -a compress \
-  -a hyphens=fr@ \
-  -a appendix-caption=Annexe@ \
-  -a docdate="$(date +%Y-%m-%d)" \
-  -D work "$@"
+# HTML : la feuille de l'aperçu VS Code (tools/preview/), qui sait déjà
+# rendre les statuts des registres ; data-uri inclut les schémas dans la
+# page, qui tient en un seul fichier.
+if [ "$format" = html ]; then
+  run asciidoctor -r asciidoctor-diagram \
+    -r ./tools/extensions/registres.rb \
+    -a stylesdir="$base/tools/preview" -a stylesheet=vscode-preview.css \
+    -a data-uri \
+    -a toc=left -a toc-title=Sommaire@ \
+    -a icons=font \
+    -a table-caption! -a example-caption! -a listing-caption! -a figure-caption! \
+    -a source-highlighter=rouge -a rouge-style=github \
+    -a appendix-caption=Annexe@ \
+    -a docdate="$(date +%Y-%m-%d)" \
+    -D work "$@"
+else
+  run asciidoctor-pdf -r asciidoctor-diagram \
+    -r ./tools/extensions/pagination.rb \
+    -r ./tools/extensions/registres.rb \
+    -a pdf-themesdir="$base/tools/pdf-theme" \
+    -a pdf-theme=custom \
+    -a header-logo="$header_logo" \
+    -a title-page@ \
+    -a 'title-logo-image=image:logo.png[pdfwidth=60%,align=center]@' \
+    -a toc-title=Sommaire@ \
+    -a icons=font \
+    -a table-caption! -a example-caption! -a listing-caption! -a figure-caption! \
+    -a source-highlighter=rouge -a rouge-style=github \
+    -a compress \
+    -a hyphens=fr@ \
+    -a appendix-caption=Annexe@ \
+    -a docdate="$(date +%Y-%m-%d)" \
+    -D work "$@"
+fi
 
-for m in "$@"; do echo "build : work/$(basename "$m" .adoc).pdf"; done
+for m in "$@"; do echo "build : work/$(basename "$m" .adoc).$format"; done
 
 # Textes provisoires du modèle (« À rédiger. », « À désigner. », « À fixer. »)
 # restés dans un maître ou ce qu'il inclut : normaux pendant la rédaction,
@@ -143,6 +166,6 @@ for m in "$@"; do
   vus=
   prov=$(inclus "$m" | xargs grep -n -H -E '^À (rédiger|désigner|fixer)' 2>/dev/null || true)
   [ -n "$prov" ] || continue
-  echo "build : AVERT $m : $(printf '%s\n' "$prov" | wc -l | tr -d ' ') texte(s) provisoire(s) dans le PDF :" >&2
+  echo "build : AVERT $m : $(printf '%s\n' "$prov" | wc -l | tr -d ' ') texte(s) provisoire(s) dans le document produit :" >&2
   printf '%s\n' "$prov" | sed 's/^/  /' >&2
 done
