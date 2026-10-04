@@ -127,12 +127,14 @@ for m in "$@"; do echo "build : work/$(basename "$m" .adoc).pdf"; done
 # restés dans un maître ou ce qu'il inclut : normaux pendant la rédaction,
 # donc absents de check.sh, mais à ne pas livrer. AVERT, sans bloquer.
 # inclus <fichier> : le fichier et, récursivement, ses include:: (chemins
-# relatifs à la racine, hors commentaires et chemins à attribut).
+# relatifs au dossier du fichier qui inclut, comme pour asciidoctor ; hors
+# commentaires et chemins à attribut).
 inclus() {
   case " $vus " in *" $1 "*) return ;; esac
   vus="$vus $1"
   echo "$1"
   for f in $(sed -n 's/^include::\([^[{]*\)\[.*/\1/p' "$1"); do
+    case $1 in */*) f=${1%/*}/$f ;; esac
     [ -f "$f" ] && inclus "$f"
   done
 }

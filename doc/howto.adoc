@@ -66,7 +66,7 @@ Sous VS Code, l'agent Relecteur peut fixer son propre modèle (champ `model`), p
 +
 [source,sh]
 ----
-git clone <url du modèle> mon-etude && cd mon-etude
+git clone https://github.com/DBuret/architect-foundry.git mon-etude && cd mon-etude
 ----
 . Si l'étude a une base projet : la déclarer et y ingérer ses entrants (<<rag>>).
 . Lancer `tools/init.sh`, qui demande les valeurs dans un terminal ou les reçoit en options :
@@ -115,7 +115,7 @@ Les réglages du hook et du pilote de fusion vivent dans `.git/config`, qui n'es
 ----
 git clone <url du dépôt de l'étude> && cd <dossier>
 git config core.hooksPath tools/hooks
-git remote add modele <url du modèle>   # seulement pour tirer le modèle
+git remote add modele https://github.com/DBuret/architect-foundry.git   # pour tirer le modèle
 git config merge.etude.driver true      # idem
 ----
 
@@ -433,7 +433,7 @@ On garde la version de l'étude pour ses `.adoc` de la racine, `images/` et le l
 
 [source,sh]
 ----
-git remote add modele <url du modèle> && git fetch modele
+git remote add modele https://github.com/DBuret/architect-foundry.git && git fetch modele
 git merge --allow-unrelated-histories --no-commit modele/main
 git checkout --ours -- ':(glob)*.adoc' images
 git checkout --theirs -- tools normes doc .agents .github AGENTS.md README.adoc LICENSE .vscode .gitattributes .gitignore
