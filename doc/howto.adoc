@@ -122,6 +122,47 @@ git config merge.etude.driver true      # idem
 [[quotidien]]
 == Travailler au quotidien
 
+L'architecte écrit l'étude ; l'agent l'assiste.
+Chaque tâche ci-dessous se fait à la main, avec l'agent, ou en mêlant les deux : écrire un passage et le faire relire, demander un premier jet et le réécrire, rédiger le raisonnement et faire sourcer les affirmations.
+Les mêmes normes et les mêmes contrôles valent dans tous les cas : `check.sh` et le hook ne savent pas qui a écrit.
+
+[[ecrire]]
+=== Écrire soi-même
+
+Dans VS Code, avec l'extension AsciiDoc : ouvrir le fragment, et son aperçu à côté (commande « AsciiDoc: Open Preview to the Side »).
+Les règles de rédaction sont dans `normes/asciidoc.adoc`, à lire une fois ; le format des registres, dans `normes/registres.adoc`.
+
+* Une hypothèse, un point ouvert ou une décision se crée dans son registre, en copiant une entrée existante, puis se cite par son ancre : `<<H2>>`, jamais « voir H2 ».
+* Une affirmation tirée d'un document se cite avec sa source ; une indication orale devient une hypothèse qui dit qui l'a donnée, quand et dans quel cadre.
+* Un schéma se dessine en PlantUML, avec le style commun (`normes/schemas.adoc`).
+
+.Exemple : un paragraphe et l'hypothèse qu'il cite
+[source,asciidoc]
+----
+// deploiement.adoc
+La rotation des secrets est quotidienne : la fenêtre d'exposition d'un
+secret volé ne dépasse pas vingt-quatre heures, si <<H2>> se confirme.
+
+// hypotheses.adoc
+[[H2]]
+== H2 : Rotation quotidienne supportée
+
+.Statut
+Non validée.
+
+.Énoncé
+Les applications rechargent un secret renouvelé sans redémarrage.
+
+.Origine
+Indication orale du responsable applicatif, atelier du 2 octobre 2026.
+----
+
+[source,sh]
+----
+tools/check.sh                       # renvois, registres, schémas
+git commit -am "Rotation des secrets"   # le hook relance check.sh
+----
+
 === Appeler un skill
 
 L'agent charge seul le skill qui correspond à la demande, d'après sa description.
@@ -162,7 +203,9 @@ L'état est dans git et dans `work/`, pas dans la conversation.
 
 === Intégrer un entrant
 
-Après une réunion, un courriel, une indication orale : coller les notes dans une session neuve et demander de les intégrer (skill `integrer-entrant`), en précisant qui, quand et dans quel cadre si les notes ne le disent pas.
+Après une réunion, un courriel, une indication orale, ce qu'il apporte se range dans les registres : hypothèses, points ouverts, décisions à proposer.
+À la main, voir <<ecrire>>.
+Avec l'agent : coller les notes dans une session neuve et demander de les intégrer (skill `integrer-entrant`), en précisant qui, quand et dans quel cadre si les notes ne le disent pas.
 
 .Exemple de demande
 [source,text]
@@ -180,13 +223,13 @@ Changer un statut reste une décision de l'architecte, qu'il fait lui-même ou d
 
 === Rédiger un chapitre
 
-. Demander le chapitre dans une session neuve.
+. Écrire le chapitre (<<ecrire>>), ou en demander un premier jet à l'agent dans une session neuve, puis le reprendre.
 L'agent suit la structure du type du maître et rédige le texte en entier, sans schéma.
-. Faire illustrer le chapitre (skill `illustrer-etude`) : mindmaps et WBS, seulement là où le texte franchit le seuil des normes.
+. Illustrer le chapitre, soi-même ou avec le skill `illustrer-etude` : mindmaps et WBS, seulement là où le texte franchit le seuil des normes.
 . `tools/check.sh` : aucun KO, chaque AVERT corrigé ou compris.
 . Relire le diff, puis commiter ; le hook relance `check.sh`.
 
-.Exemple : une session par étape
+.Exemple : premier jet et illustration par l'agent, une session par étape
 [source,text]
 ----
 Rédige le chapitre « Déploiement cible » du mémo, dans deploiement.adoc,

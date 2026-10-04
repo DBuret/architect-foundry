@@ -96,6 +96,9 @@ Ensuite, sans agent :
 |===
 | Pour | Faire
 
+| Écrire un chapitre, une hypothèse, une décision
+| Dans VS Code, avec l'aperçu AsciiDoc, selon `normes/` : xref:doc/howto.adoc#ecrire[Écrire soi-même].
+
 | Vérifier
 | `tools/check.sh` ; le hook le relance à chaque commit.
 
@@ -128,7 +131,7 @@ Détail : xref:doc/howto.adoc#modele-llm[Choisir le modèle de l'agent].
 | Intégrer un compte rendu, un courriel, une indication orale
 | Coller les notes et demander de les intégrer : skill `integrer-entrant`.
 
-| Rédiger un chapitre
+| Avoir un premier jet d'un chapitre, à reprendre
 | Le chapitre voulu, dans une session neuve.
 
 | Illustrer un chapitre rédigé
