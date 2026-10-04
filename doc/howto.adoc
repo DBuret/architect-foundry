@@ -529,10 +529,28 @@ Une évolution du modèle (une norme, un correctif de `check.sh`, un skill) se t
 [source,sh]
 ----
 git fetch modele
-git merge modele/main    # ou une version précise : git merge <tag>
+git merge modele/main    # ou une version précise : git merge v1.0.0
 tools/check.sh           # une nouvelle norme peut faire apparaître des AVERT
 git push
 ----
+
+Le modèle est publié en versions, `vMAJEURE.MINEURE.CORRECTIF`, et le numéro dit ce qu'une mise à jour peut demander à l'étude :
+
+[cols="1,3"]
+|===
+| Version | Contenu
+
+| Majeure (`v2.0.0`)
+| Une évolution qui peut faire échouer `check.sh` sur une étude existante : nouvelle règle bloquante, format de registre changé. Lire les notes de version avant de fusionner.
+
+| Mineure (`v1.1.0`)
+| Un ajout : skill, axe de revue, contrôle en AVERT, option d'outil.
+
+| Correctif (`v1.0.1`)
+| Une correction, sans rien de nouveau à apprendre.
+|===
+
+Les notes de chaque version sont sur la page des releases du dépôt.
 
 Toujours une fusion, jamais un rebase, qui réécrirait l'historique déjà poussé de l'étude ; en une ligne : `git pull --no-rebase modele main`.
 Éviter de tirer le modèle juste avant de livrer un PDF : ses nouvelles normes peuvent demander des corrections.
