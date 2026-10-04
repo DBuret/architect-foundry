@@ -11,7 +11,7 @@ endif::[]
 _Études d'architecture IT en doc-as-code._
 
 image:https://img.shields.io/badge/licence-Apache%202.0-blue[Licence Apache 2.0,link=LICENSE]
-image:https://img.shields.io/badge/docs--as--code-AsciiDoc-E40046?logo=asciidoctor&logoColor=white[AsciiDoc,link=https://asciidoctor.org]
+image:https://img.shields.io/static/v1?label=docs-as-code&message=AsciiDoc&color=E40046&logo=asciidoctor&logoColor=white[AsciiDoc,link=https://asciidoctor.org]
 image:https://img.shields.io/badge/sch%C3%A9mas-PlantUML-4E7FBF[PlantUML,link=https://plantuml.com]
 image:https://img.shields.io/badge/sortie-PDF-B30B00[PDF]
 image:https://img.shields.io/badge/agents-pi%20%7C%20VS%20Code-6E40C9[Agents : pi, VS Code]
