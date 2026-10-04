@@ -1,7 +1,23 @@
 = ArchitectFoundry
 :lang: fr
+:toc: macro
+:toc-title: Sommaire
+:toclevels: 1
+ifdef::env-github[]
+:tip-caption: :bulb:
+:important-caption: :heavy_exclamation_mark:
+endif::[]
 
 _Études d'architecture IT en doc-as-code._
+
+image:https://img.shields.io/badge/licence-Apache%202.0-blue[Licence Apache 2.0,link=LICENSE]
+image:https://img.shields.io/badge/docs--as--code-AsciiDoc-E40046?logo=asciidoctor&logoColor=white[AsciiDoc,link=https://asciidoctor.org]
+image:https://img.shields.io/badge/sch%C3%A9mas-PlantUML-4E7FBF[PlantUML,link=https://plantuml.com]
+image:https://img.shields.io/badge/sortie-PDF-B30B00[PDF]
+image:https://img.shields.io/badge/agents-pi%20%7C%20VS%20Code-6E40C9[Agents : pi, VS Code]
+image:https://img.shields.io/badge/RAG-facultatif-2E8B57[RAG facultatif]
+image:https://img.shields.io/badge/langue-fran%C3%A7ais-0055A4[Documentation en français]
+image:https://img.shields.io/github/last-commit/DBuret/architect-foundry[Dernier commit,link=https://github.com/DBuret/architect-foundry/commits/main]
 
 ArchitectFoundry fournit un modèle de travail pour produire des études d'architecture IT avec Git, AsciiDoc et des agents IA.
 
@@ -13,8 +29,27 @@ Il structure le travail autour de :
 * génération PDF ;
 * skills optionnels pour les agents IA.
 
-L'architecte reste responsable des décisions.
+IMPORTANT: L'architecte reste responsable des décisions.
 L'IA rédige, recherche, vérifie et propose ; elle ne décide pas.
+
+[cols="1,2,2",options="header"]
+|===
+| Document | Pour qui | Pour quoi
+
+| Mémo de décision
+| La direction
+| Trancher entre des options, sur des critères, coûts et risques explicites.
+
+| Dossier d'architecture technique (DAT)
+| Les équipes
+| Construire et exploiter ce qui a été décidé.
+
+| Note de réflexion
+| L'architecte et ses pairs
+| Faire le point sur un sujet long, avant toute décision.
+|===
+
+toc::[]
 
 == Pourquoi ?
 
@@ -46,7 +81,7 @@ Poste équipé (xref:doc/howto.adoc#installer[prérequis]) :
 
 [source,sh]
 ----
-git clone <url du modèle> mon-etude && cd mon-etude
+git clone https://github.com/DBuret/architect-foundry.git mon-etude && cd mon-etude
 tools/init.sh --projet "Mon projet" --kb ma-base --maitres memo,dat \
   --depot <url du dépôt de l'étude>
 ----
