@@ -160,7 +160,8 @@ L'agent y vérifie les affirmations de l'étude, y cherche ce qui soutient ou co
 Il cite chaque passage par son titre, sa section et sa page, et ne répond jamais de mémoire : sans RAG, il le dit et marque ses vérifications « non vérifié ».
 
 Les outils sont les mêmes sous les deux agents : `rag_list`, `rag_search`, `rag_status`, fournis par l'extension pi-rag sous pi et par un serveur MCP `rag` sous VS Code.
-Détail : xref:doc/howto.adoc#rag[Déclarer une base de connaissances].
+Des sites de référence (documentation d'un éditeur, portail d'une norme), déclarés par l'attribut `:sites-projet:`, complètent les bases.
+Détail : xref:doc/howto.adoc#rag[Déclarer une base de connaissances], xref:doc/howto.adoc#sites[Déclarer les sites de référence].
 
 == Documentation
 
@@ -169,7 +170,7 @@ Détail : xref:doc/howto.adoc#rag[Déclarer une base de connaissances].
 | Document | Contenu
 
 | xref:doc/howto.adoc[Mode d'emploi]
-| Installer le poste, démarrer ou rejoindre une étude, travailler au quotidien, produire et livrer un document, déclarer une base de connaissances, tirer le modèle, dépanner.
+| Installer le poste, démarrer ou rejoindre une étude, travailler au quotidien, produire et livrer un document, déclarer une base de connaissances et les sites de référence, tirer le modèle, dépanner.
 
 | xref:doc/architecture.adoc[Architecture du modèle]
 | Principes, types de documents, arborescence, contrôles, agent et skills, bases de connaissances, séparation entre étude et modèle.

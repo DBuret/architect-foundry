@@ -400,6 +400,31 @@ Pour les documents de projet, ils restent facultatifs.
 * *Pas de seuil de score.*
 Chaque recherche renvoie `topK` passages, même sans rapport : c'est le réglage de départ, en attendant de calibrer un seuil avec `rag-query eval`, puisque l'agent juge chaque passage à la lecture.
 
+[[sites]]
+== Déclarer les sites de référence
+
+Les sites de référence complètent les bases de connaissances : la documentation d'un éditeur, le portail d'une norme, le site d'un partenaire.
+Ils se déclarent dans l'en-tête de chaque maître, par l'attribut `:sites-projet:`, URL séparées par des virgules ; vide, l'étude n'en a pas.
+
+[source,asciidoc]
+----
+:sites-projet: https://developer.hashicorp.com/vault/docs, https://www.ssi.gouv.fr
+----
+
+* *À la création*, `init.sh --sites` le renseigne dans tous les maîtres gardés.
+Ensuite, la ligne se modifie à la main, avec la même valeur dans chaque maître : si elles diffèrent, l'agent le signale et demande.
+* *Ce qu'en fait l'agent.*
+Ce que les bases ne couvrent pas, il le cherche d'abord sur ces sites, avant toute autre recherche web.
+Un site fait foi pour ce qu'il publie sur son propre domaine, comme la documentation technique d'un éditeur ; sur ce qui a été demandé ou décidé pour le projet, la base projet prime, et un écart entre les deux est signalé, pas tranché.
+* *Il faut un outil web à l'agent.*
+Sous VS Code, l'outil `web` lit une page dont l'URL est connue, sans moteur de recherche ; les agents Relecteur et Justificateur d'idée l'ont.
+Sous pi, une extension de recherche web est nécessaire.
+Sans outil web, ou site inaccessible, les vérifications qui en dépendent sont marquées « non vérifié ».
+* *Citation.*
+Une page se cite par son titre, en lien (`link:URL[Titre]`), avec la date de consultation : une page change, un PDF ingéré non.
+* *Confidentialité.*
+Seul du contenu public est cherché sur le web : l'agent n'y envoie jamais de nom de projet, d'architecture cible, de chiffre interne ni d'extrait des bases.
+
 [[modele]]
 == Tirer les évolutions du modèle
 
