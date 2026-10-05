@@ -8,7 +8,7 @@ ifdef::env-github[]
 :important-caption: :heavy_exclamation_mark:
 endif::[]
 
-_Études d'architecture IT en doc-as-code._
+image::doc/images/apercu-social.png[ArchitectFoundry : études d'architecture IT en doc-as-code,640]
 
 image:https://img.shields.io/badge/licence-Apache%202.0-blue[Licence Apache 2.0,link=LICENSE]
 image:https://img.shields.io/static/v1?label=docs-as-code&message=AsciiDoc&color=E40046&logo=asciidoctor&logoColor=white[AsciiDoc,link=https://asciidoctor.org]
