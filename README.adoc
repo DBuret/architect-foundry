@@ -8,6 +8,8 @@ ifdef::env-github[]
 :important-caption: :heavy_exclamation_mark:
 endif::[]
 
+image::doc/images/logo.svg[ArchitectFoundry,120]
+
 _Études d'architecture IT en doc-as-code._
 
 image:https://img.shields.io/badge/licence-Apache%202.0-blue[Licence Apache 2.0,link=LICENSE]
