@@ -28,7 +28,7 @@ mindmapDiagram {
     FontSize 12
     FontStyle Bold
     BackgroundColor #EEF6F2
-    LineColor #087859
+    LineColor #227C63
   }
   :depth(1) {
     BackgroundColor #D3EDD2
