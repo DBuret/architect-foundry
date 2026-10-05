@@ -11,7 +11,7 @@
 !include normes/plantuml/_mindmap.iuml
 * Périmètre de l'étude
 ** Applications éligibles
-*** Sans état
+*** Sans état <<focus>>
 **** Web
 **** Batch
 *** Runtimes standards
@@ -34,7 +34,7 @@
 * Phasage
 ** P0 : Cadrage
 *** Note de cadrage
-** P1 : Alignement
+** P1 : Alignement <<focus>>
 *** Matrice de couverture
 **** Grille
 *** Concept paper <<urgent>>

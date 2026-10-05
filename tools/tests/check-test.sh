@@ -186,28 +186,29 @@ if ruby -e 'require "asciidoctor-diagram"' >/dev/null 2>&1; then
 
   # Régression : un arrow{} ou un sélecteur de classe (.urgent) posé hors
   # du bloc englobant (mindmapDiagram/wbsDiagram) n'a silencieusement
-  # aucun effet sur cette version de PlantUML (voir normes/schemas.adoc). check.sh ne peut pas le voir : on
-  # inspecte donc le SVG produit, avec les vrais fichiers du dépôt.
+  # aucun effet sur cette version de PlantUML (voir normes/schemas.adoc).
+  # check.sh ne peut pas le voir : on inspecte donc le SVG produit, avec les
+  # vrais fichiers du dépôt. <<urgent>> (#C62828) et <<focus>> (#087859)
+  # marquent leur nœud seul : l'enfant d'un nœud marqué ne l'est pas.
   nouveau; mkdir -p "$d/normes/plantuml"
   cp "$ROOT/normes/plantuml/_commun.iuml" "$ROOT/normes/plantuml/_mindmap.iuml" "$ROOT/normes/plantuml/_wbs.iuml" "$d/normes/plantuml/"
 
-  printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,mm,svg]\n----\n@startmindmap\n!include normes/plantuml/_mindmap.iuml\n* Racine\n** Point <<urgent>>\n@endmindmap\n----\n' > "$d/memo.adoc"
-  n=$((n + 1))
-  if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
-     && grep -q "stroke:#FF0000" "$d/work/images/mm.svg" 2>/dev/null; then
-    echo "ok     <<urgent>> visible sur un mindmap (arrow/classe dans mindmapDiagram)"
-  else
-    fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> visible sur un mindmap : rouge absent du rendu"
-  fi
-
-  printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,wb,svg]\n----\n@startwbs\n!include normes/plantuml/_wbs.iuml\n* Racine\n** Point <<urgent>>\n@endwbs\n----\n' > "$d/memo.adoc"
-  n=$((n + 1))
-  if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
-     && grep -q "stroke:#FF0000" "$d/work/images/wb.svg" 2>/dev/null; then
-    echo "ok     <<urgent>> visible sur un WBS (arrow/classe dans wbsDiagram)"
-  else
-    fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> visible sur un WBS : rouge absent du rendu"
-  fi
+  # marques <type> <début> <fin> <image>
+  marques() {
+    printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,%s,svg]\n----\n%s\n!include normes/plantuml/_%s.iuml\n* Racine\n** Point <<urgent>>\n*** Enfant\n** Sujet <<focus>>\n%s\n----\n' "$4" "$2" "$1" "$3" > "$d/memo.adoc"
+    n=$((n + 1))
+    svg=$d/work/images/$4.svg
+    if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
+       && grep -q "stroke:#C62828;stroke-width:2.5" "$svg" \
+       && grep -q "stroke:#087859;stroke-width:2.5" "$svg" \
+       && ! grep -o "<rect[^>]*/><text[^>]*>Enfant<" "$svg" | grep -q "#C62828"; then
+      echo "ok     <<urgent>> et <<focus>> sur un $1, nœud seul"
+    else
+      fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> et <<focus>> sur un $1 : contour absent, ou étendu à l'enfant"
+    fi
+  }
+  marques mindmap @startmindmap @endmindmap mm
+  marques wbs @startwbs @endwbs wb
 else
   echo "ignoré schéma PlantUML : asciidoctor-diagram absent"
 fi

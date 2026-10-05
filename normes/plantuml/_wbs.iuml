@@ -5,8 +5,10 @@
 ' phasage détaillé. La racine se distingue des autres niveaux par une
 ' police plus grande (14, contre 12 en gras pour la profondeur 1), sans
 ' quoi elle serait visuellement identique à un simple nœud de premier
-' niveau. Marquer un nœud <<urgent>> lui donne un contour rouge, quelle
-' que soit sa profondeur.
+' niveau. Marquer un nœud <<urgent>> (alerte) ou <<focus>> (le sujet) lui
+' donne un contour rouge ou vert de 2,5 px, à lui seul : le sélecteur
+' .urgent, sans « * », ne touche pas ses enfants, et arrow{} garde fins les
+' liens qui en partent (normes/schemas.adoc).
 ' Tout doit rester à l'intérieur de wbsDiagram { ... } : un arrow{} ou un
 ' sélecteur de classe (.urgent) posé en dehors n'a silencieusement aucun
 ' effet, sans WARNING ni ERROR (vérifié sur cette version de PlantUML).
@@ -39,8 +41,15 @@ wbsDiagram {
     BackgroundColor white
     LineColor white
   }
-  .urgent * {
-    node { LineColor red }
+  .urgent {
+    LineColor #C62828
+    LineThickness 2.5
+    arrow { LineColor DimGrey; LineThickness 1.5 }
+  }
+  .focus {
+    LineColor #087859
+    LineThickness 2.5
+    arrow { LineColor DimGrey; LineThickness 1.5 }
   }
 }
 </style>

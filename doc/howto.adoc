@@ -248,6 +248,44 @@ git commit -am "Chapitre déploiement cible"
 La synthèse s'écrit en dernier, une fois le corps stable.
 Quand une étude produit un DAT et un mémo, le mémo se rédige à partir du DAT.
 
+[[dessiner]]
+=== Dessiner un schéma à la main
+
+Un schéma que PlantUML ne sait pas faire (couches, matrices, flux entre plateformes) se dessine dans draw.io, ou avec l'extension « Draw.io Integration » de VS Code.
+Il reprend la palette des schémas PlantUML pour que le document reste homogène : les règles sont dans `normes/schemas.adoc`, « Couleurs des schémas » ; la planche ci-dessous les montre.
+
+image::images/planche-drawio.png[Schémas draw.io : couleurs et règles,width=100%]
+
+Une fois par poste, dans draw.io, menu « Extras », puis « Configuration », coller ce qui suit et redémarrer : la palette apparaît dans le panneau « Style », et les nouvelles formes prennent la bonne police et la bonne couleur de texte.
+
+[source,json]
+----
+{
+  "customColorSchemes": [[
+    {"fill": "#F1F1F1", "stroke": "#BBBBBB"},
+    {"fill": "#FFFFFF", "stroke": "#BBBBBB"},
+    {"fill": "#EEF6F2", "stroke": "#087859"},
+    {"fill": "#D3EDD2", "stroke": "#5B9A5A"},
+    {"fill": "#D1E6E4", "stroke": "#4A8C86"},
+    {"fill": "#E6F2FD", "stroke": "#5B8DB8"},
+    {"fill": "#D6DDE9", "stroke": "#6B7C99"},
+    {"fill": "#FFF2E8", "stroke": "#C25E00"},
+    {"fill": "#ECE6F3", "stroke": "#8A72B0"},
+    {"fill": "none", "stroke": "#087859"},
+    {"fill": "none", "stroke": "#C62828"}
+  ]],
+  "defaultVertexStyle": {"fontFamily": "Helvetica", "fontSize": "12", "fontColor": "#333333", "html": "0"},
+  "defaultEdgeStyle": {"strokeColor": "#087859", "fontColor": "#333333"}
+}
+----
+
+Pour chaque schéma :
+
+. L'enregistrer en `.drawio.svg` dans `images/` : l'image du document et sa source en un seul fichier.
+. Avant d'enregistrer, tout sélectionner et décocher « Formatted Text » : sinon le PDF affiche « Text is not SVG ».
+. L'insérer à sa taille naturelle : `image::mon-schema.drawio.svg[Texte alternatif]`.
+. Produire le PDF (`tools/build.sh`) et vérifier le schéma dans la page.
+
 === Relire
 
 Une revue porte sur un axe et un périmètre : `revue-etude traçabilité git diff`, `revue-etude cohérence memo.adoc`.

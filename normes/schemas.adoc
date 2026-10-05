@@ -101,7 +101,8 @@ Dans un schéma, les flèches s'écrivent `->`, `-->` ou `..>`, jamais avec un t
 |===
 
 Pour un mindmap ou un WBS, la couleur et la taille de police varient automatiquement avec la profondeur (`:depth(0)` à `:depth(6)`) : la racine ressort sans rien à écrire dans le texte du schéma.
-Marquer un nœud du stéréotype `\<<urgent>>` lui donne un contour rouge, quelle que soit sa profondeur, pour signaler un point sensible.
+Marquer un nœud du stéréotype `\<<urgent>>` lui donne un contour rouge, pour signaler un problème ou un point sensible ; `\<<focus>>`, un contour vert, pour désigner le sujet (« Couleurs des schémas »).
+Le marquage ne touche que ce nœud, pas ses enfants.
 
 .Rendu obtenu ici — chemin propre à ce fichier, voir plus bas
 [plantuml,exemple-style-commun,svg]
@@ -109,7 +110,7 @@ Marquer un nœud du stéréotype `\<<urgent>>` lui donne un contour rouge, quell
 @startmindmap
 !include plantuml/_mindmap.iuml
 * Périmètre de l'étude
-** Applications éligibles
+** Applications éligibles <<focus>>
 ** Hors périmètre <<urgent>>
 @endmindmap
 ----
@@ -137,9 +138,60 @@ WARNING: Le cache des schémas (`work/cache`, attribut `:diagram-cachedir:`) est
 Éditer `normes/plantuml/_mindmap.iuml` sans purger `work/cache` laisse silencieusement l'ancien style dans les schémas déjà générés.
 `tools/build.sh` purge ce cache à chaque exécution ; dans l'aperçu VS Code, qui garde un cache persistant, lancer `rm -rf work/cache` après avoir modifié un fichier de `normes/plantuml/`.
 
+[[couleurs]]
+== Couleurs des schémas
+
+Les schémas PlantUML et les schémas dessinés à la main (draw.io) partagent la même palette, tirée du thème PDF : une teinte pâle pour le fond, une bordure de la même famille.
+Les styles de `normes/plantuml/` l'appliquent d'office ; un schéma draw.io la reprend à la main.
+La planche du mode d'emploi (`doc/howto.adoc`, « Dessiner un schéma à la main ») la montre en exemples.
+
+[cols="2,1,1,3"]
+|===
+| Rôle | Fond | Bordure | Usage
+
+| Conteneur
+| `#F1F1F1`
+| `#BBBBBB`
+| Cadre englobant.
+
+| Élément
+| `#FFFFFF`
+| `#BBBBBB`
+| Boîte dans un cadre.
+
+| Zone principale
+| `#EEF6F2`
+| `#087859`
+| Le sujet, le périmètre étudié ; racine d'un mindmap.
+
+| Vert, sarcelle, bleu, bleu-gris, pêche, lilas
+| `#D3EDD2`, `#D1E6E4`, `#E6F2FD`, `#D6DDE9`, `#FFF2E8`, `#ECE6F3`
+| `#5B9A5A`, `#4A8C86`, `#5B8DB8`, `#6B7C99`, `#C25E00`, `#8A72B0`
+| Familles de couleur ; pêche porte aussi « à surveiller ».
+|===
+
+* Texte `#333333` ; flux et dépendances `#087859` ; liens neutres `#555555`.
+* Une couleur, un sens, dans tout le document : vert du thème pour le sujet, orange pour ce qui est à surveiller, rouge (`#C62828`) pour un problème.
+* Trois familles de couleur au plus par schéma, en plus du conteneur et des éléments blancs.
+* Mise en évidence : un focus (`#087859`) et une alerte (`#C62828`) au plus par schéma, contour de 2,5 px autour de l'élément et étiquette qui dit pourquoi ; en PlantUML, `\<<focus>>` et `\<<urgent>>`.
+* Schéma de flux : cadres de zone sans bordure, éléments bordés de `#DDDDDD` ; seuls les flux sont des traits soutenus.
+* Pointillés : « hors périmètre », « à venir », « supposé » ; jamais pour mettre en évidence.
+
 == Images ajoutées manuellement
 
 Une image qui n'est pas générée (capture, logo, schéma produit hors PlantUML) est déposée dans `images/` et versionnée.
 Elle est citée par son nom seul, résolu depuis `images/` grâce à l'attribut `:imagesdir:` de l'en-tête : `image::nom.svg[Texte alternatif]`.
 Préférer `svg` quand l'outil d'origine le permet.
+L'image est insérée à sa taille naturelle, sans `pdfwidth` qui l'agrandirait : son texte garderait sinon une taille différente de celle du document.
+
+=== Schémas draw.io
+
+Un schéma dessiné dans draw.io s'enregistre au format `.drawio.svg` dans `images/` : un seul fichier, à la fois image du document et source que draw.io rouvre.
+Il suit la palette (« Couleurs des schémas »), en Helvetica 12, sans ombre, et sa largeur ne dépasse pas 640 px, la largeur utile d'une page A4.
+
+WARNING: Un libellé à « mise en forme HTML », le réglage par défaut de draw.io, sort dans le PDF sous la forme « Text is not SVG - cannot display », sans WARNING ni ERROR.
+Avant d'enregistrer : tout sélectionner, puis décocher « Formatted Text ».
+
+Ne pas estomper avec le curseur « Opacity » : il pâlit aussi le fond et le texte ; prendre une couleur de bordure plus claire.
+Un texte long (puces, avantages et limites) n'a pas sa place dans l'image : il va dans le document, où il est cherchable et contrôlé.
 Une image introuvable ne bloque ni le HTML ni le PDF : `check.sh` la signale en KO.

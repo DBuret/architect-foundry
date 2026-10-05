@@ -1,8 +1,12 @@
 ' Style des mindmaps. Voir normes/schemas.adoc.
 ' Usage : !include normes/plantuml/_mindmap.iuml, juste après @startmindmap.
-' La racine (profondeur 0) est mise en valeur automatiquement, sans rien à
-' écrire dans le texte du schéma. Marquer un nœud <<urgent>> lui donne un
-' contour rouge, quelle que soit sa profondeur.
+' Couleurs de la palette commune aux schémas PlantUML et draw.io
+' (normes/schemas.adoc) : la racine, le sujet, en vert du thème ; puis vert,
+' sarcelle, bleu-gris, pêche selon la profondeur.
+' Marquer un nœud <<urgent>> (alerte) ou <<focus>> (le sujet) lui donne un
+' contour rouge ou vert de 2,5 px, à lui seul : le sélecteur .urgent, sans
+' « * », ne touche pas ses enfants, et arrow{} garde fins les liens qui en
+' partent.
 ' Tout doit rester à l'intérieur de mindmapDiagram { ... } : un arrow{} ou
 ' un sélecteur de classe (.urgent) posé en dehors n'a silencieusement
 ' aucun effet, sans WARNING ni ERROR (vérifié sur cette version de
@@ -13,32 +17,33 @@
 <style>
 mindmapDiagram {
   node {
-    LineColor DarkGrey
+    LineColor #BBBBBB
     MaximumWidth 150
     HorizontalAlignment center
   }
   arrow {
-    LineColor DimGrey
+    LineColor #555555
   }
   :depth(0) {
     FontSize 12
     FontStyle Bold
-    BackgroundColor #def2c6
+    BackgroundColor #EEF6F2
+    LineColor #087859
   }
   :depth(1) {
-    BackgroundColor #d3edd2
+    BackgroundColor #D3EDD2
     node { FontSize 11 }
   }
   :depth(2) {
-    BackgroundColor #d1e6e4
+    BackgroundColor #D1E6E4
     node { FontSize 10; Padding 10 }
   }
   :depth(3) {
-    BackgroundColor #d6dde9
+    BackgroundColor #D6DDE9
     node { FontSize 9; Padding 7 }
   }
   :depth(4) {
-    BackgroundColor #fff2e8
+    BackgroundColor #FFF2E8
     node { FontSize 8; Padding 7 }
   }
   :depth(5) {
@@ -49,8 +54,15 @@ mindmapDiagram {
     BackgroundColor none
     node { FontSize 8; Padding 7 }
   }
-  .urgent * {
-    node { LineColor red }
+  .urgent {
+    LineColor #C62828
+    LineThickness 2.5
+    arrow { LineColor #555555; LineThickness 1 }
+  }
+  .focus {
+    LineColor #087859
+    LineThickness 2.5
+    arrow { LineColor #555555; LineThickness 1 }
   }
 }
 </style>
