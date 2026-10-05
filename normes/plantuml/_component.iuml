@@ -5,34 +5,26 @@
 !include _commun.iuml
 
 skinparam componentStyle rectangle
-' Palette de normes/schemas.adoc, « Couleurs des schémas » : éléments blancs
-' bordés de #BBBBBB, cadres (package, node, frame…) en conteneur #F1F1F1.
-' Sans ces valeurs, PlantUML borde tout de #181818, presque noir.
-skinparam ComponentBackgroundColor #FFFFFF
-skinparam ComponentBorderColor #BBBBBB
-skinparam DatabaseBackgroundColor #FFFFFF
-skinparam DatabaseBorderColor #BBBBBB
-skinparam QueueBackgroundColor #FFFFFF
-skinparam QueueBorderColor #BBBBBB
-skinparam RectangleBackgroundColor #FFFFFF
-skinparam RectangleBorderColor #BBBBBB
-skinparam InterfaceBackgroundColor #FFFFFF
-skinparam InterfaceBorderColor #BBBBBB
-skinparam ActorBackgroundColor #FFFFFF
-skinparam ActorBorderColor #BBBBBB
-skinparam ArtifactBackgroundColor #FFFFFF
-skinparam ArtifactBorderColor #BBBBBB
-skinparam StorageBackgroundColor #FFFFFF
-skinparam StorageBorderColor #BBBBBB
-skinparam ClassBackgroundColor #FFFFFF
-skinparam ClassBorderColor #BBBBBB
-skinparam PackageBackgroundColor #F1F1F1
-skinparam PackageBorderColor #BBBBBB
-skinparam NodeBackgroundColor #F1F1F1
-skinparam NodeBorderColor #BBBBBB
-skinparam FrameBackgroundColor #F1F1F1
-skinparam FrameBorderColor #BBBBBB
-skinparam FolderBackgroundColor #F1F1F1
-skinparam FolderBorderColor #BBBBBB
-skinparam CloudBackgroundColor #F1F1F1
-skinparam CloudBorderColor #BBBBBB
+
+' Palette de _palette.iuml (normes/schemas.adoc, « Couleurs des schémas ») :
+' éléments blancs bordés de gris, cadres en conteneur gris pâle. Sans ces
+' valeurs, PlantUML borde tout de #181818, presque noir.
+!$elements = %splitstr("component,database,queue,rectangle,interface,actor,artifact,storage,collections,card,file,class", ",")
+!$cadres = %splitstr("package,node,frame,folder,cloud", ",")
+!foreach $e in $elements
+skinparam $e {
+  BackgroundColor $element_fond
+  BorderColor $element_bord
+}
+!endfor
+!foreach $e in $cadres
+skinparam $e {
+  BackgroundColor $conteneur_fond
+  BorderColor $conteneur_bord
+}
+!endfor
+
+' Couleurs nommées (<<vert>>, <<peche>>…) et mise en évidence (<<focus>>,
+' <<urgent>>), sur les éléments comme sur les cadres.
+$stereos_couleurs(%splitstr("component,database,queue,rectangle,actor,artifact,storage,collections,card,file,class,package,node,frame,folder,cloud", ","))
+$stereos_marques(%splitstr("component,database,queue,rectangle,actor,artifact,storage,collections,card,file,class,package,node,frame,folder,cloud", ","))

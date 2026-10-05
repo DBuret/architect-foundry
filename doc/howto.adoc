@@ -134,7 +134,7 @@ Les règles de rédaction sont dans `normes/asciidoc.adoc`, à lire une fois ; l
 
 * Une hypothèse, un point ouvert ou une décision se crée dans son registre, en copiant une entrée existante, puis se cite par son ancre : `<<H2>>`, jamais « voir H2 ».
 * Une affirmation tirée d'un document se cite avec sa source ; une indication orale devient une hypothèse qui dit qui l'a donnée, quand et dans quel cadre.
-* Un schéma se dessine en PlantUML, avec le style commun (`normes/schemas.adoc`).
+* Un schéma se dessine en PlantUML, avec le style commun ; ses couleurs se posent par leur nom, `\<<vert>>`, `\<<peche>>`…, jamais par un code (`normes/schemas.adoc`, « Couleurs des schémas »).
 
 .Exemple : un paragraphe et l'hypothèse qu'il cite
 [source,asciidoc]

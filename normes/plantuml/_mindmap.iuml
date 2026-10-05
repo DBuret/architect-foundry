@@ -2,7 +2,8 @@
 ' Usage : !include normes/plantuml/_mindmap.iuml, juste après @startmindmap.
 ' Couleurs de la palette commune aux schémas PlantUML et draw.io
 ' (normes/schemas.adoc) : la racine, le sujet, en vert du thème ; puis vert,
-' sarcelle, bleu-gris, pêche selon la profondeur.
+' sarcelle, bleu-gris, pêche selon la profondeur. Une couleur nommée
+' (<<vert>>, <<peche>>… : _palette.iuml) remplace celle de la profondeur.
 ' Marquer un nœud <<urgent>> (alerte) ou <<focus>> (le sujet) lui donne un
 ' contour rouge ou vert de 2,5 px, à lui seul : le sélecteur .urgent, sans
 ' « * », ne touche pas ses enfants, et arrow{} garde fins les liens qui en
@@ -18,33 +19,33 @@
 mindmapDiagram {
   node {
     RoundCorner 8
-    LineColor #BBBBBB
+    LineColor $element_bord
     MaximumWidth 150
     HorizontalAlignment center
   }
   arrow {
-    LineColor #555555
+    LineColor $lien
   }
   :depth(0) {
     FontSize 12
     FontStyle Bold
-    BackgroundColor #EEF6F2
-    LineColor #227C63
+    BackgroundColor $zone_fond
+    LineColor $zone_bord
   }
   :depth(1) {
-    BackgroundColor #D3EDD2
+    BackgroundColor $vert_fond
     node { FontSize 11 }
   }
   :depth(2) {
-    BackgroundColor #D1E6E4
+    BackgroundColor $sarcelle_fond
     node { FontSize 10; Padding 10 }
   }
   :depth(3) {
-    BackgroundColor #D6DDE9
+    BackgroundColor $bleugris_fond
     node { FontSize 9; Padding 7 }
   }
   :depth(4) {
-    BackgroundColor #FFF2E8
+    BackgroundColor $peche_fond
     node { FontSize 8; Padding 7 }
   }
   :depth(5) {
@@ -55,15 +56,16 @@ mindmapDiagram {
     BackgroundColor none
     node { FontSize 8; Padding 7 }
   }
+$classes_couleurs()
   .urgent {
-    LineColor #C62828
+    LineColor $alerte
     LineThickness 2.5
-    arrow { LineColor #555555; LineThickness 1 }
+    arrow { LineColor $lien; LineThickness 1 }
   }
   .focus {
-    LineColor #087859
+    LineColor $focus
     LineThickness 2.5
-    arrow { LineColor #555555; LineThickness 1 }
+    arrow { LineColor $lien; LineThickness 1 }
   }
 }
 </style>

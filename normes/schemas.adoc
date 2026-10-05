@@ -78,8 +78,8 @@ Rédiger le texte sans s'interrompre pour évaluer chaque paragraphe ; l'ajout d
 
 === Style commun aux schémas
 
-Tous les schémas PlantUML de l'étude partagent le même style (couleurs, police, absence d'ombre) grâce à des fichiers d'inclusion PlantUML dans `normes/plantuml/` : `_commun.iuml` pose le style de base, et un fichier par type de schéma l'étend.
-Un chapitre n'écrit jamais de `skinparam` lui-même ; il inclut le fichier de son type de schéma, juste après la balise de début.
+Tous les schémas PlantUML de l'étude partagent le même style (couleurs, police, absence d'ombre) grâce à des fichiers d'inclusion PlantUML dans `normes/plantuml/` : `_palette.iuml` définit les couleurs, `_commun.iuml` pose le style de base, et un fichier par type de schéma l'étend.
+Un chapitre n'écrit jamais de `skinparam`, de bloc `<style>` ni de code couleur lui-même (« Couleurs des schémas ») ; il inclut le fichier de son type de schéma, juste après la balise de début.
 `check.sh` signale en AVERT un bloc `[plantuml]` sans cet `!include`.
 Dans un schéma, les flèches s'écrivent `->`, `-->` ou `..>`, jamais avec un tiret long Unicode (`–`, `—`), et un bloc `[plantuml]` ne contient que du PlantUML, jamais de code source :
 
@@ -122,7 +122,7 @@ Un chemin absent déclenche une `ERROR: cannot include`, une vraie erreur de bui
 
 Ne jamais écrire `!include +{docdir}+/...` : contrairement à l'en-tête du document, le contenu d'un bloc `[plantuml]` ne subit aucune substitution d'attributs Asciidoctor ; `+{docdir}+` resterait littéral et l'inclusion échouerait.
 
-Ajouter un nouveau type de fichier d'inclusion suit toujours le même patron : `!include _commun.iuml` en première ligne (chemin relatif au dossier `normes/plantuml/` lui-même, sans le préfixe), puis les `skinparam` ou le bloc `<style>` propres au type.
+Ajouter un nouveau type de fichier d'inclusion suit toujours le même patron : `!include _commun.iuml` en première ligne (chemin relatif au dossier `normes/plantuml/` lui-même, sans le préfixe), puis les `skinparam` ou le bloc `<style>` propres au type, avec les variables de `_palette.iuml` (`$vert_fond`…) plutôt qu'un code couleur, et les couleurs nommées : `$classes_couleurs()` dans le bloc `<style>` d'un mindmap ou d'un WBS, `$stereos_couleurs()` et `$stereos_marques()` pour les éléments d'un `@startuml`.
 Le bloc `<style>` (syntaxe CSS de PlantUML) cible un type de nœud (`node`, `arrow`), une profondeur (`:depth(n)`) ou une classe posée en stéréotype dans le texte (`.urgent`, ciblée par `\<<urgent>>`) ; il l'emporte sur un `skinparam` de portée plus large.
 
 WARNING: Un sélecteur `arrow` ou de classe (`.urgent`) écrit hors du bloc englobant du type de schéma (`mindmapDiagram { ... }`, `wbsDiagram { ... }`) n'a silencieusement aucun effet : ni WARNING, ni ERROR, ni schéma dégradé visible autrement qu'en comparant le rendu à l'intention.
@@ -145,30 +145,79 @@ Les schémas PlantUML et les schémas dessinés à la main (draw.io) partagent l
 Les styles de `normes/plantuml/` l'appliquent d'office ; un schéma draw.io la reprend à la main.
 La planche du mode d'emploi (`doc/howto.adoc`, « Dessiner un schéma à la main ») la montre en exemples.
 
-[cols="2,1,1,3"]
+[cols="2,2,1,1,3"]
 |===
-| Rôle | Fond | Bordure | Usage
+| Rôle | Nom PlantUML | Fond | Bordure | Usage
 
 | Conteneur
+| `\<<conteneur>>`
 | `#F1F1F1`
 | `#BBBBBB`
 | Cadre englobant.
 
 | Élément
+| (par défaut)
 | `#FFFFFF`
 | `#BBBBBB`
 | Boîte dans un cadre.
 
 | Zone principale
+| `\<<zone>>`
 | `#EEF6F2`
 | `#227C63`
 | Le sujet, le périmètre étudié ; racine d'un mindmap.
 
-| Vert, sarcelle, bleu, bleu-gris, pêche, lilas
-| `#D3EDD2`, `#D1E6E4`, `#E6F2FD`, `#D6DDE9`, `#FFF2E8`, `#ECE6F3`
-| `#769D75`, `#62938E`, `#7F9BB3`, `#848E9E`, `#B96E27`, `#9C8FB2`
-| Familles de couleur ; pêche porte aussi « à surveiller ».
+| Vert
+| `\<<vert>>`
+| `#D3EDD2`
+| `#769D75`
+.6+| Familles de couleur ; pêche porte aussi « à surveiller ».
+
+| Sarcelle
+| `\<<sarcelle>>`
+| `#D1E6E4`
+| `#62938E`
+
+| Bleu
+| `\<<bleu>>`
+| `#E6F2FD`
+| `#7F9BB3`
+
+| Bleu-gris
+| `\<<bleugris>>`
+| `#D6DDE9`
+| `#848E9E`
+
+| Pêche
+| `\<<peche>>`
+| `#FFF2E8`
+| `#B96E27`
+
+| Lilas
+| `\<<lilas>>`
+| `#ECE6F3`
+| `#9C8FB2`
 |===
+
+La palette est écrite une seule fois, dans `normes/plantuml/_palette.iuml` ; les styles l'utilisent, et `check-test.sh` vérifie que ce tableau et la configuration draw.io du mode d'emploi la reprennent à l'identique.
+Dans un schéma PlantUML, une couleur se pose par son nom, en stéréotype : `\<<vert>>` donne le fond et la bordure de la famille, sur un nœud de mindmap ou de WBS comme sur un composant, un cadre ou un participant.
+Le nom ne s'affiche pas dans le schéma.
+Un schéma n'écrit aucun code couleur (`[#D3EDD2]`, `#lightblue`) : `check.sh` signale en AVERT un code hors palette, une couleur par son nom et plus d'un `\<<focus>>` ou d'un `\<<urgent>>` dans un même schéma.
+
+.Couleurs nommées et mise en évidence
+[plantuml,exemple-couleurs-nommees,svg]
+----
+@startuml
+!include plantuml/_component.iuml
+package "Plateforme data" <<zone>> {
+  component "Ingestion" <<vert>>
+  component "Normes" <<peche>>
+  database "Entrepôt" <<focus>>
+}
+"Ingestion" --> "Entrepôt"
+"Normes" ..> "Ingestion"
+@enduml
+----
 
 * Texte `#333333` ; flux et dépendances `#087859` ; liens neutres `#555555`.
 * Une couleur, un sens, dans tout le document : vert du thème pour le sujet, orange pour ce qui est à surveiller, rouge (`#C62828`) pour un problème.

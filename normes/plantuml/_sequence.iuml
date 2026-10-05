@@ -5,41 +5,37 @@
 !include _commun.iuml
 
 hide footbox
-' Palette de normes/schemas.adoc, « Couleurs des schémas » : participants
-' en conteneur #F1F1F1 bordé de #BBBBBB, lignes de vie grises ; seuls les
+' Palette de _palette.iuml (normes/schemas.adoc, « Couleurs des schémas ») :
+' participants en conteneur bordé de gris, lignes de vie grises ; seuls les
 ' messages, des flux, sont verts. Sans ces valeurs, PlantUML borde tout de
 ' #181818, presque noir. Les lignes de vie et les barres d'activation
 ' ignorent les skinparam sur cette version : le bloc <style> les atteint.
-skinparam ParticipantBackgroundColor #F1F1F1
-skinparam ParticipantBorderColor #BBBBBB
-skinparam ActorBackgroundColor #F1F1F1
-skinparam ActorBorderColor #BBBBBB
-skinparam DatabaseBackgroundColor #F1F1F1
-skinparam DatabaseBorderColor #BBBBBB
-skinparam QueueBackgroundColor #F1F1F1
-skinparam QueueBorderColor #BBBBBB
-skinparam BoundaryBackgroundColor #F1F1F1
-skinparam BoundaryBorderColor #BBBBBB
-skinparam ControlBackgroundColor #F1F1F1
-skinparam ControlBorderColor #BBBBBB
-skinparam EntityBackgroundColor #F1F1F1
-skinparam EntityBorderColor #BBBBBB
-skinparam CollectionsBackgroundColor #F1F1F1
-skinparam CollectionsBorderColor #BBBBBB
-skinparam SequenceGroupBorderColor #BBBBBB
-skinparam SequenceBoxBorderColor #BBBBBB
-skinparam SequenceBoxBackgroundColor #F1F1F1
-skinparam SequenceDividerBorderColor #BBBBBB
-skinparam SequenceReferenceBorderColor #BBBBBB
+!$participants = %splitstr("participant,actor,database,queue,boundary,control,entity,collections", ",")
+!foreach $e in $participants
+skinparam $e {
+  BackgroundColor $conteneur_fond
+  BorderColor $conteneur_bord
+}
+!endfor
+skinparam SequenceGroupBorderColor $conteneur_bord
+skinparam SequenceBoxBorderColor $conteneur_bord
+skinparam SequenceBoxBackgroundColor $conteneur_fond
+skinparam SequenceDividerBorderColor $conteneur_bord
+skinparam SequenceReferenceBorderColor $conteneur_bord
+
+' Couleurs nommées (<<vert>>, <<peche>>…) et mise en évidence (<<focus>>,
+' <<urgent>>) sur les participants.
+$stereos_couleurs($participants)
+$stereos_marques($participants)
 
 <style>
 sequenceDiagram {
   lifeLine {
-    LineColor #BBBBBB
+    LineColor $conteneur_bord
   }
   activationBox {
-    LineColor #BBBBBB
-    BackgroundColor #FFFFFF
+    LineColor $conteneur_bord
+    BackgroundColor $element_fond
   }
 }
 </style>

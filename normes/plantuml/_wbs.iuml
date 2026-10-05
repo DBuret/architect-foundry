@@ -8,7 +8,8 @@
 ' niveau. Marquer un nœud <<urgent>> (alerte) ou <<focus>> (le sujet) lui
 ' donne un contour rouge ou vert de 2,5 px, à lui seul : le sélecteur
 ' .urgent, sans « * », ne touche pas ses enfants, et arrow{} garde fins les
-' liens qui en partent (normes/schemas.adoc).
+' liens qui en partent (normes/schemas.adoc). Une couleur nommée
+' (<<vert>>, <<peche>>… : _palette.iuml) colore un nœud.
 ' Tout doit rester à l'intérieur de wbsDiagram { ... } : un arrow{} ou un
 ' sélecteur de classe (.urgent) posé en dehors n'a silencieusement aucun
 ' effet, sans WARNING ni ERROR (vérifié sur cette version de PlantUML).
@@ -20,11 +21,12 @@ wbsDiagram {
   node {
     MaximumWidth 250
     RoundCorner 8
-    LineColor #BBBBBB
+    BackgroundColor $conteneur_fond
+    LineColor $conteneur_bord
     LineThickness 1.0
   }
   arrow {
-    LineColor #555555
+    LineColor $lien
   }
   :depth(0) {
     FontStyle bold
@@ -34,22 +36,20 @@ wbsDiagram {
     FontStyle bold
     FontSize 12
   }
-  ' Profondeur 2 : fond bleu pâle envisagé (#e6f2fd), laissé inactif comme
-  ' dans le fichier d'origine ; décommenter au besoin.
-  ' :depth(2) { BackgroundColor #e6f2fd }
   :depth(3) {
-    BackgroundColor white
-    LineColor white
+    BackgroundColor $element_fond
+    LineColor $element_fond
   }
+$classes_couleurs()
   .urgent {
-    LineColor #C62828
+    LineColor $alerte
     LineThickness 2.5
-    arrow { LineColor #555555; LineThickness 1.5 }
+    arrow { LineColor $lien; LineThickness 1.5 }
   }
   .focus {
-    LineColor #087859
+    LineColor $focus
     LineThickness 2.5
-    arrow { LineColor #555555; LineThickness 1.5 }
+    arrow { LineColor $lien; LineThickness 1.5 }
   }
 }
 </style>

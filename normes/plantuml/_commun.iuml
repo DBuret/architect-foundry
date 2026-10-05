@@ -4,6 +4,8 @@
 ' Ne pas renommer ce fichier sans répercuter le changement dans chaque
 ' _<type>.iuml qui le référence par son nom seul.
 
+!include _palette.iuml
+
 skinparam shadowing false
 ' Coins arrondis de 4 px (rayon = roundCorner / 2), comme les boîtes
 ' draw.io : normes/schemas.adoc, « Couleurs des schémas ».
@@ -15,10 +17,11 @@ skinparam defaultFontName DejaVu Sans
 ' hauteur visuelle que le corps du document (10,5 pt).
 skinparam defaultFontSize 12
 
-' Couleurs alignées sur le thème PDF (tools/pdf-theme/custom-theme.yml).
-skinparam ArrowColor #087859
-skinparam DefaultFontColor #333333
+' Couleurs de _palette.iuml, alignées sur le thème PDF
+' (tools/pdf-theme/custom-theme.yml).
+skinparam ArrowColor $flux
+skinparam DefaultFontColor $texte
 ' Notes : élément blanc bordé de gris (normes/schemas.adoc, « Couleurs des
 ' schémas »), au lieu du jaune de PlantUML.
-skinparam NoteBackgroundColor #FFFFFF
-skinparam NoteBorderColor #BBBBBB
+skinparam NoteBackgroundColor $element_fond
+skinparam NoteBorderColor $element_bord
