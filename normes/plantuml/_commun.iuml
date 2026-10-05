@@ -15,3 +15,7 @@ skinparam defaultFontSize 12
 ' Couleurs alignées sur le thème PDF (tools/pdf-theme/custom-theme.yml).
 skinparam ArrowColor #087859
 skinparam DefaultFontColor #333333
+' Notes : élément blanc bordé de gris (normes/schemas.adoc, « Couleurs des
+' schémas »), au lieu du jaune de PlantUML.
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #BBBBBB

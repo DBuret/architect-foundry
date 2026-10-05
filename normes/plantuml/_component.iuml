@@ -5,5 +5,34 @@
 !include _commun.iuml
 
 skinparam componentStyle rectangle
-skinparam ComponentBackgroundColor #F1F1F1
-skinparam DatabaseBackgroundColor #F1F1F1
+' Palette de normes/schemas.adoc, « Couleurs des schémas » : éléments blancs
+' bordés de #BBBBBB, cadres (package, node, frame…) en conteneur #F1F1F1.
+' Sans ces valeurs, PlantUML borde tout de #181818, presque noir.
+skinparam ComponentBackgroundColor #FFFFFF
+skinparam ComponentBorderColor #BBBBBB
+skinparam DatabaseBackgroundColor #FFFFFF
+skinparam DatabaseBorderColor #BBBBBB
+skinparam QueueBackgroundColor #FFFFFF
+skinparam QueueBorderColor #BBBBBB
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam RectangleBorderColor #BBBBBB
+skinparam InterfaceBackgroundColor #FFFFFF
+skinparam InterfaceBorderColor #BBBBBB
+skinparam ActorBackgroundColor #FFFFFF
+skinparam ActorBorderColor #BBBBBB
+skinparam ArtifactBackgroundColor #FFFFFF
+skinparam ArtifactBorderColor #BBBBBB
+skinparam StorageBackgroundColor #FFFFFF
+skinparam StorageBorderColor #BBBBBB
+skinparam ClassBackgroundColor #FFFFFF
+skinparam ClassBorderColor #BBBBBB
+skinparam PackageBackgroundColor #F1F1F1
+skinparam PackageBorderColor #BBBBBB
+skinparam NodeBackgroundColor #F1F1F1
+skinparam NodeBorderColor #BBBBBB
+skinparam FrameBackgroundColor #F1F1F1
+skinparam FrameBorderColor #BBBBBB
+skinparam FolderBackgroundColor #F1F1F1
+skinparam FolderBorderColor #BBBBBB
+skinparam CloudBackgroundColor #F1F1F1
+skinparam CloudBorderColor #BBBBBB

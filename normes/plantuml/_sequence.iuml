@@ -5,5 +5,41 @@
 !include _commun.iuml
 
 hide footbox
+' Palette de normes/schemas.adoc, « Couleurs des schémas » : participants
+' en conteneur #F1F1F1 bordé de #BBBBBB, lignes de vie grises ; seuls les
+' messages, des flux, sont verts. Sans ces valeurs, PlantUML borde tout de
+' #181818, presque noir. Les lignes de vie et les barres d'activation
+' ignorent les skinparam sur cette version : le bloc <style> les atteint.
 skinparam ParticipantBackgroundColor #F1F1F1
-skinparam LifeLineBorderColor #087859
+skinparam ParticipantBorderColor #BBBBBB
+skinparam ActorBackgroundColor #F1F1F1
+skinparam ActorBorderColor #BBBBBB
+skinparam DatabaseBackgroundColor #F1F1F1
+skinparam DatabaseBorderColor #BBBBBB
+skinparam QueueBackgroundColor #F1F1F1
+skinparam QueueBorderColor #BBBBBB
+skinparam BoundaryBackgroundColor #F1F1F1
+skinparam BoundaryBorderColor #BBBBBB
+skinparam ControlBackgroundColor #F1F1F1
+skinparam ControlBorderColor #BBBBBB
+skinparam EntityBackgroundColor #F1F1F1
+skinparam EntityBorderColor #BBBBBB
+skinparam CollectionsBackgroundColor #F1F1F1
+skinparam CollectionsBorderColor #BBBBBB
+skinparam SequenceGroupBorderColor #BBBBBB
+skinparam SequenceBoxBorderColor #BBBBBB
+skinparam SequenceBoxBackgroundColor #F1F1F1
+skinparam SequenceDividerBorderColor #BBBBBB
+skinparam SequenceReferenceBorderColor #BBBBBB
+
+<style>
+sequenceDiagram {
+  lifeLine {
+    LineColor #BBBBBB
+  }
+  activationBox {
+    LineColor #BBBBBB
+    BackgroundColor #FFFFFF
+  }
+}
+</style>

@@ -209,6 +209,25 @@ if ruby -e 'require "asciidoctor-diagram"' >/dev/null 2>&1; then
   }
   marques mindmap @startmindmap @endmindmap mm
   marques wbs @startwbs @endwbs wb
+
+  # Bordures grises de la palette : sans elles, PlantUML borde composants,
+  # participants, lignes de vie et barres d'activation de #181818, presque
+  # noir. Les lignes de vie et les activations n'obéissent qu'au <style>.
+  cp "$ROOT/normes/plantuml/_component.iuml" "$ROOT/normes/plantuml/_sequence.iuml" "$d/normes/plantuml/"
+  # gris <type> <corps> <image>
+  gris() {
+    printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,%s,svg]\n----\n@startuml\n!include normes/plantuml/_%s.iuml\n%b\n@enduml\n----\n' "$3" "$1" "$2" > "$d/memo.adoc"
+    n=$((n + 1))
+    svg=$d/work/images/$3.svg
+    if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
+       && grep -q "stroke:#BBBBBB" "$svg" && ! grep -Eq "stroke:#(181818|000000)" "$svg"; then
+      echo "ok     bordures grises de la palette sur un schéma $1"
+    else
+      fails=$((fails + 1)); echo "ÉCHEC  bordures sur un schéma $1 : absentes, ou noires de PlantUML"
+    fi
+  }
+  gris component 'package Zone {\n  component A\n  database B\n}\nA --> B\nnote right of B : n' co
+  gris sequence 'actor C\nparticipant P\nC -> P : a\nactivate P\nP --> C : b\nnote right : n' se
 else
   echo "ignoré schéma PlantUML : asciidoctor-diagram absent"
 fi

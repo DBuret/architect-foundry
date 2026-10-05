@@ -20,11 +20,11 @@ wbsDiagram {
   node {
     MaximumWidth 250
     RoundCorner 8
-    LineColor #aaaaaa
+    LineColor #BBBBBB
     LineThickness 1.0
   }
   arrow {
-    LineColor DimGrey
+    LineColor #555555
   }
   :depth(0) {
     FontStyle bold
@@ -44,12 +44,12 @@ wbsDiagram {
   .urgent {
     LineColor #C62828
     LineThickness 2.5
-    arrow { LineColor DimGrey; LineThickness 1.5 }
+    arrow { LineColor #555555; LineThickness 1.5 }
   }
   .focus {
     LineColor #087859
     LineThickness 2.5
-    arrow { LineColor DimGrey; LineThickness 1.5 }
+    arrow { LineColor #555555; LineThickness 1.5 }
   }
 }
 </style>
