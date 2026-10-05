@@ -151,7 +151,7 @@ Les règles détaillées sont dans les normes, que l'humain lit comme l'agent :
 
 == Contrôles
 
-`check.sh` rend chaque maître en HTML dans un dossier temporaire et inspecte le source : renvois sans cible ou vers un fichier non inclus, numéros de section en dur, restes de Markdown ou de LaTeX, identifiants jamais cités ou cités sans xref, statuts hors liste, images introuvables, admonitions non admises, emojis, fragments trop longs, schémas PlantUML sans style commun.
+`check.sh` rend chaque maître en HTML dans un dossier temporaire et inspecte le source : renvois sans cible ou vers un fichier non inclus, numéros de section en dur, restes de Markdown ou de LaTeX, identifiants jamais cités ou cités sans xref, statuts hors liste, images introuvables, admonitions non admises, emojis, fragments trop longs, schémas PlantUML sans style commun, couleurs de schéma hors palette.
 Un KO bloque (code de sortie 1, commit refusé) ; un AVERT signale un défaut probable sans bloquer.
 Chaque contrôle est décrit, avec son niveau et sa raison, par le commentaire qui le précède dans le script.
 Sans asciidoctor sur le poste, `check.sh` se relance dans le conteneur de `build.sh` (`tools/conteneur.sh`, qui fixe l'image une seule fois pour les deux).

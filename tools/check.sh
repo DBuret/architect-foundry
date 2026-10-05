@@ -333,4 +333,41 @@ awk 'FNR == 1 { attend = 0; dans = 0 }
      /^\[plantuml[],]/ { attend = 1; debut = FNR }' $ADOCS \
   | grep . && avert "schéma sans style commun : !include normes/plantuml/_<type>.iuml"
 
+# 13. Couleurs d'un bloc PlantUML : un code #RRGGBB absent de la palette
+#     (normes/plantuml/_palette.iuml) ou une couleur par son nom (#red,
+#     #lightblue) sort de la charte ; plus d'un <<focus>> ou d'un <<urgent>>
+#     dilue la mise en évidence (normes/schemas.adoc, « Couleurs des
+#     schémas »). Une couleur nommée de la palette (<<vert>>…) n'est pas un
+#     code et passe. Un # suivi de chiffres (« ticket #123 ») n'est pas une
+#     couleur ; les commentaires PlantUML (') ne sont pas lus.
+palette="$depot/normes/plantuml/_palette.iuml"
+if [ -f "$palette" ]; then
+  codes=$(grep -o '"#[0-9A-Fa-f]\{6\}"' "$palette" | tr -d '"#' | tr 'a-f' 'A-F' | tr '\n' ' ')
+  awk -v codes="$codes" '
+       BEGIN { n = split(codes, c, " "); for (i = 1; i <= n; i++) ok[c[i]] = 1 }
+       FNR == 1 { attend = 0; dans = 0 }
+       dans && $0 == fin {
+         if (focus > 1) print FILENAME ":" debut ": " focus " <<focus>> dans un même schéma"
+         if (urgent > 1) print FILENAME ":" debut ": " urgent " <<urgent>> dans un même schéma"
+         dans = 0; next }
+       dans {
+         if ($0 ~ /^[ \t]*\047/) next
+         l = $0
+         while (match(l, /#[0-9A-Za-z]+/)) {
+           t = substr(l, RSTART + 1, RLENGTH - 1); l = substr(l, RSTART + RLENGTH)
+           if (t ~ /^[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]$/) {
+             u = toupper(t); if (!(u in ok)) print FILENAME ":" FNR ": #" t " hors palette"
+           } else if (t ~ /^[A-Za-z][A-Za-z][A-Za-z]+$/)
+             print FILENAME ":" FNR ": #" t ", couleur par son nom"
+         }
+         l = $0; while (match(l, /<<focus>>/)) { focus++; l = substr(l, RSTART + RLENGTH) }
+         l = $0; while (match(l, /<<urgent>>/)) { urgent++; l = substr(l, RSTART + RLENGTH) }
+         next }
+       attend && /^[ \t]*$/ { next }
+       attend && /^(----|\.\.\.\.)[ \t]*$/ { dans = 1; focus = 0; urgent = 0; fin = $0; attend = 0; next }
+       { attend = 0 }
+       /^\[plantuml[],]/ { attend = 1; debut = FNR }' $ADOCS \
+    | grep . && avert "couleur de schéma hors palette, ou mise en évidence multiple : couleurs nommées <<vert>>, <<peche>>… (normes/schemas.adoc)"
+fi
+
 exit $rc

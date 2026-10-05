@@ -5,5 +5,26 @@
 !include _commun.iuml
 
 skinparam componentStyle rectangle
-skinparam ComponentBackgroundColor #F1F1F1
-skinparam DatabaseBackgroundColor #F1F1F1
+
+' Palette de _palette.iuml (normes/schemas.adoc, « Couleurs des schémas ») :
+' éléments blancs bordés de gris, cadres en conteneur gris pâle. Sans ces
+' valeurs, PlantUML borde tout de #181818, presque noir.
+!$elements = %splitstr("component,database,queue,rectangle,interface,actor,artifact,storage,collections,card,file,class", ",")
+!$cadres = %splitstr("package,node,frame,folder,cloud", ",")
+!foreach $e in $elements
+skinparam $e {
+  BackgroundColor $element_fond
+  BorderColor $element_bord
+}
+!endfor
+!foreach $e in $cadres
+skinparam $e {
+  BackgroundColor $conteneur_fond
+  BorderColor $conteneur_bord
+}
+!endfor
+
+' Couleurs nommées (<<vert>>, <<peche>>…) et mise en évidence (<<focus>>,
+' <<urgent>>), sur les éléments comme sur les cadres.
+$stereos_couleurs(%splitstr("component,database,queue,rectangle,actor,artifact,storage,collections,card,file,class,package,node,frame,folder,cloud", ","))
+$stereos_marques(%splitstr("component,database,queue,rectangle,actor,artifact,storage,collections,card,file,class,package,node,frame,folder,cloud", ","))

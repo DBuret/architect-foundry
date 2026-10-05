@@ -1,0 +1,99 @@
+' Palette des schémas, écrite une seule fois : normes/schemas.adoc,
+' « Couleurs des schémas ». Incluse par _commun.iuml, jamais par un
+' chapitre. Les styles de ce dossier n'écrivent aucun code couleur
+' eux-mêmes : ils utilisent ces variables.
+' check.sh signale tout code couleur d'un bloc [plantuml] absent de ce
+' fichier ; check-test.sh vérifie que chaque couple fond/bordure figure
+' aussi dans normes/schemas.adoc et dans la configuration draw.io de
+' doc/howto.adoc.
+
+' Texte, flux, liens, mise en évidence.
+!$texte = "#333333"
+!$flux = "#087859"
+!$lien = "#555555"
+!$focus = "#087859"
+!$alerte = "#C62828"
+' Bordure des éléments d'un schéma de flux.
+!$bord_flux = "#DDDDDD"
+
+' Couples fond/bordure. Le nom, sans _fond ni _bord, est aussi celui de la
+' couleur nommée qu'un schéma pose en stéréotype : <<vert>>, <<peche>>…
+!$conteneur_fond = "#F1F1F1"
+!$conteneur_bord = "#BBBBBB"
+!$element_fond = "#FFFFFF"
+!$element_bord = "#BBBBBB"
+!$zone_fond = "#EEF6F2"
+!$zone_bord = "#227C63"
+!$vert_fond = "#D3EDD2"
+!$vert_bord = "#769D75"
+!$sarcelle_fond = "#D1E6E4"
+!$sarcelle_bord = "#62938E"
+!$bleu_fond = "#E6F2FD"
+!$bleu_bord = "#7F9BB3"
+!$bleugris_fond = "#D6DDE9"
+!$bleugris_bord = "#848E9E"
+!$peche_fond = "#FFF2E8"
+!$peche_bord = "#B96E27"
+!$lilas_fond = "#ECE6F3"
+!$lilas_bord = "#9C8FB2"
+
+' Couleurs nommées pour mindmap et WBS : une classe par couple, à appeler
+' à l'intérieur du bloc mindmapDiagram { ... } ou wbsDiagram { ... }.
+' arrow{} garde gris les liens qui partent du nœud coloré.
+!procedure $classe($nom, $fond, $bord)
+  .$nom {
+    BackgroundColor $fond
+    LineColor $bord
+    arrow { LineColor $lien }
+  }
+!endprocedure
+!procedure $classes_couleurs()
+$classe("conteneur", $conteneur_fond, $conteneur_bord)
+$classe("zone", $zone_fond, $zone_bord)
+$classe("vert", $vert_fond, $vert_bord)
+$classe("sarcelle", $sarcelle_fond, $sarcelle_bord)
+$classe("bleu", $bleu_fond, $bleu_bord)
+$classe("bleugris", $bleugris_fond, $bleugris_bord)
+$classe("peche", $peche_fond, $peche_bord)
+$classe("lilas", $lilas_fond, $lilas_bord)
+!endprocedure
+
+' Couleurs nommées pour les éléments d'un diagramme @startuml : un
+' skinparam par type d'élément, et le stéréotype masqué pour que « «vert» »
+' ne s'affiche pas dans le schéma.
+!procedure $stereo($nom, $fond, $bord, $elements)
+!foreach $e in $elements
+skinparam $e<<$nom>> {
+  BackgroundColor $fond
+  BorderColor $bord
+}
+!endfor
+hide <<$nom>> stereotype
+!endprocedure
+!procedure $stereos_couleurs($elements)
+$stereo("conteneur", $conteneur_fond, $conteneur_bord, $elements)
+$stereo("zone", $zone_fond, $zone_bord, $elements)
+$stereo("vert", $vert_fond, $vert_bord, $elements)
+$stereo("sarcelle", $sarcelle_fond, $sarcelle_bord, $elements)
+$stereo("bleu", $bleu_fond, $bleu_bord, $elements)
+$stereo("bleugris", $bleugris_fond, $bleugris_bord, $elements)
+$stereo("peche", $peche_fond, $peche_bord, $elements)
+$stereo("lilas", $lilas_fond, $lilas_bord, $elements)
+!endprocedure
+
+' Mise en évidence pour les éléments d'un diagramme @startuml : contour de
+' 2,5 px en vert du thème (<<focus>>) ou en rouge d'alerte (<<urgent>>),
+' comme sur un mindmap ou un WBS.
+!procedure $marque($nom, $coul, $elements)
+!foreach $e in $elements
+skinparam $e<<$nom>> {
+  BorderColor $coul
+  BorderThickness 2.5
+}
+!endfor
+hide <<$nom>> stereotype
+!endprocedure
+!procedure $stereos_marques($elements)
+$marque("focus", $focus, $elements)
+$marque("urgent", $alerte, $elements)
+!endprocedure

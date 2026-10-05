@@ -5,5 +5,37 @@
 !include _commun.iuml
 
 hide footbox
-skinparam ParticipantBackgroundColor #F1F1F1
-skinparam LifeLineBorderColor #087859
+' Palette de _palette.iuml (normes/schemas.adoc, « Couleurs des schémas ») :
+' participants en conteneur bordé de gris, lignes de vie grises ; seuls les
+' messages, des flux, sont verts. Sans ces valeurs, PlantUML borde tout de
+' #181818, presque noir. Les lignes de vie et les barres d'activation
+' ignorent les skinparam sur cette version : le bloc <style> les atteint.
+!$participants = %splitstr("participant,actor,database,queue,boundary,control,entity,collections", ",")
+!foreach $e in $participants
+skinparam $e {
+  BackgroundColor $conteneur_fond
+  BorderColor $conteneur_bord
+}
+!endfor
+skinparam SequenceGroupBorderColor $conteneur_bord
+skinparam SequenceBoxBorderColor $conteneur_bord
+skinparam SequenceBoxBackgroundColor $conteneur_fond
+skinparam SequenceDividerBorderColor $conteneur_bord
+skinparam SequenceReferenceBorderColor $conteneur_bord
+
+' Couleurs nommées (<<vert>>, <<peche>>…) et mise en évidence (<<focus>>,
+' <<urgent>>) sur les participants.
+$stereos_couleurs($participants)
+$stereos_marques($participants)
+
+<style>
+sequenceDiagram {
+  lifeLine {
+    LineColor $conteneur_bord
+  }
+  activationBox {
+    LineColor $conteneur_bord
+    BackgroundColor $element_fond
+  }
+}
+</style>

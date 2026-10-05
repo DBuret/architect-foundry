@@ -186,30 +186,105 @@ if ruby -e 'require "asciidoctor-diagram"' >/dev/null 2>&1; then
 
   # Régression : un arrow{} ou un sélecteur de classe (.urgent) posé hors
   # du bloc englobant (mindmapDiagram/wbsDiagram) n'a silencieusement
-  # aucun effet sur cette version de PlantUML (voir normes/schemas.adoc). check.sh ne peut pas le voir : on
-  # inspecte donc le SVG produit, avec les vrais fichiers du dépôt.
+  # aucun effet sur cette version de PlantUML (voir normes/schemas.adoc).
+  # check.sh ne peut pas le voir : on inspecte donc le SVG produit, avec les
+  # vrais fichiers du dépôt. <<urgent>> (#C62828) et <<focus>> (#087859)
+  # marquent leur nœud seul : l'enfant d'un nœud marqué ne l'est pas.
   nouveau; mkdir -p "$d/normes/plantuml"
-  cp "$ROOT/normes/plantuml/_commun.iuml" "$ROOT/normes/plantuml/_mindmap.iuml" "$ROOT/normes/plantuml/_wbs.iuml" "$d/normes/plantuml/"
+  cp "$ROOT/normes/plantuml/_commun.iuml" "$ROOT/normes/plantuml/_palette.iuml" "$ROOT/normes/plantuml/_mindmap.iuml" "$ROOT/normes/plantuml/_wbs.iuml" "$d/normes/plantuml/"
 
-  printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,mm,svg]\n----\n@startmindmap\n!include normes/plantuml/_mindmap.iuml\n* Racine\n** Point <<urgent>>\n@endmindmap\n----\n' > "$d/memo.adoc"
-  n=$((n + 1))
-  if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
-     && grep -q "stroke:#FF0000" "$d/work/images/mm.svg" 2>/dev/null; then
-    echo "ok     <<urgent>> visible sur un mindmap (arrow/classe dans mindmapDiagram)"
-  else
-    fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> visible sur un mindmap : rouge absent du rendu"
-  fi
+  # marques <type> <début> <fin> <image>
+  marques() {
+    printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,%s,svg]\n----\n%s\n!include normes/plantuml/_%s.iuml\n* Racine\n** Point <<urgent>>\n*** Enfant\n** Sujet <<focus>>\n%s\n----\n' "$4" "$2" "$1" "$3" > "$d/memo.adoc"
+    n=$((n + 1))
+    svg=$d/work/images/$4.svg
+    if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
+       && grep -q "stroke:#C62828;stroke-width:2.5" "$svg" \
+       && grep -q "stroke:#087859;stroke-width:2.5" "$svg" \
+       && grep -q "rx='4'" "$svg" && ! grep -q "rx='12.5'" "$svg" \
+       && ! grep -o "<rect[^>]*/><text[^>]*>Enfant<" "$svg" | grep -q "#C62828"; then
+      echo "ok     <<urgent>> et <<focus>> sur un $1, nœud seul"
+    else
+      fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> et <<focus>> sur un $1 : contour absent, étendu à l'enfant, ou coins autres que 4 px"
+    fi
+  }
+  marques mindmap @startmindmap @endmindmap mm
+  marques wbs @startwbs @endwbs wb
 
-  printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,wb,svg]\n----\n@startwbs\n!include normes/plantuml/_wbs.iuml\n* Racine\n** Point <<urgent>>\n@endwbs\n----\n' > "$d/memo.adoc"
-  n=$((n + 1))
-  if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
-     && grep -q "stroke:#FF0000" "$d/work/images/wb.svg" 2>/dev/null; then
-    echo "ok     <<urgent>> visible sur un WBS (arrow/classe dans wbsDiagram)"
-  else
-    fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> visible sur un WBS : rouge absent du rendu"
-  fi
+  # Bordures grises de la palette : sans elles, PlantUML borde composants,
+  # participants, lignes de vie et barres d'activation de #181818, presque
+  # noir. Les lignes de vie et les activations n'obéissent qu'au <style>.
+  # Coins de 4 px (roundCorner 8), comme les boîtes draw.io.
+  cp "$ROOT/normes/plantuml/_component.iuml" "$ROOT/normes/plantuml/_sequence.iuml" "$d/normes/plantuml/"
+  # gris <type> <corps> <image>
+  gris() {
+    printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,%s,svg]\n----\n@startuml\n!include normes/plantuml/_%s.iuml\n%b\n@enduml\n----\n' "$3" "$1" "$2" > "$d/memo.adoc"
+    n=$((n + 1))
+    svg=$d/work/images/$3.svg
+    if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
+       && grep -q "stroke:#BBBBBB" "$svg" && ! grep -Eq "stroke:#(181818|000000)" "$svg" \
+       && grep -q "rx='4'" "$svg" && ! grep -q "rx='2.5'" "$svg"; then
+      echo "ok     bordures grises et coins de 4 px sur un schéma $1"
+    else
+      fails=$((fails + 1)); echo "ÉCHEC  bordures ou coins sur un schéma $1 : noirs de PlantUML, ou coins autres que 4 px"
+    fi
+  }
+  gris component 'package Zone {\n  component A\n  database B\n}\nA --> B\nnote right of B : n' co
+  gris sequence 'actor C\nparticipant P\nC -> P : a\nactivate P\nP --> C : b\nnote right : n' se
+
+  # Couleurs nommées de la palette (_palette.iuml) : <<peche>> pose le fond
+  # et la bordure pêche, sans afficher « «peche» » ; <<focus>> fait un
+  # contour vert de 2,5 px sur un élément @startuml comme sur un mindmap.
+  # nommees <type> <début> <fin> <corps> <image>
+  nommees() {
+    printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,%s,svg]\n----\n%s\n!include normes/plantuml/_%s.iuml\n%b\n%s\n----\n' "$5" "$2" "$1" "$4" "$3" > "$d/memo.adoc"
+    n=$((n + 1))
+    svg=$d/work/images/$5.svg
+    if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
+       && grep -q "fill='#FFF2E8'" "$svg" && grep -q "stroke:#B96E27" "$svg" \
+       && grep -q "stroke:#087859;stroke-width:2.5" "$svg" && ! grep -q "peche" "$svg"; then
+      echo "ok     couleur nommée et <<focus>> sur un schéma $1"
+    else
+      fails=$((fails + 1)); echo "ÉCHEC  couleur nommée ou <<focus>> sur un schéma $1 : fond, bordure ou contour absent, ou stéréotype affiché"
+    fi
+  }
+  nommees mindmap @startmindmap @endmindmap '* Racine\n** A <<peche>>\n** B <<focus>>' nm
+  nommees wbs @startwbs @endwbs '* Racine\n** A <<peche>>\n** B <<focus>>' nw
+  nommees component @startuml @enduml 'component A <<peche>>\ncomponent B <<focus>>\nA --> B' nc
+  nommees sequence @startuml @enduml 'participant A <<peche>>\nparticipant B <<focus>>\nA -> B : x' ns
+
+  # Contrôle 13 : codes couleur d'un bloc PlantUML confrontés à la palette,
+  # mise en évidence multiple. Blocs sans !include : seul compte ici le
+  # texte du bloc.
+  bloc() { printf '= M\n:type: dat\n:imagesoutdir: {docdir}/work/images\n:diagram-cachedir: {docdir}/work/cache\n\n[plantuml,b,svg]\n----\n@startmindmap\n%b\n@endmindmap\n----\n' "$1" > "$d/memo.adoc"; }
+  nouveau; bloc "* Racine\n** A [#D3EDD2]\n** B <<vert>>\n** Ticket #123 <<focus>>\n' #FF0000 en commentaire"
+  cas "couleurs de la palette" 0 - "hors palette\|par son nom\|même schéma"
+  nouveau; bloc "* Racine\n** A [#FF0000]"
+  cas "code couleur hors palette" 0 "#FF0000 hors palette" -
+  nouveau; bloc "* Racine\n**[#lightblue] A"
+  cas "couleur par son nom" 0 "#lightblue, couleur par son nom" -
+  nouveau; bloc "* Racine\n** A <<focus>>\n** B <<focus>>"
+  cas "deux <<focus>> dans un schéma" 0 "2 <<focus>> dans un même schéma" -
 else
   echo "ignoré schéma PlantUML : asciidoctor-diagram absent"
+fi
+
+# Palette écrite une seule fois : chaque couple fond/bordure de
+# _palette.iuml doit figurer dans le tableau de normes/schemas.adoc et dans
+# la configuration draw.io de doc/howto.adoc, sinon PlantUML et draw.io
+# divergent à la prochaine retouche de couleur.
+n=$((n + 1)); manque=""
+pal="$ROOT/normes/plantuml/_palette.iuml"
+for nom in $(sed -n 's/^!\$\([a-z]*\)_fond = .*/\1/p' "$pal"); do
+  f=$(sed -n "s/^!\\\$${nom}_fond = \"\\(#[0-9A-F]*\\)\"/\\1/p" "$pal")
+  b=$(sed -n "s/^!\\\$${nom}_bord = \"\\(#[0-9A-F]*\\)\"/\\1/p" "$pal")
+  grep -q "\"fill\": \"$f\", \"stroke\": \"$b\"" "$ROOT/doc/howto.adoc" || manque="$manque $nom(howto)"
+  grep -q "$f" "$ROOT/normes/schemas.adoc" && grep -q "$b" "$ROOT/normes/schemas.adoc" || manque="$manque $nom(schemas)"
+done
+if [ -z "$manque" ] && [ -n "$f" ]; then
+  echo "ok     palette identique dans _palette.iuml, normes/schemas.adoc et doc/howto.adoc"
+else
+  fails=$((fails + 1)); echo "ÉCHEC  palette divergente :${manque:- aucun couple lu dans _palette.iuml}"
 fi
 
 # Repli sur le conteneur (BUILD=docker) : le cas doit être sous la racine

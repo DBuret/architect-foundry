@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1618" viewBox="0 0 1000 1618" font-family="Helvetica, Arial, Liberation Sans, sans-serif" font-size="12" fill="#333333">
+<rect width="1000" height="1618" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="22" font-weight="bold" fill="#087859">Schémas draw.io : couleurs et règles</text>
+<text x="30" y="58" fill="#555555">Les mêmes couleurs que le thème PDF et les styles PlantUML du modèle. Police Helvetica 12, texte #333333, tiret « - » (jamais « − »).</text>
+<text x="30" y="98" font-size="16" font-weight="bold" fill="#087859">1. Fonds : une teinte pâle, une bordure de la même famille</text>
+<line x1="30" y1="106" x2="970" y2="106" stroke="#DDDDDD"/>
+<rect x="30" y="118" width="300" height="58" rx="4" fill="#F1F1F1" stroke="#BBBBBB" stroke-width="1" />
+<text x="44" y="142" font-weight="bold" font-size="13">Conteneur</text>
+<text x="44" y="162" fill="#555555" font-size="11">cadre englobant</text>
+<text x="316" y="142" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #F1F1F1</text>
+<text x="316" y="162" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #BBBBBB</text>
+<rect x="345" y="118" width="300" height="58" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="359" y="142" font-weight="bold" font-size="13">Élément</text>
+<text x="359" y="162" fill="#555555" font-size="11">boîte dans un cadre</text>
+<text x="631" y="142" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #FFFFFF</text>
+<text x="631" y="162" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #BBBBBB</text>
+<rect x="660" y="118" width="300" height="58" rx="4" fill="#EEF6F2" stroke="#227C63" stroke-width="1" />
+<text x="674" y="142" font-weight="bold" font-size="13">Zone principale</text>
+<text x="674" y="162" fill="#555555" font-size="11">périmètre étudié</text>
+<text x="946" y="142" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #EEF6F2</text>
+<text x="946" y="162" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #227C63</text>
+<rect x="30" y="188" width="300" height="58" rx="4" fill="#D3EDD2" stroke="#769D75" stroke-width="1" />
+<text x="44" y="212" font-weight="bold" font-size="13">Vert</text>
+<text x="44" y="232" fill="#555555" font-size="11">famille 1</text>
+<text x="316" y="212" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #D3EDD2</text>
+<text x="316" y="232" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #769D75</text>
+<rect x="345" y="188" width="300" height="58" rx="4" fill="#D1E6E4" stroke="#62938E" stroke-width="1" />
+<text x="359" y="212" font-weight="bold" font-size="13">Sarcelle</text>
+<text x="359" y="232" fill="#555555" font-size="11">famille 2</text>
+<text x="631" y="212" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #D1E6E4</text>
+<text x="631" y="232" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #62938E</text>
+<rect x="660" y="188" width="300" height="58" rx="4" fill="#E6F2FD" stroke="#7F9BB3" stroke-width="1" />
+<text x="674" y="212" font-weight="bold" font-size="13">Bleu</text>
+<text x="674" y="232" fill="#555555" font-size="11">famille 3</text>
+<text x="946" y="212" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #E6F2FD</text>
+<text x="946" y="232" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #7F9BB3</text>
+<rect x="30" y="258" width="300" height="58" rx="4" fill="#D6DDE9" stroke="#848E9E" stroke-width="1" />
+<text x="44" y="282" font-weight="bold" font-size="13">Bleu-gris</text>
+<text x="44" y="302" fill="#555555" font-size="11">famille 4</text>
+<text x="316" y="282" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #D6DDE9</text>
+<text x="316" y="302" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #848E9E</text>
+<rect x="345" y="258" width="300" height="58" rx="4" fill="#FFF2E8" stroke="#B96E27" stroke-width="1" />
+<text x="359" y="282" font-weight="bold" font-size="13">Pêche</text>
+<text x="359" y="302" fill="#555555" font-size="11">famille 5</text>
+<text x="631" y="282" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #FFF2E8</text>
+<text x="631" y="302" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #B96E27</text>
+<rect x="660" y="258" width="300" height="58" rx="4" fill="#ECE6F3" stroke="#9C8FB2" stroke-width="1" />
+<text x="674" y="282" font-weight="bold" font-size="13">Lilas</text>
+<text x="674" y="302" fill="#555555" font-size="11">famille 6</text>
+<text x="946" y="282" text-anchor="end" font-size="11" font-family="Menlo, monospace">fond #ECE6F3</text>
+<text x="946" y="302" text-anchor="end" font-size="11" font-family="Menlo, monospace">bord #9C8FB2</text>
+<text x="30" y="362" font-size="16" font-weight="bold" fill="#087859">2. Texte, flèches, pastilles</text>
+<line x1="30" y1="370" x2="970" y2="370" stroke="#DDDDDD"/>
+<text x="30" y="400" font-weight="bold">Texte : #333333, partout</text>
+<line x1="260" y1="396" x2="394" y2="396" stroke="#087859" stroke-width="1.5"/><path d="M400,396 l-8,-4 l0,8 z" fill="#087859"/>
+<text x="410" y="400" >flux, dépendance : #087859</text>
+<line x1="640" y1="396" x2="754" y2="396" stroke="#555555" stroke-width="1.5"/><path d="M760,396 l-8,-4 l0,8 z" fill="#555555"/>
+<text x="770" y="400" >lien neutre : #555555</text>
+<text x="30" y="440" font-weight="bold">Pastilles de statut :</text>
+<circle cx="190" cy="436" r="10" fill="#EAF4EA" stroke="#2E7D32" stroke-width="1.5"/>
+<text x="190" y="440" text-anchor="middle" font-weight="bold" font-size="11" fill="#2E7D32">✓</text>
+<text x="208" y="440" font-size="11">acquis #2E7D32</text>
+<circle cx="380" cy="436" r="10" fill="#FFF2E8" stroke="#C25E00" stroke-width="1.5"/>
+<text x="380" y="440" text-anchor="middle" font-weight="bold" font-size="11" fill="#C25E00">…</text>
+<text x="398" y="440" font-size="11">en attente #C25E00</text>
+<circle cx="570" cy="436" r="10" fill="#FDECEA" stroke="#C62828" stroke-width="1.5"/>
+<text x="570" y="440" text-anchor="middle" font-weight="bold" font-size="11" fill="#C62828">!</text>
+<text x="588" y="440" font-size="11">alerte #C62828</text>
+<circle cx="760" cy="436" r="10" fill="#F1F1F1" stroke="#777777" stroke-width="1.5"/>
+<text x="760" y="440" text-anchor="middle" font-weight="bold" font-size="11" fill="#777777">–</text>
+<text x="778" y="440" font-size="11">inactif #777777</text>
+<text x="30" y="486" font-size="16" font-weight="bold" fill="#087859">3. Exemples</text>
+<line x1="30" y1="494" x2="970" y2="494" stroke="#DDDDDD"/>
+<text x="30" y="516" font-weight="bold">Schéma en couches ; alerte en rouge</text>
+<rect x="30" y="526" width="460" height="48" rx="4" fill="#F1F1F1" stroke="#BBBBBB" stroke-width="1" />
+<text x="46" y="554" font-weight="bold">Sources</text>
+<rect x="150" y="536" width="96" height="28" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="198" y="554" text-anchor="middle">CMDB</text>
+<rect x="258" y="536" width="96" height="28" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="306" y="554" text-anchor="middle">vCenter</text>
+<rect x="366" y="536" width="96" height="28" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="414" y="554" text-anchor="middle">...</text>
+<circle cx="344" cy="536" r="9" fill="#FFF2E8" stroke="#C25E00" stroke-width="1.5"/>
+<text x="344" y="540" text-anchor="middle" font-weight="bold" font-size="10" fill="#C25E00">T</text>
+<rect x="144" y="530" width="108" height="40" rx="10" fill="none" stroke="#C62828" stroke-width="2.5" />
+<rect x="152" y="564" width="92" height="16" rx="8" fill="#C62828" stroke="#C62828" stroke-width="1" />
+<text x="198" y="576" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">source non fiable</text>
+<line x1="260" y1="576" x2="260" y2="596" stroke="#087859" stroke-width="1.5"/><path d="M260,602 l-4,-8 l8,0 z" fill="#087859"/>
+<rect x="30" y="604" width="460" height="120" rx="4" fill="#F1F1F1" stroke="#BBBBBB" stroke-width="1" />
+<text x="46" y="626" font-weight="bold">Data Platform</text>
+<rect x="46" y="636" width="200" height="74" rx="4" fill="#EEF6F2" stroke="#227C63" stroke-width="1" />
+<text x="58" y="656" font-weight="bold">ingestion</text>
+<rect x="58" y="668" width="84" height="30" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="100" y="687" text-anchor="middle">kafka</text>
+<rect x="150" y="668" width="84" height="30" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="192" y="687" text-anchor="middle">staging</text>
+<rect x="270" y="636" width="204" height="74" rx="4" fill="#FFF2E8" stroke="#B96E27" stroke-width="1" />
+<text x="282" y="656" font-weight="bold">normes</text>
+<rect x="282" y="668" width="180" height="30" rx="4" fill="#FFFFFF" stroke="#BBBBBB" stroke-width="1" />
+<text x="372" y="687" text-anchor="middle">registre des contrats</text>
+<line x1="270" y1="683" x2="250" y2="683" stroke="#555555" stroke-width="1.5"/><path d="M246,683 l8,-4 l0,8 z" fill="#555555"/>
+<text x="530" y="516" font-weight="bold">Superpositions à 60 % d'opacité ; focus en vert</text>
+<rect x="620" y="546" width="104" height="150" rx="4" fill="#E6F2FD" stroke="#7F9BB3" stroke-width="1" />
+<text x="672" y="564" text-anchor="middle" font-weight="bold" font-size="11">Processus</text>
+<rect x="738" y="546" width="104" height="150" rx="4" fill="#D3EDD2" stroke="#769D75" stroke-width="1" />
+<text x="790" y="564" text-anchor="middle" font-weight="bold" font-size="11">Data</text>
+<rect x="856" y="546" width="104" height="150" rx="4" fill="#ECE6F3" stroke="#9C8FB2" stroke-width="1" />
+<text x="908" y="564" text-anchor="middle" font-weight="bold" font-size="11">Applications</text>
+<rect x="530" y="578" width="440" height="42" rx="4" fill="#FFF2E8" stroke="#B96E27" stroke-width="1" fill-opacity="0.6"/>
+<text x="542" y="604" font-weight="bold">Carte</text>
+<rect x="530" y="630" width="440" height="42" rx="4" fill="#FFF2E8" stroke="#B96E27" stroke-width="1" fill-opacity="0.6"/>
+<text x="542" y="656" font-weight="bold">Terrain</text>
+<rect x="733" y="540" width="116" height="162" rx="10" fill="none" stroke="#087859" stroke-width="2.5" />
+<rect x="741" y="696" width="100" height="18" rx="9" fill="#087859" stroke="#087859" stroke-width="1" />
+<text x="791" y="709" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">focus de l'étude</text>
+<text x="30" y="772" font-size="16" font-weight="bold" fill="#087859">4. Schémas de flux : seuls les flux sont des traits soutenus</text>
+<line x1="30" y1="780" x2="970" y2="780" stroke="#DDDDDD"/>
+<rect x="30" y="796" width="250" height="130" rx="4" fill="#F1F1F1" stroke="none" stroke-width="1" />
+<text x="44" y="816" font-weight="bold">Plateforme</text>
+<rect x="300" y="796" width="250" height="130" rx="4" fill="#EEF6F2" stroke="none" stroke-width="1" />
+<text x="314" y="816" font-weight="bold">Services centraux</text>
+<ellipse cx="90" cy="850" rx="40" ry="17" fill="#FFFFFF" stroke="#DDDDDD"/>
+<text x="90" y="854" text-anchor="middle">cluster 1</text>
+<ellipse cx="90" cy="896" rx="40" ry="17" fill="#FFFFFF" stroke="#DDDDDD"/>
+<text x="90" y="900" text-anchor="middle">cluster 2</text>
+<ellipse cx="215" cy="873" rx="42" ry="22" fill="#FFFFFF" stroke="#DDDDDD"/>
+<text x="215" y="877" text-anchor="middle">Kafka</text>
+<path d="M130,850 L150,850 L150,873 L166,873" fill="none" stroke="#C25E00" stroke-width="1.5"/>
+<path d="M130,896 L150,896 L150,873 L166,873" fill="none" stroke="#C25E00" stroke-width="1.5"/>
+<path d="M173,873 l-8,-4 l0,8 z" fill="#C25E00"/>
+<rect x="370" y="834" width="150" height="32" rx="4" fill="#FFFFFF" stroke="#DDDDDD" stroke-width="1" />
+<text x="445" y="855" text-anchor="middle">puits de logs</text>
+<path d="M257,873 L320,873 L320,850 L362,850" fill="none" stroke="#087859" stroke-width="1.5"/><path d="M370,850 l-8,-4 l0,8 z" fill="#087859"/>
+<rect x="370" y="882" width="150" height="32" rx="4" fill="#FFFFFF" stroke="#DDDDDD" stroke-width="1" />
+<text x="445" y="903" text-anchor="middle">puits de métriques</text>
+<path d="M257,873 L320,873 L320,898 L362,898" fill="none" stroke="#087859" stroke-width="1.5"/><path d="M370,898 l-8,-4 l0,8 z" fill="#087859"/>
+<text x="150" y="838" font-weight="bold" fill="#C25E00" font-size="11">write</text>
+<text x="285" y="864" font-weight="bold" fill="#087859" font-size="11">read</text>
+<text x="580" y="824" font-size="12">Cadres de zone : le fond seul, sans bordure.</text>
+<text x="580" y="846" font-size="12">Éléments : fond blanc, bordure #DDDDDD.</text>
+<text x="580" y="868" font-size="12">Flux : seuls traits soutenus, en couleur.</text>
+<text x="580" y="890" font-size="12">Pas de curseur « Opacity » : il pâlit aussi</text>
+<text x="580" y="912" font-size="12">le fond et le texte.</text>
+<text x="30" y="968" font-size="16" font-weight="bold" fill="#087859">5. Même palette dans les schémas PlantUML (as code)</text>
+<line x1="30" y1="976" x2="970" y2="976" stroke="#DDDDDD"/>
+<image x="30" y="994" width="600" height="191" href="data:image/svg+xml;base64,PD9wbGFudHVtbCAxLjIwMjYuMj8+PHN2ZyBjb250ZW50U3R5bGVUeXBlPSd0ZXh0L2NzcycgZGF0YS1kaWFncmFtLXR5cGU9J01JTkRNQVAnIGhlaWdodD0nMjI4cHgnIHByZXNlcnZlQXNwZWN0UmF0aW89J25vbmUnIHN0eWxlPSd3aWR0aDo3MTVweDtoZWlnaHQ6MjI4cHg7YmFja2dyb3VuZDojRkZGRkZGOycgdmVyc2lvbj0nMS4xJyB2aWV3Qm94PScwIDAgNzE1IDIyOCcgd2lkdGg9JzcxNXB4JyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB6b29tQW5kUGFuPSdtYWduaWZ5Jz48ZGVmcy8+PGc+PHJlY3QgZmlsbD0nI0VFRjZGMicgaGVpZ2h0PSczMy45Njg4JyByeD0nNCcgcnk9JzQnIHN0eWxlPSdzdHJva2U6IzIyN0M2MztzdHJva2Utd2lkdGg6MS41Oycgd2lkdGg9JzEyOS42MDU1JyB4PScyNDMuNjAyNScgeT0nOTYuMjk2OScvPjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMicgZm9udC13ZWlnaHQ9J2JvbGQnIGxlbmd0aEFkanVzdD0nc3BhY2luZycgdGV4dExlbmd0aD0nNzQuOTA2MycgeD0nMjUzLjYwMjUnIHk9JzExNy40MzU1Jz5QbGF0ZWZvcm1lPC90ZXh0Pjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMicgZm9udC13ZWlnaHQ9J2JvbGQnIGxlbmd0aEFkanVzdD0nc3BhY2luZycgdGV4dExlbmd0aD0nNC4xNzc3JyB4PSczMjguNTA4OCcgeT0nMTE3LjQzNTUnPiYjMTYwOzwvdGV4dD48dGV4dCBmaWxsPScjMzMzMzMzJyBmb250LWZhbWlseT0nRGVqYVZ1IFNhbnMnIGZvbnQtc2l6ZT0nMTInIGZvbnQtd2VpZ2h0PSdib2xkJyBsZW5ndGhBZGp1c3Q9J3NwYWNpbmcnIHRleHRMZW5ndGg9JzMwLjUyMTUnIHg9JzMzMi42ODY1JyB5PScxMTcuNDM1NSc+ZGF0YTwvdGV4dD48cmVjdCBmaWxsPScjRDNFREQyJyBoZWlnaHQ9JzMyLjgwNDcnIHJ4PSc0JyByeT0nNCcgc3R5bGU9J3N0cm9rZTojQkJCQkJCO3N0cm9rZS13aWR0aDoxLjU7JyB3aWR0aD0nNjMuNzUyOScgeD0nNDIzLjIwOCcgeT0nNDUuMjM4MycvPjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMScgbGVuZ3RoQWRqdXN0PSdzcGFjaW5nJyB0ZXh0TGVuZ3RoPSc0My43NTI5JyB4PSc0MzMuMjA4JyB5PSc2NS40NDg3Jz5Tb3VyY2VzPC90ZXh0PjxyZWN0IGZpbGw9JyNEMUU2RTQnIGhlaWdodD0nMzEuNjQwNicgcng9JzQnIHJ5PSc0JyBzdHlsZT0nc3Ryb2tlOiNDNjI4Mjg7c3Ryb2tlLXdpZHRoOjIuNTsnIHdpZHRoPSc1MC4xNzA5JyB4PSc1MzYuOTYwOScgeT0nMjAnLz48dGV4dCBmaWxsPScjMzMzMzMzJyBmb250LWZhbWlseT0nRGVqYVZ1IFNhbnMnIGZvbnQtc2l6ZT0nMTAnIGxlbmd0aEFkanVzdD0nc3BhY2luZycgdGV4dExlbmd0aD0nMzAuMTcwOScgeD0nNTQ2Ljk2MDknIHk9JzM5LjI4MjInPkNNREI8L3RleHQ+PHBhdGggZD0nTTQ4Ni45NjA5LDYxLjY0MDYgTDQ5Ni45NjA5LDYxLjY0MDYgQzUxMS45NjA5LDYxLjY0MDYgNTExLjk2MDksMzUuODIwMyA1MjYuOTYwOSwzNS44MjAzIEw1MzYuOTYwOSwzNS44MjAzJyBmaWxsPSdub25lJyBzdHlsZT0nc3Ryb2tlOiM1NTU1NTU7c3Ryb2tlLXdpZHRoOjE7Jy8+PHJlY3QgZmlsbD0nI0QxRTZFNCcgaGVpZ2h0PSczMS42NDA2JyByeD0nNCcgcnk9JzQnIHN0eWxlPSdzdHJva2U6I0JCQkJCQjtzdHJva2Utd2lkdGg6MS41Oycgd2lkdGg9JzU5LjU3NTInIHg9JzUzNi45NjA5JyB5PSc3MS42NDA2Jy8+PHRleHQgZmlsbD0nIzMzMzMzMycgZm9udC1mYW1pbHk9J0RlamFWdSBTYW5zJyBmb250LXNpemU9JzEwJyBsZW5ndGhBZGp1c3Q9J3NwYWNpbmcnIHRleHRMZW5ndGg9JzM5LjU3NTInIHg9JzU0Ni45NjA5JyB5PSc5MC45MjI5Jz52Q2VudGVyPC90ZXh0PjxwYXRoIGQ9J000ODYuOTYwOSw2MS42NDA2IEw0OTYuOTYwOSw2MS42NDA2IEM1MTEuOTYwOSw2MS42NDA2IDUxMS45NjA5LDg3LjQ2MDkgNTI2Ljk2MDksODcuNDYwOSBMNTM2Ljk2MDksODcuNDYwOScgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojNTU1NTU1O3N0cm9rZS13aWR0aDoxOycvPjxwYXRoIGQ9J00zNzMuMjA4LDExMy4yODEzIEwzODMuMjA4LDExMy4yODEzIEMzOTguMjA4LDExMy4yODEzIDM5OC4yMDgsNjEuNjQwNiA0MTMuMjA4LDYxLjY0MDYgTDQyMy4yMDgsNjEuNjQwNicgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojMjI3QzYzO3N0cm9rZS13aWR0aDoxOycvPjxyZWN0IGZpbGw9JyNEM0VERDInIGhlaWdodD0nMzIuODA0Nycgcng9JzQnIHJ5PSc0JyBzdHlsZT0nc3Ryb2tlOiNCQkJCQkI7c3Ryb2tlLXdpZHRoOjEuNTsnIHdpZHRoPSc1MC40MjcyJyB4PSc0MjMuMjA4JyB5PScxNDguNTE5NScvPjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMScgbGVuZ3RoQWRqdXN0PSdzcGFjaW5nJyB0ZXh0TGVuZ3RoPSczMC40MjcyJyB4PSc0MzMuMjA4JyB5PScxNjguNzMnPkMmIzMzOTt1cjwvdGV4dD48cmVjdCBmaWxsPScjRDFFNkU0JyBoZWlnaHQ9JzMxLjY0MDYnIHJ4PSc0JyByeT0nNCcgc3R5bGU9J3N0cm9rZTojMDg3ODU5O3N0cm9rZS13aWR0aDoyLjU7JyB3aWR0aD0nNzAuNzg2MScgeD0nNTIzLjYzNTMnIHk9JzEyMy4yODEzJy8+PHRleHQgZmlsbD0nIzMzMzMzMycgZm9udC1mYW1pbHk9J0RlamFWdSBTYW5zJyBmb250LXNpemU9JzEwJyBsZW5ndGhBZGp1c3Q9J3NwYWNpbmcnIHRleHRMZW5ndGg9JzUwLjc4NjEnIHg9JzUzMy42MzUzJyB5PScxNDIuNTYzNSc+SW52ZW50YWlyZTwvdGV4dD48cmVjdCBmaWxsPScjRDZEREU5JyBoZWlnaHQ9JzI0LjQ3NjYnIHJ4PSc0JyByeT0nNCcgc3R5bGU9J3N0cm9rZTojQkJCQkJCO3N0cm9rZS13aWR0aDoxLjU7JyB3aWR0aD0nNTkuMDgzNScgeD0nNjQ0LjQyMTQnIHk9JzEyNi44NjMzJy8+PHRleHQgZmlsbD0nIzMzMzMzMycgZm9udC1mYW1pbHk9J0RlamFWdSBTYW5zJyBmb250LXNpemU9JzknIGxlbmd0aEFkanVzdD0nc3BhY2luZycgdGV4dExlbmd0aD0nNDUuMDgzNScgeD0nNjUxLjQyMTQnIHk9JzE0Mi4yMTczJz5oaXN0b3JpcXVlPC90ZXh0PjxwYXRoIGQ9J001OTQuNDIxNCwxMzkuMTAxNiBMNjA0LjQyMTQsMTM5LjEwMTYgQzYxOS40MjE0LDEzOS4xMDE2IDYxOS40MjE0LDEzOS4xMDE2IDYzNC40MjE0LDEzOS4xMDE2IEw2NDQuNDIxNCwxMzkuMTAxNicgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojNTU1NTU1O3N0cm9rZS13aWR0aDoxOycvPjxwYXRoIGQ9J000NzMuNjM1MywxNjQuOTIxOSBMNDgzLjYzNTMsMTY0LjkyMTkgQzQ5OC42MzUzLDE2NC45MjE5IDQ5OC42MzUzLDEzOS4xMDE2IDUxMy42MzUzLDEzOS4xMDE2IEw1MjMuNjM1MywxMzkuMTAxNicgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojNTU1NTU1O3N0cm9rZS13aWR0aDoxOycvPjxyZWN0IGZpbGw9JyNEMUU2RTQnIGhlaWdodD0nMzEuNjQwNicgcng9JzQnIHJ5PSc0JyBzdHlsZT0nc3Ryb2tlOiNCQkJCQkI7c3Ryb2tlLXdpZHRoOjEuNTsnIHdpZHRoPSc3Ny4zODc3JyB4PSc1MjMuNjM1MycgeT0nMTc0LjkyMTknLz48dGV4dCBmaWxsPScjMzMzMzMzJyBmb250LWZhbWlseT0nRGVqYVZ1IFNhbnMnIGZvbnQtc2l6ZT0nMTAnIGxlbmd0aEFkanVzdD0nc3BhY2luZycgdGV4dExlbmd0aD0nNTcuMzg3NycgeD0nNTMzLjYzNTMnIHk9JzE5NC4yMDQxJz5BbGlnbmVtZW50PC90ZXh0PjxwYXRoIGQ9J000NzMuNjM1MywxNjQuOTIxOSBMNDgzLjYzNTMsMTY0LjkyMTkgQzQ5OC42MzUzLDE2NC45MjE5IDQ5OC42MzUzLDE5MC43NDIyIDUxMy42MzUzLDE5MC43NDIyIEw1MjMuNjM1MywxOTAuNzQyMicgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojNTU1NTU1O3N0cm9rZS13aWR0aDoxOycvPjxwYXRoIGQ9J00zNzMuMjA4LDExMy4yODEzIEwzODMuMjA4LDExMy4yODEzIEMzOTguMjA4LDExMy4yODEzIDM5OC4yMDgsMTY0LjkyMTkgNDEzLjIwOCwxNjQuOTIxOSBMNDIzLjIwOCwxNjQuOTIxOScgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojMjI3QzYzO3N0cm9rZS13aWR0aDoxOycvPjxyZWN0IGZpbGw9JyNEM0VERDInIGhlaWdodD0nMzIuODA0Nycgcng9JzQnIHJ5PSc0JyBzdHlsZT0nc3Ryb2tlOiNCQkJCQkI7c3Ryb2tlLXdpZHRoOjEuNTsnIHdpZHRoPSc2MC4wMDM5JyB4PScxMzMuNTk4NicgeT0nOTYuODc4OScvPjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMScgbGVuZ3RoQWRqdXN0PSdzcGFjaW5nJyB0ZXh0TGVuZ3RoPSc0MC4wMDM5JyB4PScxNDMuNTk4NicgeT0nMTE3LjA4OTQnPlVzYWdlczwvdGV4dD48cmVjdCBmaWxsPScjRDFFNkU0JyBoZWlnaHQ9JzMxLjY0MDYnIHJ4PSc0JyByeT0nNCcgc3R5bGU9J3N0cm9rZTojQkJCQkJCO3N0cm9rZS13aWR0aDoxLjU7JyB3aWR0aD0nNjAuMjUzOScgeD0nMjMuMzQ0NycgeT0nNzEuNjQwNicvPjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMCcgbGVuZ3RoQWRqdXN0PSdzcGFjaW5nJyB0ZXh0TGVuZ3RoPSc0MC4yNTM5JyB4PSczMy4zNDQ3JyB5PSc5MC45MjI5Jz5QaWxvdGFnZTwvdGV4dD48cGF0aCBkPSdNMTMzLjU5ODYsMTEzLjI4MTMgTDEyMy41OTg2LDExMy4yODEzIEMxMDguNTk4NiwxMTMuMjgxMyAxMDguNTk4Niw4Ny40NjA5IDkzLjU5ODYsODcuNDYwOSBMODMuNTk4Niw4Ny40NjA5JyBmaWxsPSdub25lJyBzdHlsZT0nc3Ryb2tlOiM1NTU1NTU7c3Ryb2tlLXdpZHRoOjE7Jy8+PHJlY3QgZmlsbD0nI0QxRTZFNCcgaGVpZ2h0PSczMS42NDA2JyByeD0nNCcgcnk9JzQnIHN0eWxlPSdzdHJva2U6I0JCQkJCQjtzdHJva2Utd2lkdGg6MS41Oycgd2lkdGg9JzczLjU5ODYnIHg9JzEwJyB5PScxMjMuMjgxMycvPjx0ZXh0IGZpbGw9JyMzMzMzMzMnIGZvbnQtZmFtaWx5PSdEZWphVnUgU2FucycgZm9udC1zaXplPScxMCcgbGVuZ3RoQWRqdXN0PSdzcGFjaW5nJyB0ZXh0TGVuZ3RoPSc1My41OTg2JyB4PScyMCcgeT0nMTQyLjU2MzUnPlByb2R1Y3Rpb248L3RleHQ+PHBhdGggZD0nTTEzMy41OTg2LDExMy4yODEzIEwxMjMuNTk4NiwxMTMuMjgxMyBDMTA4LjU5ODYsMTEzLjI4MTMgMTA4LjU5ODYsMTM5LjEwMTYgOTMuNTk4NiwxMzkuMTAxNiBMODMuNTk4NiwxMzkuMTAxNicgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojNTU1NTU1O3N0cm9rZS13aWR0aDoxOycvPjxwYXRoIGQ9J00yNDMuNjAyNSwxMTMuMjgxMyBMMjMzLjYwMjUsMTEzLjI4MTMgQzIxOC42MDI1LDExMy4yODEzIDIxOC42MDI1LDExMy4yODEzIDIwMy42MDI1LDExMy4yODEzIEwxOTMuNjAyNSwxMTMuMjgxMycgZmlsbD0nbm9uZScgc3R5bGU9J3N0cm9rZTojMjI3QzYzO3N0cm9rZS13aWR0aDoxOycvPjw/cGxhbnR1bWwtc3JjIGhQSlJaakNtNDhSbHluR1pTR0V2QThjeElMRXNnZFFSV3ExWUtLS3ZONWtuYXZXY1RoNlROTFlxSnk0cHlMdXVKZlE2N2YyR3JmOFpVc1J5X1JPcHVva2JpVEdEdXdKMUV5VEhNeVB0TUU4Nkw4TTlrNkV5WDBCTllldXlaVTBZaHdIZXc5NkJxMEF0alN1NHItLW15SVZxMl94S21XUHBUSmZnbS11Zi02V2lWMnNiazhqNUJJR3l5dzlQNUNuN3BjSV9UMFlQc2tPdTJ3TV9ydEpmMzRUOTYyd3gxSnlTMDJ1OGpHRTB6d0JiOTFRSUttY0hqUm5iZDB3ZWJNdE1VZUVfaVFQakZaRVlBXzAzcG5mVjJ5ZGtaSkFraHNqTXllUG8zUmR2SzZkUzN3UlpSa2szcWVXUnMzUjRsMjlxZndsZHRlaVhSZG1CVi1SVEtNMGJRYzlEQXZubEl6ZGx0MEJKRDBpcFQyWTNxMm1FZnRfQi04eW9IdW5hY1lQOXAtWmxQeEdKdG85NjY3R1V1d1RYVWQ0UXVydDI2WEZJdlAzbDdJQWR2djVYYWdKcGF5WnZkWld4MTV3UzFNUFBYakJlOTMzdzFwMHUxLUkycV8tY1hLejNjeElveEZCa0FDZFk0NExlZHo4VkFmUGxFTEtBcTJJbXJZNHZabkZweWMzMV9rekYyZjZ0d2JYaEFDaWRyN2ZtNVktNzBkUFhOTUREMm83RDBxQW1uZXhobWFRcUNnVkEzNXM4UnY4TEIxUnpISW9OcmRPUnp0Tk9rTl96UkFLcmxrNnRuZWdQZjJSUzdnTUZUZzVZSWZqWV9qZkk2c1pCY05ScnhESXFxQTBPd0hwbUtVNW80NXNwTWNXcHdvVElhM1JOSjczZFlmaGR2bDdyejJWOEctNDRfR08wPz48L2c+PC9zdmc+"/>
+<rect x="680" y="1002" width="22" height="18" rx="4" fill="#EEF6F2" stroke="#227C63" stroke-width="1" />
+<text x="712" y="1016" font-size="12">racine : le sujet</text>
+<rect x="680" y="1032" width="22" height="18" rx="4" fill="#D3EDD2" stroke="#BBBBBB" stroke-width="1" />
+<text x="712" y="1046" font-size="12">niveau 1 : vert</text>
+<rect x="680" y="1062" width="22" height="18" rx="4" fill="#D1E6E4" stroke="#BBBBBB" stroke-width="1" />
+<text x="712" y="1076" font-size="12">niveau 2 : sarcelle</text>
+<rect x="680" y="1092" width="22" height="18" rx="4" fill="#D6DDE9" stroke="#BBBBBB" stroke-width="1" />
+<text x="712" y="1106" font-size="12">niveau 3 : bleu-gris</text>
+<rect x="680" y="1122" width="22" height="18" rx="4" fill="#FFF2E8" stroke="#BBBBBB" stroke-width="1" />
+<text x="712" y="1136" font-size="12">niveau 4 : pêche</text>
+<rect x="680" y="1152" width="22" height="18" rx="4" fill="#FFFFFF" stroke="#C62828" stroke-width="2.5" />
+<text x="712" y="1166" font-size="12">&lt;&lt;urgent&gt;&gt; : alerte</text>
+<rect x="680" y="1182" width="22" height="18" rx="4" fill="#FFFFFF" stroke="#087859" stroke-width="2.5" />
+<text x="712" y="1196" font-size="12">&lt;&lt;focus&gt;&gt; : focus</text>
+<text x="680" y="1232" font-size="11" fill="#555555">Mêmes fonds, mêmes bordures, mêmes</text>
+<text x="680" y="1248" font-size="11" fill="#555555">rouge et vert que les schémas draw.io.</text>
+<text x="30" y="1275" font-size="16" font-weight="bold" fill="#087859">6. Règles</text>
+<line x1="30" y1="1283" x2="970" y2="1283" stroke="#DDDDDD"/>
+<circle cx="38" cy="1303" r="3" fill="#087859"/>
+<text x="50" y="1307" font-size="13">Trois familles de couleur au plus par schéma, en plus du conteneur et des éléments blancs.</text>
+<circle cx="38" cy="1331" r="3" fill="#087859"/>
+<text x="50" y="1335" font-size="13">Une couleur, un sens, dans tout le document : si « Data » est vert dans un schéma, il l'est dans tous.</text>
+<circle cx="38" cy="1359" r="3" fill="#087859"/>
+<text x="50" y="1363" font-size="13">Vert du thème = le sujet, le focus ; orange = à surveiller ; rouge = problème, alerte.</text>
+<circle cx="38" cy="1387" r="3" fill="#087859"/>
+<text x="50" y="1391" font-size="13">Schéma de flux : cadres sans bordure, éléments bordés de #DDDDDD ; seuls les flux sont des traits soutenus.</text>
+<circle cx="38" cy="1415" r="3" fill="#087859"/>
+<text x="50" y="1419" font-size="13">Mise en évidence : un focus (#087859) et une alerte (#C62828) au plus par schéma ; contour de 2,5 px autour de l'élément, étiquette qui dit pourquoi.</text>
+<circle cx="38" cy="1443" r="3" fill="#087859"/>
+<text x="50" y="1447" font-size="13">Pointillés : « hors périmètre », « à venir », « supposé » ; jamais pour mettre en évidence.</text>
+<circle cx="38" cy="1471" r="3" fill="#087859"/>
+<text x="50" y="1475" font-size="13">Coins arrondis de 4 px pour toutes les boîtes, dans draw.io comme dans les styles PlantUML, mindmap compris.</text>
+<circle cx="38" cy="1499" r="3" fill="#087859"/>
+<text x="50" y="1503" font-size="13">Texte Helvetica 12, couleur #333333 ; pas d'ombre ; image insérée à sa taille naturelle, jamais agrandie.</text>
+<circle cx="38" cy="1527" r="3" fill="#087859"/>
+<text x="50" y="1531" font-size="13">Export : tout sélectionner, décocher « Formatted Text », sinon le PDF affiche « Text is not SVG ».</text>
+<circle cx="38" cy="1555" r="3" fill="#087859"/>
+<text x="50" y="1559" font-size="13">Enregistrer en .drawio.svg dans images/ : un seul fichier, à la fois image du document et source modifiable.</text>
+</svg>

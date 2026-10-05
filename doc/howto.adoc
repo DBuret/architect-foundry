@@ -134,7 +134,7 @@ Les règles de rédaction sont dans `normes/asciidoc.adoc`, à lire une fois ; l
 
 * Une hypothèse, un point ouvert ou une décision se crée dans son registre, en copiant une entrée existante, puis se cite par son ancre : `<<H2>>`, jamais « voir H2 ».
 * Une affirmation tirée d'un document se cite avec sa source ; une indication orale devient une hypothèse qui dit qui l'a donnée, quand et dans quel cadre.
-* Un schéma se dessine en PlantUML, avec le style commun (`normes/schemas.adoc`).
+* Un schéma se dessine en PlantUML, avec le style commun ; ses couleurs se posent par leur nom, `\<<vert>>`, `\<<peche>>`…, jamais par un code (`normes/schemas.adoc`, « Couleurs des schémas »).
 
 .Exemple : un paragraphe et l'hypothèse qu'il cite
 [source,asciidoc]
@@ -247,6 +247,45 @@ git commit -am "Chapitre déploiement cible"
 
 La synthèse s'écrit en dernier, une fois le corps stable.
 Quand une étude produit un DAT et un mémo, le mémo se rédige à partir du DAT.
+
+[[dessiner]]
+=== Dessiner un schéma à la main
+
+Un schéma que PlantUML ne sait pas faire (couches, matrices, flux entre plateformes) se dessine dans draw.io, ou avec l'extension « Draw.io Integration » de VS Code.
+Il reprend la palette des schémas PlantUML pour que le document reste homogène : les règles sont dans `normes/schemas.adoc`, « Couleurs des schémas » ; la planche ci-dessous les montre.
+
+image::images/planche-drawio.png[Schémas draw.io : couleurs et règles,width=100%]
+
+Une fois par poste, dans draw.io, menu « Extras », puis « Configuration », coller ce qui suit et redémarrer : la palette apparaît dans le panneau « Style », et les nouvelles formes prennent la bonne police et la bonne couleur de texte.
+
+[source,json]
+----
+{
+  "customColorSchemes": [[
+    {"fill": "#F1F1F1", "stroke": "#BBBBBB"},
+    {"fill": "#FFFFFF", "stroke": "#BBBBBB"},
+    {"fill": "#EEF6F2", "stroke": "#227C63"},
+    {"fill": "#D3EDD2", "stroke": "#769D75"},
+    {"fill": "#D1E6E4", "stroke": "#62938E"},
+    {"fill": "#E6F2FD", "stroke": "#7F9BB3"},
+    {"fill": "#D6DDE9", "stroke": "#848E9E"},
+    {"fill": "#FFF2E8", "stroke": "#B96E27"},
+    {"fill": "#ECE6F3", "stroke": "#9C8FB2"},
+    {"fill": "none", "stroke": "#087859"},
+    {"fill": "none", "stroke": "#C62828"}
+  ]],
+  "defaultVertexStyle": {"fontFamily": "Helvetica", "fontSize": "12", "fontColor": "#333333", "html": "0",
+                         "rounded": "1", "absoluteArcSize": "1", "arcSize": "8"},
+  "defaultEdgeStyle": {"strokeColor": "#087859", "fontColor": "#333333"}
+}
+----
+
+Pour chaque schéma :
+
+. L'enregistrer en `.drawio.svg` dans `images/` : l'image du document et sa source en un seul fichier.
+. Avant d'enregistrer, tout sélectionner et décocher « Formatted Text » : sinon le PDF affiche « Text is not SVG ».
+. L'insérer à sa taille naturelle : `image::mon-schema.drawio.svg[Texte alternatif]`.
+. Produire le PDF (`tools/build.sh`) et vérifier le schéma dans la page.
 
 === Relire
 

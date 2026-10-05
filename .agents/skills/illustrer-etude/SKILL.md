@@ -17,7 +17,8 @@ liste au fil de l'eau. D'où l'ordre : rédiger, puis illustrer.
    chapitres touchés par `git diff` depuis le dernier commit.
 2. Lis `normes/schemas.adoc` : syntaxe PlantUML, partage des rôles entre
    mindmap et WBS (« Mindmaps et WBS »), fichier `!include` à poser dans
-   chaque nouveau bloc (« Style commun aux schémas »).
+   chaque nouveau bloc (« Style commun aux schémas »), couleurs nommées et
+   mise en évidence (« Couleurs des schémas »).
 3. Lis le `:type:` du maître. Dans le corps d'un mémo (`memo`), un schéma
    par chapitre au plus, mindmap ou WBS seulement : le décideur doit saisir
    les options et la trajectoire, pas l'architecture détaillée. Ses annexes
@@ -47,6 +48,13 @@ liste au fil de l'eau. D'où l'ordre : rédiger, puis illustrer.
 - Mindmap pour un inventaire ou une catégorisation sans ordre
   d'exécution (risques, critères, périmètre inclus/exclu). WBS pour une
   décomposition avec un sens d'exécution (phasage, livrable, lots).
+- Couleurs : celles du style suffisent le plus souvent. Pour en poser
+  une, une couleur nommée de la palette en stéréotype
+  (`** Lot 2 <<peche>>`), jamais un code (`[#FF0000]`, `#lightblue`) :
+  `check.sh` signale tout code hors palette. Une couleur, un sens : la même couleur
+  pour la même notion dans tout le document. Pour mettre un nœud en
+  évidence, `<<focus>>` ou `<<urgent>>`, un de chaque au plus par schéma,
+  et seulement si le texte dit pourquoi.
 - Toute donnée portée par un schéma (un chiffre, un statut, un nom) doit
   déjà être dans le texte qu'il illustre. N'invente rien pour remplir un
   nœud ; un schéma qui ajoute une information absente du texte introduit
