@@ -201,10 +201,11 @@ if ruby -e 'require "asciidoctor-diagram"' >/dev/null 2>&1; then
     if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
        && grep -q "stroke:#C62828;stroke-width:2.5" "$svg" \
        && grep -q "stroke:#087859;stroke-width:2.5" "$svg" \
+       && grep -q "rx='4'" "$svg" && ! grep -q "rx='12.5'" "$svg" \
        && ! grep -o "<rect[^>]*/><text[^>]*>Enfant<" "$svg" | grep -q "#C62828"; then
       echo "ok     <<urgent>> et <<focus>> sur un $1, nœud seul"
     else
-      fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> et <<focus>> sur un $1 : contour absent, ou étendu à l'enfant"
+      fails=$((fails + 1)); echo "ÉCHEC  <<urgent>> et <<focus>> sur un $1 : contour absent, étendu à l'enfant, ou coins autres que 4 px"
     fi
   }
   marques mindmap @startmindmap @endmindmap mm
@@ -213,6 +214,7 @@ if ruby -e 'require "asciidoctor-diagram"' >/dev/null 2>&1; then
   # Bordures grises de la palette : sans elles, PlantUML borde composants,
   # participants, lignes de vie et barres d'activation de #181818, presque
   # noir. Les lignes de vie et les activations n'obéissent qu'au <style>.
+  # Coins de 4 px (roundCorner 8), comme les boîtes draw.io.
   cp "$ROOT/normes/plantuml/_component.iuml" "$ROOT/normes/plantuml/_sequence.iuml" "$d/normes/plantuml/"
   # gris <type> <corps> <image>
   gris() {
@@ -220,10 +222,11 @@ if ruby -e 'require "asciidoctor-diagram"' >/dev/null 2>&1; then
     n=$((n + 1))
     svg=$d/work/images/$3.svg
     if (cd "$d" && asciidoctor -r asciidoctor-diagram -o /dev/null memo.adoc >/dev/null 2>&1) \
-       && grep -q "stroke:#BBBBBB" "$svg" && ! grep -Eq "stroke:#(181818|000000)" "$svg"; then
-      echo "ok     bordures grises de la palette sur un schéma $1"
+       && grep -q "stroke:#BBBBBB" "$svg" && ! grep -Eq "stroke:#(181818|000000)" "$svg" \
+       && grep -q "rx='4'" "$svg" && ! grep -q "rx='2.5'" "$svg"; then
+      echo "ok     bordures grises et coins de 4 px sur un schéma $1"
     else
-      fails=$((fails + 1)); echo "ÉCHEC  bordures sur un schéma $1 : absentes, ou noires de PlantUML"
+      fails=$((fails + 1)); echo "ÉCHEC  bordures ou coins sur un schéma $1 : noirs de PlantUML, ou coins autres que 4 px"
     fi
   }
   gris component 'package Zone {\n  component A\n  database B\n}\nA --> B\nnote right of B : n' co

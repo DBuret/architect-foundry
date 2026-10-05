@@ -5,6 +5,9 @@
 ' _<type>.iuml qui le référence par son nom seul.
 
 skinparam shadowing false
+' Coins arrondis de 4 px (rayon = roundCorner / 2), comme les boîtes
+' draw.io : normes/schemas.adoc, « Couleurs des schémas ».
+skinparam roundCorner 8
 skinparam monochrome false
 skinparam defaultFontName DejaVu Sans
 ' 12 px, soit 9 pt dans le PDF : DejaVu Sans a des minuscules plus hautes

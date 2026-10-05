@@ -274,7 +274,8 @@ Une fois par poste, dans draw.io, menu « Extras », puis « Configuration », c
     {"fill": "none", "stroke": "#087859"},
     {"fill": "none", "stroke": "#C62828"}
   ]],
-  "defaultVertexStyle": {"fontFamily": "Helvetica", "fontSize": "12", "fontColor": "#333333", "html": "0"},
+  "defaultVertexStyle": {"fontFamily": "Helvetica", "fontSize": "12", "fontColor": "#333333", "html": "0",
+                         "rounded": "1", "absoluteArcSize": "1", "arcSize": "8"},
   "defaultEdgeStyle": {"strokeColor": "#087859", "fontColor": "#333333"}
 }
 ----

@@ -172,6 +172,7 @@ La planche du mode d'emploi (`doc/howto.adoc`, « Dessiner un schéma à la main
 
 * Texte `#333333` ; flux et dépendances `#087859` ; liens neutres `#555555`.
 * Une couleur, un sens, dans tout le document : vert du thème pour le sujet, orange pour ce qui est à surveiller, rouge (`#C62828`) pour un problème.
+* Coins arrondis de 4 px pour toutes les boîtes, mindmap compris : `roundCorner 8` dans les styles PlantUML, rayon fixe dans la configuration draw.io du mode d'emploi.
 * Trois familles de couleur au plus par schéma, en plus du conteneur et des éléments blancs.
 * Mise en évidence : un focus (`#087859`) et une alerte (`#C62828`) au plus par schéma, contour de 2,5 px autour de l'élément et étiquette qui dit pourquoi ; en PlantUML, `\<<focus>>` et `\<<urgent>>`.
 * Schéma de flux : cadres de zone sans bordure, éléments bordés de `#DDDDDD` ; seuls les flux sont des traits soutenus.

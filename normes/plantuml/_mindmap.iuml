@@ -17,6 +17,7 @@
 <style>
 mindmapDiagram {
   node {
+    RoundCorner 8
     LineColor #BBBBBB
     MaximumWidth 150
     HorizontalAlignment center
