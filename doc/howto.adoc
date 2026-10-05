@@ -226,6 +226,7 @@ Changer un statut reste une décision de l'architecte, qu'il fait lui-même ou d
 . Écrire le chapitre (<<ecrire>>), ou en demander un premier jet à l'agent dans une session neuve, puis le reprendre.
 L'agent suit la structure du type du maître et rédige le texte en entier, sans schéma.
 . Illustrer le chapitre, soi-même ou avec le skill `illustrer-etude` : mindmaps et WBS, seulement là où le texte franchit le seuil des normes.
+Un schéma de composants, de déploiement ou de séquence se dessine soi-même, ou se fait écrire par l'agent à partir d'une description (<<schema-agent>>).
 . `tools/check.sh` : aucun KO, chaque AVERT corrigé ou compris.
 . Relire le diff, puis commiter ; le hook relance `check.sh`.
 
@@ -247,6 +248,33 @@ git commit -am "Chapitre déploiement cible"
 
 La synthèse s'écrit en dernier, une fois le corps stable.
 Quand une étude produit un DAT et un mémo, le mémo se rédige à partir du DAT.
+
+[[schema-agent]]
+=== Faire écrire un schéma par l'agent
+
+Pour un schéma de composants, de déploiement ou de séquence, l'agent part d'une description en langage naturel et en écrit le PlantUML aux normes : style, couleurs nommées, mise en évidence.
+La logique reste celle de l'architecte : la description nomme chaque élément, zone et flux, avec son sens ; ce qu'elle ne dit pas, l'agent ne l'invente pas.
+
+. Décrire le schéma dans une session neuve, en nommant le fichier et l'endroit où l'insérer.
+. Répondre aux questions que l'agent liste à la fin, plutôt que de le laisser deviner.
+. Relire le rendu dans l'aperçu ou le PDF, pas seulement le code, puis reprendre le schéma à la main : regroupements, libellés, flux secondaires.
+. `tools/check.sh` : il signale un style manquant ou une couleur hors palette.
+
+.Exemple : schéma de déploiement décrit en langage naturel
+[source,text]
+----
+Lis normes/schemas.adoc, sections « Style commun aux schémas » et
+« Couleurs des schémas ». Dans deploiement.adoc, après le paragraphe
+sur la cible, écris un schéma de déploiement PlantUML :
+- zone « DMZ » : le reverse proxy ;
+- zone « Interne », en <<zone>> : deux nœuds applicatifs, la base
+  PostgreSQL en primaire et secondaire ;
+- flux : proxy -> nœuds en HTTPS, nœuds -> base primaire en SQL,
+  réplication primaire -> secondaire ;
+- <<urgent>> sur la base secondaire : la bascule n'est pas automatique.
+N'invente aucun élément ni aucun flux : liste tes questions à la fin.
+Lance tools/check.sh.
+----
 
 [[dessiner]]
 === Dessiner un schéma à la main
